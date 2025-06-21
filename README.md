@@ -14,6 +14,7 @@ Para os 2 desafios considere o objeto EquipamentoEletronico com os seguintes cam
 3. Quantidade em estoque: Campo obrigatório
 4. Data de inclusão: Campo obrigatório
 5. Tem Estoque: Campo somente leitura
+
 Diferencial:
 1. Efetuar testes unitarios no projeto do C# e/ou Angular
 2. Criar os 2 projetos conectados um como back-end e outro como front-end

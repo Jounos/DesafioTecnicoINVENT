@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.14.36212.18 d17.14
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "desafioInventBackend", "desafioInventBackend\desafioInventBackend.csproj", "{154D2428-3F93-4E44-8446-93B3AD00F086}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DesafioInventBackend", "DesafioInventBackend\DesafioInventBackend.csproj", "{26D5F170-B308-411C-A660-749150BFE1BF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,15 +11,15 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{154D2428-3F93-4E44-8446-93B3AD00F086}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{154D2428-3F93-4E44-8446-93B3AD00F086}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{154D2428-3F93-4E44-8446-93B3AD00F086}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{154D2428-3F93-4E44-8446-93B3AD00F086}.Release|Any CPU.Build.0 = Release|Any CPU
+		{26D5F170-B308-411C-A660-749150BFE1BF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{26D5F170-B308-411C-A660-749150BFE1BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{26D5F170-B308-411C-A660-749150BFE1BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{26D5F170-B308-411C-A660-749150BFE1BF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {82E85772-1906-4C8F-B64A-6B1CC80F547A}
+		SolutionGuid = {A4D0CFD0-0BC0-4FD3-9967-1E243CF58D2A}
 	EndGlobalSection
 EndGlobal

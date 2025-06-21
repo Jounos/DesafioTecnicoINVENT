@@ -1,10 +1,15 @@
+using DesafioInventBackend.Model.Context;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
 builder.Services.AddControllers();
+
+// Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
+
+builder.Services.AddDbContext<EquipamentoEletronicoContext>(opt => opt.UseInMemoryDatabase("EquipamentoEletronicoList"));
 
 var app = builder.Build();
 
@@ -16,8 +21,8 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-//app.UseAuthorization();
+app.UseAuthorization();
 
 app.MapControllers();
 
-app.Run("http://localhost:9000");
+app.Run();
