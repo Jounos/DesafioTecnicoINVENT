@@ -1,12 +1,35 @@
-﻿namespace DesafioInventBackend.Model
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace DesafioInventBackend.Model
 {
     public class EquipamentoEletronico
     {
-        private long Id { get; set; }
-        private string nome { get; set; }
-        private int quantidadeEstoque { get; set; }
-        private bool temEstoque { get; set; }
-        private DateTime dataInclsao { get; set; }
-        private DateTime dataExclusao { get; set; }
+        public int Id { get; set; }
+
+        [Required]
+        public string? Nome { get; set; }
+        [Required]
+        public TipoEquipamento TipoEquipamento { get; set; }
+        [Required]
+        public int QuantidadeEstoque { get; set; }
+        public bool TemEstoque { get; set; }
+        [Required]
+        public DateTime DataInclusao { get; set; }
+        public DateTime DataExclusao { get; set; }
+
+        public EquipamentoEletronico()
+        {
+            this.TemEstoque = this.QuantidadeEstoque > 0;
+        }
+    }
+
+    public enum TipoEquipamento
+    {
+        PC,
+        Notebook,
+        Mouse,
+        Teclado
     }
 }
+

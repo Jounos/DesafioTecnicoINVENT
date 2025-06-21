@@ -1,6 +1,37 @@
-@DesafioInventBackend_HostAddress = http://localhost:5031
+@DesafioInventBackend_HostAddress = https://localhost:7005
 
-GET {{DesafioInventBackend_HostAddress}}/weatherforecast/
-Accept: application/json
+###
+
+GET {{DesafioInventBackend_HostAddress}}/api/equipamento-eletronico
+
+###
+
+POST {{DesafioInventBackend_HostAddress}}/api/equipamento-eletronico
+Content-Type: application/json
+
+{ 
+  "nome": "pc de teste",
+  "tipoEquipamento": 0,
+  "quantidadeEstoque": 10,
+  "dataInclusao": "2025-06-21T00:00:00"
+}
+
+###
+
+@id=0
+DELETE {{DesafioInventBackend_HostAddress}}/api/equipamento-eletronico/{{id}}
+
+###
+
+GET {{DesafioInventBackend_HostAddress}}/api/equipamento-eletronico/{{id}}
+
+###
+
+PUT {{DesafioInventBackend_HostAddress}}/api/equipamento-eletronico/{{id}}
+Content-Type: application/json
+
+{
+  //EquipamentoEletronico
+}
 
 ###
