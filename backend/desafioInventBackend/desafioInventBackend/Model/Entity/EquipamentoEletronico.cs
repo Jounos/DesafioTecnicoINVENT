@@ -1,10 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace DesafioInventBackend.Model
+namespace DesafioInventBackend.Model.Entity
 {
     public class EquipamentoEletronico
     {
+        [Key]
         public int Id { get; set; }
 
         [Required]
@@ -15,12 +16,12 @@ namespace DesafioInventBackend.Model
         public int QuantidadeEstoque { get; set; }
         public bool TemEstoque { get; set; }
         [Required]
-        public DateTime DataInclusao { get; set; }
-        public DateTime DataExclusao { get; set; }
+        public DateTimeOffset DataInclusao { get; set; }
+        public DateTimeOffset DataExclusao { get; set; }
 
         public EquipamentoEletronico()
         {
-            this.TemEstoque = this.QuantidadeEstoque > 0;
+            TemEstoque = QuantidadeEstoque > 0;
         }
     }
 

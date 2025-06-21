@@ -1,4 +1,4 @@
-using DesafioInventBackend.Model.Context;
+using DesafioInventBackend.Context;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,9 +9,7 @@ builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
-builder.Services.AddSwaggerGen();
-
-builder.Services.AddDbContext<EquipamentoEletronicoContext>(opt => opt.UseInMemoryDatabase("EquipamentoEletronicoList"));
+builder.Services.AddDbContext<DataContext>(opt => opt.UseInMemoryDatabase("EquipamentoEletronicoList"));
 
 var app = builder.Build();
 
@@ -19,7 +17,6 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
-    app.UseSwagger();
 
 }
 
