@@ -23,6 +23,35 @@ namespace DesafioInventBackend.Controller
             this._equipamentoEletronicoService = equipamentoEletronicoService;
         }
 
+        [HttpGet]
+        public async Task<IActionResult> listarTodosEquipamentosEletronicos()
+        {
+            return OK();
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> buscarEquipamentoEletronicoPorId(int id)
+        {
+            return Ok();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> cadastrarEquipamentoEletronico(EquipamentoEletronico equipamentoEletronico)
+        {
+            return Ok();
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> atualizarEquipamentoEletronico(int id, EquipamentoEletronico equipamentoEletronico)
+        {
+            return Ok();
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> excluirEquipamentoEletronico(int id)
+        {
+            return Ok();
+        }
 
     }
 }

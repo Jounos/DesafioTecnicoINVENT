@@ -18,7 +18,6 @@ namespace DesafioInventBackend.Model.Entity
         public bool TemEstoque { get; set; }
         [Required]
         public DateTimeOffset DataInclusao { get; set; }
-        public DateTimeOffset DataExclusao { get; set; }
 
         public EquipamentoEletronico()
         {
