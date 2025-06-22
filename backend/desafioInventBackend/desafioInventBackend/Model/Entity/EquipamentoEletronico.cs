@@ -14,6 +14,7 @@ namespace DesafioInventBackend.Model.Entity
         public TipoEquipamento TipoEquipamento { get; set; }
         [Required]
         public int QuantidadeEstoque { get; set; }
+        [NotMapped]
         public bool TemEstoque { get; set; }
         [Required]
         public DateTimeOffset DataInclusao { get; set; }

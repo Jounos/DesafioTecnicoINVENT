@@ -7,6 +7,6 @@ namespace DesafioInventBackend.Context
     {
         public DataContext(DbContextOptions<DataContext> options) : base(options) { }
 
-        public DbSet<EquipamentoEletronico> equipamentoEletronicos { get; set; } = null!;
+        public DbSet<EquipamentoEletronico> equipamentoEletronico { get; set; } = null!;
     }
 }
