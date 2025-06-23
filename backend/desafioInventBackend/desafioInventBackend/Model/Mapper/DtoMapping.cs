@@ -8,7 +8,7 @@ namespace DesafioInventBackend.Model.Mapper
     {
         public DtoMapping()
         {
-            CreateMap<EquipamentoEletronico, EquipamentoEletronicoDto>().ReverseMap();
+            CreateMap<EquipamentoEletronico, RetornoEquipamentoEletronicoDto>().ReverseMap();
         }
     }
 }

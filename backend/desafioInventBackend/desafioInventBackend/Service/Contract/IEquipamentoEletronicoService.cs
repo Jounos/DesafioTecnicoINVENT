@@ -5,14 +5,14 @@ namespace DesafioInventBackend.Service.Contract
 {
     public interface IEquipamentoEletronicoService
     {
-        public ICollection<EquipamentoEletronico> listarEquipamentosEletronicos();
+        public Task<ICollection<RetornoEquipamentoEletronicoDto>> listarEquipamentosEletronicos();
 
-        public EquipamentoEletronico buscarEquipamentoEletronicoPorId(int id);
+        public Task<RetornoEquipamentoEletronicoDto> buscarEquipamentoEletronicoPorId(int id);
 
-        public EquipamentoEletronicoDto cadastrarEquipamentoEletronico(EquipamentoEletronicoDto equipamentoEletronico);
+        public Task<RetornoEquipamentoEletronicoDto> cadastrarEquipamentoEletronico(RetornoEquipamentoEletronicoDto equipamentoEletronico);
         
-        public EquipamentoEletronicoDto editarEquipamentoEletronico(int id, EquipamentoEletronicoDto equipamentoEletronico);
+        public Task<RetornoEquipamentoEletronicoDto> atualizarEquipamentoEletronico(int id, RetornoEquipamentoEletronicoDto equipamentoEletronico);
 
-        public bool excluirEquipamentoEletronico(int id);
+        public Task<bool> excluirEquipamentoEletronico(int id);
     }
 }

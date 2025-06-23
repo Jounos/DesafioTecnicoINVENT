@@ -8,6 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using DesafioInventBackend.Context;
 using DesafioInventBackend.Model.Entity;
 using DesafioInventBackend.Service.Contract;
+using DesafioInventBackend.Model.DTO;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace DesafioInventBackend.Controller
 {
@@ -16,27 +18,41 @@ namespace DesafioInventBackend.Controller
     public class EquipamentoEletronicoController : ControllerBase
     {
 
-        private readonly IEquipamentoEletronicoService _equipamentoEletronicoService;
+        private readonly IEquipamentoEletronicoService _service;
 
         public EquipamentoEletronicoController(IEquipamentoEletronicoService equipamentoEletronicoService)
         {
-            this._equipamentoEletronicoService = equipamentoEletronicoService;
+            this._service = equipamentoEletronicoService;
         }
 
         [HttpGet]
-        public IActionResult listarTodosEquipamentosEletronicos()
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<RetornoEquipamentoEletronicoDto>))]
+        public async Task<ActionResult<ICollection<RetornoEquipamentoEletronicoDto>>> listarTodosEquipamentosEletronicos()
         {
-            return Ok();
+            ICollection<RetornoEquipamentoEletronicoDto> listaEquipamentosEletronicos = await _service.listarEquipamentosEletronicos();
+            if (listaEquipamentosEletronicos.Count == 0)
+            {
+                return NotFound();
+            }
+
+            return Ok(listaEquipamentosEletronicos);
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> buscarEquipamentoEletronicoPorId(int id)
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<RetornoEquipamentoEletronicoDto>))]
+        public async Task<ActionResult<RetornoEquipamentoEletronicoDto>> buscarEquipamentoEletronicoPorId(int id)
         {
-            return Ok();
+            RetornoEquipamentoEletronicoDto equipamentoEletronicoDto = await _service.buscarEquipamentoEletronicoPorId(id);
+            if (equipamentoEletronicoDto == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(equipamentoEletronicoDto);
         }
 
         [HttpPost]
-        public async Task<IActionResult> cadastrarEquipamentoEletronico(EquipamentoEletronico equipamentoEletronico)
+        public async Task<IActionResult> cadastrarEquipamentoEletronico(EquipamentoEletronicoDto equipamentoEletronicoDto)
         {
             return Ok();
         }

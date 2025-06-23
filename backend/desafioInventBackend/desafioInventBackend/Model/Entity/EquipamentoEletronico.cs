@@ -10,7 +10,7 @@ namespace DesafioInventBackend.Model.Entity
         public int Id { get; set; }
 
         [Required]
-        public string Nome { get; set; }
+        public string? Nome { get; set; }
         [Required]
         public TipoEquipamento TipoEquipamento { get; set; }
         [Required]
@@ -26,17 +26,15 @@ namespace DesafioInventBackend.Model.Entity
             TemEstoque = QuantidadeEstoque > 0;
         }
 
-        public EquipamentoEletronico(EquipamentoEletronicoDto equipamentoEletronicoDto, DateTime? dataInclusao = null)
+        public EquipamentoEletronico(RetornoEquipamentoEletronicoDto equipamentoEletronicoDto)
         {
+            this.Id = equipamentoEletronicoDto.Id;
             this.Nome = equipamentoEletronicoDto.Nome;
             this.TipoEquipamento = (TipoEquipamento)equipamentoEletronicoDto.TipoEquipamentoId;
             this.QuantidadeEstoque = equipamentoEletronicoDto.QuantidadeEstoque;
             this.TemEstoque = (equipamentoEletronicoDto.QuantidadeEstoque > 0);
-            if (dataInclusao != null)
-            {
-                this.DataInclusao = dataInclusao!.Value;
-            }
-
+            this.DataInclusao = (equipamentoEletronicoDto.DataInclusao == null ? DateTime.MinValue : equipamentoEletronicoDto.DataInclusao!.Value);
+            this.DataExclusao = (equipamentoEletronicoDto.DataExclusao == null ? DateTime.MinValue : equipamentoEletronicoDto.DataExclusao!.Value);
         }
     }
 

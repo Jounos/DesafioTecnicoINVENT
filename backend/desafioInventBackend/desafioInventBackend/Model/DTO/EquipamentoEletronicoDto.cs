@@ -4,8 +4,9 @@ namespace DesafioInventBackend.Model.DTO
 {
     public class EquipamentoEletronicoDto
     {
+
         [Required]
-        public string Nome { get; set; }
+        public string? Nome { get; set; }
 
         [Required]
         public int TipoEquipamentoId { get; set; }
@@ -13,7 +14,9 @@ namespace DesafioInventBackend.Model.DTO
         [Required]
         public int QuantidadeEstoque { get; set; }
 
-        //[Required]
-        //public DateTime DataInclusao { get; set; }
+        public EquipamentoEletronicoDto()
+        {
+
+        }
     }
 }

@@ -14,32 +14,31 @@ namespace DesafioInventBackend.Repository
         {
             _dataContext = dataContext;
         }
-
-        public EquipamentoEletronico buscarEquipamentoEletronicoPorId(int id)
+        public async Task<ICollection<EquipamentoEletronico>> listarEquipamentosEletronicos()
         {
-            return _dataContext.equipamentoEletronico.Where(e => e.Id == id).Single();
+            return await _dataContext.equipamentoEletronico.ToListAsync();
         }
 
-        public ICollection<EquipamentoEletronico> listarEquipamentosEletronicos()
+        public async Task<EquipamentoEletronico> buscarEquipamentoEletronicoPorId(int id)
         {
-            return _dataContext.equipamentoEletronico.ToList();
+            return await _dataContext.equipamentoEletronico.FirstAsync(e => e.Id == id);
         }
 
-        public bool cadastrarEquipamentoEletronico(EquipamentoEletronico equipamentoEletronico)
+        public async Task<bool> cadastrarEquipamentoEletronico(EquipamentoEletronico equipamentoEletronico)
         {
-            _dataContext.equipamentoEletronico.Add(equipamentoEletronico);
-            return Salvar();
+            await _dataContext.equipamentoEletronico.AddAsync(equipamentoEletronico);
+            return await Salvar();
         }
 
-        public bool atualizarEquipamentoEletronico(EquipamentoEletronico equipamentoEletronico)
+        public async Task<bool> atualizarEquipamentoEletronico(EquipamentoEletronico equipamentoEletronico)
         {
             _dataContext.equipamentoEletronico.Update(equipamentoEletronico);
-            return Salvar();
+            return await Salvar();
         }
 
-        private bool Salvar() 
+        private async Task<bool> Salvar() 
         {
-            return _dataContext.SaveChanges() > 0 ? true : false;
+            return await _dataContext.SaveChangesAsync() > 0 ? true : false;
         }
     }
 }

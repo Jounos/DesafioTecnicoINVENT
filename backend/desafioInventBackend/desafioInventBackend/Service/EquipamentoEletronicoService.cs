@@ -23,79 +23,80 @@ namespace DesafioInventBackend.Service
             this._mapper = mapper;
         }
 
-        public ICollection<EquipamentoEletronico> listarEquipamentosEletronicos()
+        public async Task<ICollection<RetornoEquipamentoEletronicoDto>> listarEquipamentosEletronicos()
         {
-            List<EquipamentoEletronico> listaEquipamentoEletronico = _repository.listarEquipamentosEletronicos().ToList();
-            if (listaEquipamentoEletronico.Count == 0)
+            ICollection<EquipamentoEletronico> listaEquipamentosEletronicos = await _repository.listarEquipamentosEletronicos();
+            if (listaEquipamentosEletronicos.Count == 0)
             {
                 throw new FormatException("Nenhum equipamento encontrado.");
             }
 
-            return listaEquipamentoEletronico;
+            ICollection<RetornoEquipamentoEletronicoDto> listaEquipamentosEletronicosDto = _mapper.Map<ICollection<RetornoEquipamentoEletronicoDto>>(listaEquipamentosEletronicos);
+
+            return listaEquipamentosEletronicosDto;
         }
 
-        public EquipamentoEletronico buscarEquipamentoEletronicoPorId(int id)
+        public async Task<RetornoEquipamentoEletronicoDto> buscarEquipamentoEletronicoPorId(int id)
         {
-            EquipamentoEletronico equipamentoEletronico = _repository.buscarEquipamentoEletronicoPorId(id);
+            EquipamentoEletronico equipamentoEletronico = await _repository.buscarEquipamentoEletronicoPorId(id);
             if (equipamentoEletronico == null)
             {
                 throw new FormatException("Equipamento eletrônico não encontrado.");
             }
 
-            return equipamentoEletronico;
-        }
-
-        public EquipamentoEletronicoDto cadastrarEquipamentoEletronico(EquipamentoEletronicoDto equipamentoEletronicoDto)
-        {
-
-            EquipamentoEletronico equipamentoEletronico = new EquipamentoEletronico(equipamentoEletronicoDto);
-            if (_repository.cadastrarEquipamentoEletronico(equipamentoEletronico)) {
-                throw new SystemException("Não foi possível realizar o cadastro do equipamento eletrônico.");
-            }
-
-            return _mapper.Map<EquipamentoEletronicoDto>(equipamentoEletronico);
-        }
-
-        public EquipamentoEletronicoDto editarEquipamentoEletronico(int id, EquipamentoEletronicoDto equipamentoEletronicoDto)
-        {
-            
-            EquipamentoEletronico equipamentoEletronico = this.buscarEquipamentoEletronicoPorId(id);
-            if (equipamentoEletronico == null)
-            {
-                throw new FormatException("Equipamento Eletrônico não encontrado.");
-            }
-            
-            if (equipamentoEletronico.DataExclusao != null)
-            {
-                throw new FormatException("Este equipamento não pode ser editado, pois já foi excluído.");
-            }
-
-            equipamentoEletronico.Nome = equipamentoEletronicoDto.Nome;
-            equipamentoEletronico.TipoEquipamento = (TipoEquipamento)equipamentoEletronicoDto.TipoEquipamentoId;
-            equipamentoEletronico.QuantidadeEstoque = equipamentoEletronicoDto.QuantidadeEstoque;
-            //equipamentoEletronico.TemEstoque = (equipamentoEletronicoDto.QuantidadeEstoque > 0);
-
-            if (_repository.atualizarEquipamentoEletronico(equipamentoEletronico))
-            {
-                throw new SystemException("Não foi possível atualizar o equipamento eletrõnico.");
-            }
-
-            equipamentoEletronicoDto = _mapper.Map<EquipamentoEletronicoDto>(equipamentoEletronico);
+            RetornoEquipamentoEletronicoDto equipamentoEletronicoDto = _mapper.Map<RetornoEquipamentoEletronicoDto>(equipamentoEletronico);
 
             return equipamentoEletronicoDto;
         }
 
-        public bool excluirEquipamentoEletronico(int id)
+        public async Task<RetornoEquipamentoEletronicoDto> cadastrarEquipamentoEletronico(RetornoEquipamentoEletronicoDto equipamentoEletronicoDto)
         {
-            EquipamentoEletronico equipamentoEletronico = this.buscarEquipamentoEletronicoPorId(id);
-            if (equipamentoEletronico.DataExclusao != null)
+
+            EquipamentoEletronico equipamentoEletronico = new EquipamentoEletronico(equipamentoEletronicoDto);
+            if (await _repository.cadastrarEquipamentoEletronico(equipamentoEletronico)) {
+                throw new SystemException("Não foi possível realizar o cadastro do equipamento eletrônico.");
+            }
+
+            return _mapper.Map<RetornoEquipamentoEletronicoDto>(equipamentoEletronico);
+        }
+
+        public async Task<RetornoEquipamentoEletronicoDto> atualizarEquipamentoEletronico(int id, RetornoEquipamentoEletronicoDto equipamentoEletronicoDto)
+        {
+
+            RetornoEquipamentoEletronicoDto retornoEquipamentoEletronicoDto = await this.buscarEquipamentoEletronicoPorId(id);
+            if (retornoEquipamentoEletronicoDto == null)
+            {
+                throw new FormatException("Equipamento Eletrônico não encontrado.");
+            }
+            
+            if (retornoEquipamentoEletronicoDto.DataExclusao != null)
+            {
+                throw new FormatException("Este equipamento não pode ser editado, pois já foi excluído.");
+            }
+
+            EquipamentoEletronico equipamentoEletronico = new EquipamentoEletronico(retornoEquipamentoEletronicoDto);
+
+            if (await _repository.atualizarEquipamentoEletronico(equipamentoEletronico))
+            {
+                throw new SystemException("Não foi possível atualizar o equipamento eletrõnico.");
+            }
+
+            equipamentoEletronicoDto = _mapper.Map<RetornoEquipamentoEletronicoDto>(equipamentoEletronico);
+
+            return equipamentoEletronicoDto;
+        }
+
+        public async Task<bool> excluirEquipamentoEletronico(int id)
+        {
+            RetornoEquipamentoEletronicoDto retornoEquipamentoEletronicoDto = await this.buscarEquipamentoEletronicoPorId(id);
+            if (retornoEquipamentoEletronicoDto.DataExclusao != null)
             {
                 throw new FormatException("Equipamento já excluído.");
             }
 
-            equipamentoEletronico.DataExclusao = DateTime.Now;
+            EquipamentoEletronico equipamentoEletronico = new EquipamentoEletronico(retornoEquipamentoEletronicoDto);
 
-            return _repository.atualizarEquipamentoEletronico(equipamentoEletronico);
+            return await _repository.atualizarEquipamentoEletronico(equipamentoEletronico);
         }
 
     }
