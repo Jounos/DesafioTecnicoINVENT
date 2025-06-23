@@ -1,4 +1,5 @@
-﻿using DesafioInventBackend.Model.Entity;
+﻿using DesafioInventBackend.Model.DTO;
+using DesafioInventBackend.Model.Entity;
 
 namespace DesafioInventBackend.Service.Contract
 {
@@ -8,9 +9,9 @@ namespace DesafioInventBackend.Service.Contract
 
         public EquipamentoEletronico buscarEquipamentoEletronicoPorId(int id);
 
-        public EquipamentoEletronico cadastrarEquipamentoEletronico(EquipamentoEletronico equipamentoEletronico);
+        public EquipamentoEletronicoDto cadastrarEquipamentoEletronico(EquipamentoEletronicoDto equipamentoEletronico);
         
-        public EquipamentoEletronico editarEquipamentoEletronico(int id, EquipamentoEletronico equipamentoEletronico);
+        public EquipamentoEletronicoDto editarEquipamentoEletronico(int id, EquipamentoEletronicoDto equipamentoEletronico);
 
         public bool excluirEquipamentoEletronico(int id);
     }

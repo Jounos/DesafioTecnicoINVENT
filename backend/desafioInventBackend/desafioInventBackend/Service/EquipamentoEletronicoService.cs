@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
+using DesafioInventBackend.Model.DTO;
 using DesafioInventBackend.Model.Entity;
 using DesafioInventBackend.Repository.Contract;
 using DesafioInventBackend.Service.Contract;
 using NuGet.Repositories;
+using System.Security.Cryptography.Xml;
 
 namespace DesafioInventBackend.Service
 {
@@ -21,7 +23,7 @@ namespace DesafioInventBackend.Service
             this._mapper = mapper;
         }
 
-        ICollection<EquipamentoEletronico> IEquipamentoEletronicoService.listarEquipamentosEletronicos()
+        public ICollection<EquipamentoEletronico> listarEquipamentosEletronicos()
         {
             List<EquipamentoEletronico> listaEquipamentoEletronico = _repository.listarEquipamentosEletronicos().ToList();
             if (listaEquipamentoEletronico.Count == 0)
@@ -43,29 +45,44 @@ namespace DesafioInventBackend.Service
             return equipamentoEletronico;
         }
 
-        public EquipamentoEletronico cadastrarEquipamentoEletronico(EquipamentoEletronico equipamentoEletronico)
+        public EquipamentoEletronicoDto cadastrarEquipamentoEletronico(EquipamentoEletronicoDto equipamentoEletronicoDto)
         {
-            throw new NotImplementedException();
+
+            EquipamentoEletronico equipamentoEletronico = new EquipamentoEletronico(equipamentoEletronicoDto);
+            if (_repository.cadastrarEquipamentoEletronico(equipamentoEletronico)) {
+                throw new SystemException("Não foi possível realizar o cadastro do equipamento eletrônico.");
+            }
+
+            return _mapper.Map<EquipamentoEletronicoDto>(equipamentoEletronico);
         }
 
-        public EquipamentoEletronico editarEquipamentoEletronico(int id, EquipamentoEletronico equipamentoEletronico)
+        public EquipamentoEletronicoDto editarEquipamentoEletronico(int id, EquipamentoEletronicoDto equipamentoEletronicoDto)
         {
             
-            EquipamentoEletronico equipamentoEletronicoHaAlterar = this.buscarEquipamentoEletronicoPorId(id);
-            if (equipamentoEletronicoHaAlterar == null)
+            EquipamentoEletronico equipamentoEletronico = this.buscarEquipamentoEletronicoPorId(id);
+            if (equipamentoEletronico == null)
             {
                 throw new FormatException("Equipamento Eletrônico não encontrado.");
             }
             
-            if (equipamentoEletronicoHaAlterar.DataExclusao != null)
+            if (equipamentoEletronico.DataExclusao != null)
             {
                 throw new FormatException("Este equipamento não pode ser editado, pois já foi excluído.");
             }
 
-            _mapper.
+            equipamentoEletronico.Nome = equipamentoEletronicoDto.Nome;
+            equipamentoEletronico.TipoEquipamento = (TipoEquipamento)equipamentoEletronicoDto.TipoEquipamentoId;
+            equipamentoEletronico.QuantidadeEstoque = equipamentoEletronicoDto.QuantidadeEstoque;
+            //equipamentoEletronico.TemEstoque = (equipamentoEletronicoDto.QuantidadeEstoque > 0);
 
+            if (_repository.atualizarEquipamentoEletronico(equipamentoEletronico))
+            {
+                throw new SystemException("Não foi possível atualizar o equipamento eletrõnico.");
+            }
 
-            throw new NotImplementedException();
+            equipamentoEletronicoDto = _mapper.Map<EquipamentoEletronicoDto>(equipamentoEletronico);
+
+            return equipamentoEletronicoDto;
         }
 
         public bool excluirEquipamentoEletronico(int id)

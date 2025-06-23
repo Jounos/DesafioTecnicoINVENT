@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using DesafioInventBackend.Model.DTO;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DesafioInventBackend.Model.Entity
@@ -9,7 +10,7 @@ namespace DesafioInventBackend.Model.Entity
         public int Id { get; set; }
 
         [Required]
-        public string? Nome { get; set; }
+        public string Nome { get; set; }
         [Required]
         public TipoEquipamento TipoEquipamento { get; set; }
         [Required]
@@ -23,6 +24,19 @@ namespace DesafioInventBackend.Model.Entity
         public EquipamentoEletronico()
         {
             TemEstoque = QuantidadeEstoque > 0;
+        }
+
+        public EquipamentoEletronico(EquipamentoEletronicoDto equipamentoEletronicoDto, DateTime? dataInclusao = null)
+        {
+            this.Nome = equipamentoEletronicoDto.Nome;
+            this.TipoEquipamento = (TipoEquipamento)equipamentoEletronicoDto.TipoEquipamentoId;
+            this.QuantidadeEstoque = equipamentoEletronicoDto.QuantidadeEstoque;
+            this.TemEstoque = (equipamentoEletronicoDto.QuantidadeEstoque > 0);
+            if (dataInclusao != null)
+            {
+                this.DataInclusao = dataInclusao!.Value;
+            }
+
         }
     }
 
