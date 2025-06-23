@@ -57,15 +57,15 @@ namespace DesafioInventBackend.Controller
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<RetornoEquipamentoEletronicoDto>> atualizarEquipamentoEletronico(int id, EquipamentoEletronicoDto equipamentoEletronicoDto)
+        public async Task<ActionResult<RetornoEquipamentoEletronicoDto>> atualizarEquipamentoEletronico(int id, AtualizarEquipamentoEletronicoDto equipamentoEletronicoDto)
         {
-            RetornoEquipamentoEletronicoDto retornoEquipamentoEletronicoatualizadoDto = await _service.atualizarEquipamentoEletronico(id, equipamentoEletronicoDto);
-            if (retornoEquipamentoEletronicoatualizadoDto == null)
+            RetornoEquipamentoEletronicoDto retornoEquipamentoEletronicoAtualizadoDto = await _service.atualizarEquipamentoEletronico(id, equipamentoEletronicoDto);
+            if (retornoEquipamentoEletronicoAtualizadoDto == null)
             {
                 return NotFound();
             }
 
-            return Ok(retornoEquipamentoEletronicoatualizadoDto);
+            return Ok(retornoEquipamentoEletronicoAtualizadoDto);
         }
 
         [HttpDelete("{id}")]

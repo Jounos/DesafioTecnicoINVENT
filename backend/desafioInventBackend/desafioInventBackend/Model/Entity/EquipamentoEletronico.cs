@@ -16,20 +16,30 @@ namespace DesafioInventBackend.Model.Entity
         [Required]
         public int QuantidadeEstoque { get; set; }
         [NotMapped]
-        public bool TemEstoque { get; set; }
+        public bool TemEstoque { get; set;  }
         [Required]
         public DateTime DataInclusao { get; set; }
         public DateTime? DataExclusao { get; set; }
 
         public EquipamentoEletronico()
         {
-            TemEstoque = QuantidadeEstoque > 0;
+
+        }
+
+        public EquipamentoEletronico(AtualizarEquipamentoEletronicoDto equipamentoEletronicoDto)
+        {
+            this.Id = equipamentoEletronicoDto.Id;
+            this.Nome = equipamentoEletronicoDto.Nome;
+            this.TipoEquipamento = (TipoEquipamento)equipamentoEletronicoDto.TipoEquipamento;
+            this.QuantidadeEstoque = equipamentoEletronicoDto.QuantidadeEstoque;
+            this.TemEstoque = (equipamentoEletronicoDto.QuantidadeEstoque > 0);
+            this.DataInclusao = (equipamentoEletronicoDto.DataInclusao == null ? DateTime.MinValue : equipamentoEletronicoDto.DataInclusao!.Value);
         }
 
         public EquipamentoEletronico(EquipamentoEletronicoDto equipamentoEletronicoDto)
         {
             this.Nome = equipamentoEletronicoDto.Nome;
-            this.TipoEquipamento = (TipoEquipamento)equipamentoEletronicoDto.TipoEquipamentoId;
+            this.TipoEquipamento = (TipoEquipamento)equipamentoEletronicoDto.TipoEquipamento;
             this.QuantidadeEstoque = equipamentoEletronicoDto.QuantidadeEstoque;
             this.TemEstoque = (equipamentoEletronicoDto.QuantidadeEstoque > 0);
             this.DataInclusao = DateTime.Now;
@@ -39,11 +49,11 @@ namespace DesafioInventBackend.Model.Entity
         {
             this.Id = equipamentoEletronicoDto.Id;
             this.Nome = equipamentoEletronicoDto.Nome;
-            this.TipoEquipamento = (TipoEquipamento)equipamentoEletronicoDto.TipoEquipamentoId;
+            this.TipoEquipamento = (TipoEquipamento)equipamentoEletronicoDto.TipoEquipamento;
             this.QuantidadeEstoque = equipamentoEletronicoDto.QuantidadeEstoque;
             this.TemEstoque = (equipamentoEletronicoDto.QuantidadeEstoque > 0);
             this.DataInclusao = (equipamentoEletronicoDto.DataInclusao == null ? DateTime.MinValue : equipamentoEletronicoDto.DataInclusao!.Value);
-            this.DataExclusao = (equipamentoEletronicoDto.DataExclusao == null ? DateTime.MinValue : equipamentoEletronicoDto.DataExclusao!.Value);
+            this.DataExclusao = (equipamentoEletronicoDto.DataExclusao == null ? null : equipamentoEletronicoDto.DataExclusao!.Value);
         }
     }
 

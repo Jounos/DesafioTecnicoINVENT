@@ -1,5 +1,4 @@
 ﻿using DesafioInventBackend.Model.DTO;
-using DesafioInventBackend.Model.Entity;
 
 namespace DesafioInventBackend.Service.Contract
 {
@@ -11,7 +10,7 @@ namespace DesafioInventBackend.Service.Contract
 
         public Task<RetornoEquipamentoEletronicoDto> cadastrarEquipamentoEletronico(EquipamentoEletronicoDto equipamentoEletronico);
         
-        public Task<RetornoEquipamentoEletronicoDto> atualizarEquipamentoEletronico(int id, EquipamentoEletronicoDto equipamentoEletronico);
+        public Task<RetornoEquipamentoEletronicoDto> atualizarEquipamentoEletronico(int id, AtualizarEquipamentoEletronicoDto equipamentoEletronico);
 
         public Task<RetornoEquipamentoEletronicoDto> excluirEquipamentoEletronico(int id);
     }

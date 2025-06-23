@@ -1,4 +1,5 @@
-﻿using DesafioInventBackend.Model.Entity;
+﻿using DesafioInventBackend.Model.DTO;
+using DesafioInventBackend.Model.Entity;
 
 namespace DesafioInventBackend.Repository.Contract
 {
