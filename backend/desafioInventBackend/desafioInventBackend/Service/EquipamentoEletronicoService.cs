@@ -49,13 +49,13 @@ namespace DesafioInventBackend.Service
             return equipamentoEletronicoDto;
         }
 
-        public async Task<RetornoEquipamentoEletronicoDto> cadastrarEquipamentoEletronico(RetornoEquipamentoEletronicoDto equipamentoEletronicoDto)
+        public async Task<RetornoEquipamentoEletronicoDto> cadastrarEquipamentoEletronico(EquipamentoEletronicoDto equipamentoEletronicoDto)
         {
 
-            EquipamentoEletronico equipamentoEletronico = new EquipamentoEletronico(equipamentoEletronicoDto);
-            if (await _repository.cadastrarEquipamentoEletronico(equipamentoEletronico)) {
+            EquipamentoEletronico equipamentoEletronico = await _repository.cadastrarEquipamentoEletronico(new EquipamentoEletronico(equipamentoEletronicoDto));
+            /*if (equipamentoEletronico.Id != null) {
                 throw new SystemException("Não foi possível realizar o cadastro do equipamento eletrônico.");
-            }
+            }*/
 
             return _mapper.Map<RetornoEquipamentoEletronicoDto>(equipamentoEletronico);
         }
@@ -74,19 +74,18 @@ namespace DesafioInventBackend.Service
                 throw new FormatException("Este equipamento não pode ser editado, pois já foi excluído.");
             }
 
-            EquipamentoEletronico equipamentoEletronico = new EquipamentoEletronico(retornoEquipamentoEletronicoDto);
-
-            if (await _repository.atualizarEquipamentoEletronico(equipamentoEletronico))
+            EquipamentoEletronico equipamentoEletronico = await _repository.atualizarEquipamentoEletronico(new EquipamentoEletronico(retornoEquipamentoEletronicoDto));
+            /*if ()
             {
                 throw new SystemException("Não foi possível atualizar o equipamento eletrõnico.");
-            }
+            }*/
 
-            equipamentoEletronicoDto = _mapper.Map<RetornoEquipamentoEletronicoDto>(equipamentoEletronico);
+            RetornoEquipamentoEletronicoDto retornoEquipamentoEletronicoAtualizadoDto = await this.buscarEquipamentoEletronicoPorId(id);
 
-            return equipamentoEletronicoDto;
+            return retornoEquipamentoEletronicoAtualizadoDto;
         }
 
-        public async Task<bool> excluirEquipamentoEletronico(int id)
+        public async Task<RetornoEquipamentoEletronicoDto> excluirEquipamentoEletronico(int id)
         {
             RetornoEquipamentoEletronicoDto retornoEquipamentoEletronicoDto = await this.buscarEquipamentoEletronicoPorId(id);
             if (retornoEquipamentoEletronicoDto.DataExclusao != null)
@@ -94,9 +93,9 @@ namespace DesafioInventBackend.Service
                 throw new FormatException("Equipamento já excluído.");
             }
 
-            EquipamentoEletronico equipamentoEletronico = new EquipamentoEletronico(retornoEquipamentoEletronicoDto);
+            await _repository.atualizarEquipamentoEletronico(new EquipamentoEletronico(retornoEquipamentoEletronicoDto));
 
-            return await _repository.atualizarEquipamentoEletronico(equipamentoEletronico);
+            return await this.buscarEquipamentoEletronicoPorId(id);
         }
 
     }

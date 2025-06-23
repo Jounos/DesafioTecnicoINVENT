@@ -24,16 +24,18 @@ namespace DesafioInventBackend.Repository
             return await _dataContext.equipamentoEletronico.FirstAsync(e => e.Id == id);
         }
 
-        public async Task<bool> cadastrarEquipamentoEletronico(EquipamentoEletronico equipamentoEletronico)
+        public async Task<EquipamentoEletronico> cadastrarEquipamentoEletronico(EquipamentoEletronico equipamentoEletronico)
         {
             await _dataContext.equipamentoEletronico.AddAsync(equipamentoEletronico);
-            return await Salvar();
+            await Salvar();
+            return equipamentoEletronico;
         }
 
-        public async Task<bool> atualizarEquipamentoEletronico(EquipamentoEletronico equipamentoEletronico)
+        public async Task<EquipamentoEletronico> atualizarEquipamentoEletronico(EquipamentoEletronico equipamentoEletronico)
         {
             _dataContext.equipamentoEletronico.Update(equipamentoEletronico);
-            return await Salvar();
+            await Salvar();
+            return equipamentoEletronico;
         }
 
         private async Task<bool> Salvar() 

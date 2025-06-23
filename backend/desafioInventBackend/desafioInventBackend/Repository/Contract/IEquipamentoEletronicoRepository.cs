@@ -8,8 +8,8 @@ namespace DesafioInventBackend.Repository.Contract
 
         public Task<EquipamentoEletronico> buscarEquipamentoEletronicoPorId(int id);
 
-        public Task<bool> cadastrarEquipamentoEletronico(EquipamentoEletronico equipamentoEletronico);
+        public Task<EquipamentoEletronico> cadastrarEquipamentoEletronico(EquipamentoEletronico equipamentoEletronico);
 
-        public Task<bool> atualizarEquipamentoEletronico(EquipamentoEletronico equipamentoEletronico);
+        public Task<EquipamentoEletronico> atualizarEquipamentoEletronico(EquipamentoEletronico equipamentoEletronico);
     }
 }

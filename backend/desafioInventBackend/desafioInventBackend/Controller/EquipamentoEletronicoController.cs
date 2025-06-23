@@ -1,15 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using DesafioInventBackend.Context;
-using DesafioInventBackend.Model.Entity;
 using DesafioInventBackend.Service.Contract;
 using DesafioInventBackend.Model.DTO;
-using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace DesafioInventBackend.Controller
 {
@@ -52,20 +44,42 @@ namespace DesafioInventBackend.Controller
         }
 
         [HttpPost]
-        public async Task<IActionResult> cadastrarEquipamentoEletronico(EquipamentoEletronicoDto equipamentoEletronicoDto)
+        public async Task<ActionResult<RetornoEquipamentoEletronicoDto>> cadastrarEquipamentoEletronico(EquipamentoEletronicoDto equipamentoEletronicoDto)
         {
-            return Ok();
+
+            RetornoEquipamentoEletronicoDto retornoEquipamentoEletronicoDto = await _service.cadastrarEquipamentoEletronico(equipamentoEletronicoDto);
+            if (retornoEquipamentoEletronicoDto == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(retornoEquipamentoEletronicoDto);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> atualizarEquipamentoEletronico(int id, EquipamentoEletronico equipamentoEletronico)
+        public async Task<ActionResult<RetornoEquipamentoEletronicoDto>> atualizarEquipamentoEletronico(int id, RetornoEquipamentoEletronicoDto retornoEquipamentoEletronicoDto)
         {
-            return Ok();
+            RetornoEquipamentoEletronicoDto retornoEquipamentoEletronicoatualizadoDto = await _service.atualizarEquipamentoEletronico(id, retornoEquipamentoEletronicoDto);
+            if (retornoEquipamentoEletronicoatualizadoDto == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(retornoEquipamentoEletronicoatualizadoDto);
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> excluirEquipamentoEletronico(int id)
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<ActionResult> excluirEquipamentoEletronico(int id)
         {
+
+            RetornoEquipamentoEletronicoDto retornoEquipamentoEletronicoExcluidoDto = await _service.excluirEquipamentoEletronico(id);
+
+            if (retornoEquipamentoEletronicoExcluidoDto.DataExclusao == null)
+            {
+                throw new SystemException("Não foi possível excluir este equipamento eletrônico.");
+            }
+
             return Ok();
         }
 

@@ -26,6 +26,15 @@ namespace DesafioInventBackend.Model.Entity
             TemEstoque = QuantidadeEstoque > 0;
         }
 
+        public EquipamentoEletronico(EquipamentoEletronicoDto equipamentoEletronicoDto)
+        {
+            this.Nome = equipamentoEletronicoDto.Nome;
+            this.TipoEquipamento = (TipoEquipamento)equipamentoEletronicoDto.TipoEquipamentoId;
+            this.QuantidadeEstoque = equipamentoEletronicoDto.QuantidadeEstoque;
+            this.TemEstoque = (equipamentoEletronicoDto.QuantidadeEstoque > 0);
+            this.DataInclusao = DateTime.Now;
+        }
+
         public EquipamentoEletronico(RetornoEquipamentoEletronicoDto equipamentoEletronicoDto)
         {
             this.Id = equipamentoEletronicoDto.Id;

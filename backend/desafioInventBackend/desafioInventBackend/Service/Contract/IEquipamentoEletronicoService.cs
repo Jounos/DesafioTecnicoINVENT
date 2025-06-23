@@ -9,10 +9,10 @@ namespace DesafioInventBackend.Service.Contract
 
         public Task<RetornoEquipamentoEletronicoDto> buscarEquipamentoEletronicoPorId(int id);
 
-        public Task<RetornoEquipamentoEletronicoDto> cadastrarEquipamentoEletronico(RetornoEquipamentoEletronicoDto equipamentoEletronico);
+        public Task<RetornoEquipamentoEletronicoDto> cadastrarEquipamentoEletronico(EquipamentoEletronicoDto equipamentoEletronico);
         
         public Task<RetornoEquipamentoEletronicoDto> atualizarEquipamentoEletronico(int id, RetornoEquipamentoEletronicoDto equipamentoEletronico);
 
-        public Task<bool> excluirEquipamentoEletronico(int id);
+        public Task<RetornoEquipamentoEletronicoDto> excluirEquipamentoEletronico(int id);
     }
 }
