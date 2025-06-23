@@ -60,7 +60,7 @@ namespace DesafioInventBackend.Service
             return _mapper.Map<RetornoEquipamentoEletronicoDto>(equipamentoEletronico);
         }
 
-        public async Task<RetornoEquipamentoEletronicoDto> atualizarEquipamentoEletronico(int id, RetornoEquipamentoEletronicoDto equipamentoEletronicoDto)
+        public async Task<RetornoEquipamentoEletronicoDto> atualizarEquipamentoEletronico(int id, EquipamentoEletronicoDto equipamentoEletronicoDto)
         {
 
             RetornoEquipamentoEletronicoDto retornoEquipamentoEletronicoDto = await this.buscarEquipamentoEletronicoPorId(id);
