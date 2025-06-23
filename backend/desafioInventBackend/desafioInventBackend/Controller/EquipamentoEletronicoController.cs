@@ -24,9 +24,9 @@ namespace DesafioInventBackend.Controller
         }
 
         [HttpGet]
-        public async Task<IActionResult> listarTodosEquipamentosEletronicos()
+        public IActionResult listarTodosEquipamentosEletronicos()
         {
-            return OK();
+            return Ok();
         }
 
         [HttpGet("{id}")]

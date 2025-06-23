@@ -17,7 +17,8 @@ namespace DesafioInventBackend.Model.Entity
         [NotMapped]
         public bool TemEstoque { get; set; }
         [Required]
-        public DateTimeOffset DataInclusao { get; set; }
+        public DateTime DataInclusao { get; set; }
+        public DateTime? DataExclusao { get; set; }
 
         public EquipamentoEletronico()
         {
@@ -27,10 +28,10 @@ namespace DesafioInventBackend.Model.Entity
 
     public enum TipoEquipamento
     {
-        PC,
-        Notebook,
-        Mouse,
-        Teclado
+        PC = 0,
+        Notebook = 1,
+        Mouse = 2,
+        Teclado = 3
     }
 }
 

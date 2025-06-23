@@ -10,7 +10,7 @@ namespace DesafioInventBackend.Service.Contract
 
         public EquipamentoEletronico cadastrarEquipamentoEletronico(EquipamentoEletronico equipamentoEletronico);
         
-        public EquipamentoEletronico editarEquipamentoEletronico(EquipamentoEletronico equipamentoEletronico);
+        public EquipamentoEletronico editarEquipamentoEletronico(int id, EquipamentoEletronico equipamentoEletronico);
 
         public bool excluirEquipamentoEletronico(int id);
     }
