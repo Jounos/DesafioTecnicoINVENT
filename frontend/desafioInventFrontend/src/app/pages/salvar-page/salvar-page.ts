@@ -8,4 +8,12 @@ import { Component } from '@angular/core';
 })
 export class SalvarPage {
 
+	tipoEquipamento: number = 0;
+	listaTiposEquipamento = [
+		{ id: 0, label: 'PC'},
+		{ id: 1, label: 'Notebook'},
+		{ id: 2, label: 'Mouse'},
+		{ id: 3, label: 'Teclado'},
+	]
+
 }
