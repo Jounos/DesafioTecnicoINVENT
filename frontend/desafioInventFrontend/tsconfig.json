@@ -3,6 +3,11 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
+    "paths": {
+      "componentes": [
+        "./dist/componentes"
+      ]
+    },
     "strict": true,
     "noImplicitOverride": true,
     "noPropertyAccessFromIndexSignature": true,
@@ -29,6 +34,6 @@
     },
     {
       "path": "./tsconfig.spec.json"
-    }
+    },
   ]
 }
