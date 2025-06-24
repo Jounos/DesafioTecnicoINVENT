@@ -1,11 +1,18 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { RouterModule } from '@angular/router';
 
 @Component({
 	selector: 'app-error-page',
-	imports: [],
+	imports: [RouterModule],
 	templateUrl: './error-page.html',
-	styleUrl: './error-page.css'
+	styleUrl: './error-page.css',
+	changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ErrorPage {
+export class ErrorPage implements OnInit {
 
+	constructor(private cdr: ChangeDetectorRef) { }
+
+	ngOnInit(): void {
+		this.cdr.detectChanges();
+	}
 }

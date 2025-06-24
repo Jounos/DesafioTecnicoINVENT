@@ -1,15 +1,14 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { NgSelectModule } from '@ng-select/ng-select';
-import { NgbPagination } from '@ng-bootstrap/ng-bootstrap';
+import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { NgbPagination } from '@ng-bootstrap/ng-bootstrap';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 
-import { PagesRoutingModule } from './pages-routing-module';
-import { GestaoPage } from './gestao-page/gestao-page';
-import { SalvarPage } from './salvar-page/salvar-page';
-import { LibraryModule } from '../../library/library-module';
 import { TipoEquipamentoPipe } from '../../library/pipes/tipo-equipamento-pipe';
+import { GestaoPage } from './gestao-page/gestao-page';
+import { PagesRoutingModule } from './pages-routing-module';
+import { SalvarPage } from './salvar-page/salvar-page';
 
 
 @NgModule({
@@ -22,7 +21,6 @@ import { TipoEquipamentoPipe } from '../../library/pipes/tipo-equipamento-pipe';
 		NgSelectModule,
 		FormsModule,
 		TipoEquipamentoPipe,
-		LibraryModule,
 		NgbPagination,
 		PagesRoutingModule,
 	]
