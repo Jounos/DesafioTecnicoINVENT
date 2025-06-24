@@ -5,8 +5,8 @@ import { LibraryModule } from '../library/library-module';
 @Component({
 	selector: 'app-root',
 	imports: [
-		RouterOutlet,
 		LibraryModule,
+		RouterOutlet,
 	],
 	schemas: [CUSTOM_ELEMENTS_SCHEMA],
 	templateUrl: './app.html',
