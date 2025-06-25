@@ -25,7 +25,7 @@ namespace DesafioInventBackend.Repository
                 TemEstoque = ee.QuantidadeEstoque > 0,
                 DataInclusao = ee.DataInclusao,
                 DataExclusao = ee.DataExclusao
-            }).ToListAsync();
+            }).Where(e => e.DataExclusao == null).ToListAsync();
         }
 
         public async Task<EquipamentoEletronico> buscarEquipamentoEletronicoPorId(int id)
@@ -39,7 +39,7 @@ namespace DesafioInventBackend.Repository
                 TemEstoque = ee.QuantidadeEstoque > 0,
                 DataInclusao = ee.DataInclusao,
                 DataExclusao = ee.DataExclusao
-            }).FirstAsync(e => e.Id == id);
+            }).FirstAsync();
             return equipamentoEletronico;
         }
 

@@ -4,25 +4,18 @@
 		<div class="row">
 			<div class="col-xl-7 col-lg-8 col-md-6 col-sm-12 col-12">
 				<label for="nome" class="form-label">Nome</label>
-				<input type="text" class="form-control">
+				<input type="text" class="form-control" [(ngModel)]="nome" (keyup)="filtrar()">
 			</div>
 			<div class="col-xl-5 col-lg-4 col-md-6 col-sm-12 col-12">
 				<label for="tipoEquipamento" class="form-label">Tipo de Equipamento</label>
-				<ng-select [(ngModel)]="tipoEquipamento">
-					@for(tipoEquipamento of listaTiposEquipamento; track tipoEquipamento.id) {
-						<ng-option [value]="tipoEquipamento.id">{{ tipoEquipamento.label }}</ng-option>
-					}
-				</ng-select>
+				<ng-select [(ngModel)]="tipoEquipamento" (change)="filtrar()" [items]="listaTiposEquipamento" bindLabel="label" bindValue="id"></ng-select>
 			</div>
 		</div>
 		<div class="row mt-4">
 			<div class="d-flex justify-content-end">
-					<a class="btn btn-primary me-4" type="button"  [routerLink]="'/cadastrar'">
+					<a class="btn btn-dark" type="button"  [routerLink]="'/cadastrar'">
 						<i class="bi bi-plus-lg me-2"></i>Cadastrar
 					</a>
-					<button class="btn btn-primary" type="button">
-						<i class="bi bi-search me-2"></i>Pesquisar
-					</button>
 			</div>
 		</div>
 	</div>
@@ -31,52 +24,42 @@
 	<div class="card-body">
 		<table class="table table-bordered table-striped table-responsive mb-4">
 			<thead>
-				<th>Nome do produto</th>
-				<th>Tipo do equipamento</th>
-				<th>Há em estoque</th>
-				<th>Inclusão</th>
-				<th>Ações</th>
+				<tr>
+					<th class="text-center">Nome do produto</th>
+					<th class="text-center">Tipo do equipamento</th>
+					<th class="text-center">Há em estoque</th>
+					<th class="text-center">Quantidade</th>
+					<th class="text-center">Inclusão</th>
+					<th class="text-center">Ações</th>
+				</tr>
 			</thead>
 			<tbody>
-				@for(equipamentoEletronico of listaEquipamentosEletronicos; track equipamentoEletronico.nome; let i = $index) {
-					<td>{{ equipamentoEletronico.nome }}</td>
-					<td>{{ equipamentoEletronico.tipoEquipamento | tipoEquipamento }}</td>
-					<td>
-						<small [ngClass]="{'d-inline-flex px-3 py-1 fw-semibold text-success bg-success-subtle border border-success-subtle rounded-2': equipamentoEletronico.tipoEquipamento}">Sim</small>
-						<small [ngClass]="{'d-inline-flex px-3 py-1 fw-semibold text-danger bg-danger-subtle border border-danger-subtle rounded-2': !equipamentoEletronico.tipoEquipamento}">Não</small>
-					</td>
-					<td>{{ equipamentoEletronico.dataInclusao | date: 'shortDate' }}</td>
-					<td></td>
+				@for(equipamentoEletronico of listaEquipamentosEletronicosFiltrada; track equipamentoEletronico.nome) {
+					<tr>
+						<td class="text-center">{{ equipamentoEletronico.nome }}</td>
+						<td class="text-center">{{ equipamentoEletronico.tipoEquipamento | tipoEquipamento }}</td>
+						<td class="text-center">
+							@if (equipamentoEletronico.temEstoque) {
+								<small [ngClass]="{'d-inline-flex px-3 py-1 fw-semibold text-success bg-success-subtle border border-success-subtle rounded-2': equipamentoEletronico.temEstoque}">Sim</small>
+							}
+							@if (!equipamentoEletronico.temEstoque) {
+								<small [ngClass]="{'d-inline-flex px-3 py-1 fw-semibold text-danger bg-danger-subtle border border-danger-subtle rounded-2': !equipamentoEletronico.temEstoque}">Não</small>
+							}
+						</td>
+						<td class="text-center">{{ equipamentoEletronico.quantidadeEstoque }}</td>
+						<td class="text-center">{{ equipamentoEletronico.dataInclusao | date: 'dd/MM/yyyy' }}</td>
+						<td class="text-center">
+							<button class="btn btn-outline-danger btn-sm me-2" (click)="excluir(equipamentoEletronico)">
+								<i class="bi bi-trash"></i>
+							</button>
+							<button class="btn btn-outline-warning btn-sm" [routerLink]="['editar', equipamentoEletronico.id]">
+								<i class="bi bi-pencil-square"></i>
+							</button>
+						</td>
+					</tr>
 				}
 			</tbody>
 		</table>
-
-		<ngb-pagination [collectionSize]="70" [(page)]="page" [boundaryLinks]="true" class="d-flex justify-content-center">
-			<ng-template ngbPaginationPages let-page let-pages="pages">
-				@if (listaEquipamentosEletronicos.length > 0) {
-					<li class="ngb-custom-pages-item">
-						<div class="mb-3 d-flex flex-nowrap px-2">
-							<label id="paginationInputLabel" for="paginationInput" class="col-form-label me-2 ms-1">Page</label>
-							<input
-								#i
-								type="text"
-								inputmode="numeric"
-								pattern="[0-9]*"
-								class="form-control custom-pages-input"
-								id="paginationInput"
-								[value]="page"
-								(keyup.enter)="selectPage(i.value)"
-								(blur)="selectPage(i.value)"
-								(input)="formatInput($any($event).target)"
-								aria-labelledby="paginationInputLabel paginationDescription"
-								style="width: 2.5rem"
-							/>
-							<span id="paginationDescription" class="col-form-label text-nowrap px-2"> of {{ pages.length }}</span>
-						</div>
-					</li>
-				}
-			</ng-template>
-		</ngb-pagination>
 	</div>
 </div>
 

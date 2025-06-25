@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbPagination } from '@ng-bootstrap/ng-bootstrap';
 import { NgSelectModule } from '@ng-select/ng-select';
 
@@ -20,6 +20,7 @@ import { SalvarPage } from './salvar-page/salvar-page';
 		CommonModule,
 		NgSelectModule,
 		FormsModule,
+		ReactiveFormsModule,
 		TipoEquipamentoPipe,
 		NgbPagination,
 		PagesRoutingModule,

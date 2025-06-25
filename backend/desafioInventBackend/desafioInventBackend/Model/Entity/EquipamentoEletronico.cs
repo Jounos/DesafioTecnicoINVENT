@@ -59,10 +59,10 @@ namespace DesafioInventBackend.Model.Entity
 
     public enum TipoEquipamento
     {
-        PC = 0,
-        Notebook = 1,
-        Mouse = 2,
-        Teclado = 3
+        PC = 1,
+        Notebook = 2,
+        Mouse = 3,
+        Teclado = 4
     }
 }
 

@@ -13,7 +13,7 @@ const routes: Routes = [
 		component: SalvarPage,
 	},
 	{
-		path: 'editar',
+		path: 'editar/:id',
 		component: SalvarPage,
 	},
 

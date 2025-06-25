@@ -15,12 +15,12 @@ export class EquipamentoEletronicoService {
 
 	constructor(private http: HttpClient) { }
 
-	listarEquipamentosEleronicos(): Observable<HttpResponse<IRetornoEquipamentoEletronico>> {
-		return this.http.get<HttpResponse<IRetornoEquipamentoEletronico>>(this.endpoint, { observe: 'body',  responseType: 'json' });
+	listarEquipamentosEleronicos(): Observable<HttpResponse<IRetornoEquipamentoEletronico[]>> {
+		return this.http.get<HttpResponse<IRetornoEquipamentoEletronico[]>>(this.endpoint, { observe: 'body',  responseType: 'json' });
 	}
 
-	buscarEquipamentoEletronicoPorId(id: number): Observable<HttpResponse<IRetornoEquipamentoEletronico[]>> {
-		return this.http.get<HttpResponse<IRetornoEquipamentoEletronico[]>>(`${this.endpoint}/${id}`, { observe: 'body',  responseType: 'json' });
+	buscarEquipamentoEletronicoPorId(id: number): Observable<HttpResponse<IRetornoEquipamentoEletronico>> {
+		return this.http.get<HttpResponse<IRetornoEquipamentoEletronico>>(`${this.endpoint}/${id}`, { observe: 'body',  responseType: 'json' });
 	}
 
 	cadastrarEquipamentoEletronico(equipamentoEletronico: IEquipamentoEletronico): Observable<HttpResponse<IRetornoEquipamentoEletronico>> {

@@ -1,32 +1,40 @@
 <div class="card">
-	<div class="card-header">Cadastrar equipamento eletrônico</div>
+	<div class="card-header">
+		@if (equipamentoEletronicoId) {
+			Editar equipamento eletrônico
+		} @else {
+			Cadastrar equipamento eletrônico
+		}
+	</div>
 	<div class="card-body">
-		<div class="row">
-			<div class="col-xl-7 col-lg-8 col-md-8 col-sm-12 col-12">
-				<label for="nome" class="form-label">Nome</label>
-				<input type="text" class="form-control">
+		<form [formGroup]="form" (ngSubmit)="salvar()">
+			<div class="row">
+				<div class="col-xl-7 col-lg-8 col-md-8 col-sm-12 col-12">
+					<label for="nome" class="form-label">Nome</label>
+					<input type="text" class="form-control" formControlName="nome">
+				</div>
+				<div class="col-xl-5 col-lg-4 col-md-4 col-sm-12 col-12">
+					<label for="tipoEquipamento" class="form-label">Tipo de Equipamento</label>
+					<ng-select formControlName="tipoEquipamento">
+						@for(tipoEquipamento of listaTiposEquipamento; track tipoEquipamento.id) {
+							<ng-option [value]="tipoEquipamento.id">{{ tipoEquipamento.label }}</ng-option>
+						}
+					</ng-select>
+				</div>
 			</div>
-			<div class="col-xl-5 col-lg-4 col-md-4 col-sm-12 col-12">
-				<label for="tipoEquipamento" class="form-label">Tipo de Equipamento</label>
-				<ng-select [(ngModel)]="tipoEquipamento">
-					@for(tipoEquipamento of listaTiposEquipamento; track tipoEquipamento.id) {
-						<ng-option [value]="tipoEquipamento.id">{{ tipoEquipamento.label }}</ng-option>
-					}
-				</ng-select>
+			<div class="row mt-4">
+				<div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
+					<label for="quantidade" class="form-label">Quantidade</label>
+					<input type="number" class="form-control" formControlName="quantidadeEstoque">
+				</div>
 			</div>
-		</div>
-		<div class="row mt-4">
-			<div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
-				<label for="quantidade" class="form-label">Quantidade</label>
-				<input type="number" class="form-control">
+			<div class="row border-top border-1 mt-4">
+				<div class="d-flex justify-content-center mt-3">
+					<button class="btn btn-dark" type="submit">
+						<i class="bi bi-check2-square me-2"></i>Salvar
+					</button>
+				</div>
 			</div>
-		</div>
-		<div class="row mt-4">
-			<div class="d-flex justify-content-end">
-				<button class="btn btn-primary" type="button">
-					<i class="bi bi-check2-square me-2"></i>Salvar
-				</button>
-			</div>
-		</div>
+		</form>
 	</div>
 </div>

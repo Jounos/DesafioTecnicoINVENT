@@ -1,12 +1,15 @@
 ﻿
-using Microsoft.AspNetCore.Mvc;
-using DesafioInventBackend.Service.Contract;
 using DesafioInventBackend.Model.DTO;
+using DesafioInventBackend.Model.Entity;
+using DesafioInventBackend.Service.Contract;
+using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Mvc;
 
 namespace DesafioInventBackend.Controller
 {
     [Route("api/equipamento-eletronico")]
     [ApiController]
+    [EnableCors("AllowAngularApp")]
     public class EquipamentoEletronicoController : ControllerBase
     {
 
@@ -24,10 +27,20 @@ namespace DesafioInventBackend.Controller
             ICollection<RetornoEquipamentoEletronicoDto> listaEquipamentosEletronicos = await _service.listarEquipamentosEletronicos();
             if (listaEquipamentosEletronicos.Count == 0)
             {
-                return NotFound();
+                return NotFound(new HttpStatus<ICollection<RetornoEquipamentoEletronicoDto>>
+                {
+                    Body = null,
+                    Status = 404,
+                    Message = "Not Found"
+                });
             }
 
-            return Ok(listaEquipamentosEletronicos);
+            return Ok(new HttpStatus<ICollection<RetornoEquipamentoEletronicoDto>>
+            {
+                Body = listaEquipamentosEletronicos,
+                Status = 201,
+                Message = "Success"
+            });
         }
 
         [HttpGet("{id}")]
@@ -40,20 +53,36 @@ namespace DesafioInventBackend.Controller
                 return NotFound();
             }
 
-            return Ok(equipamentoEletronicoDto);
+            return Ok(new HttpStatus<RetornoEquipamentoEletronicoDto>
+            {
+                Body = equipamentoEletronicoDto,
+                Status = 201,
+                Message = "Success"
+            });
         }
 
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(RetornoEquipamentoEletronicoDto))]
         public async Task<ActionResult<RetornoEquipamentoEletronicoDto>> cadastrarEquipamentoEletronico(EquipamentoEletronicoDto equipamentoEletronicoDto)
         {
 
             RetornoEquipamentoEletronicoDto retornoEquipamentoEletronicoDto = await _service.cadastrarEquipamentoEletronico(equipamentoEletronicoDto);
             if (retornoEquipamentoEletronicoDto == null)
             {
-                return NotFound();
+                return NotFound(new HttpStatus<RetornoEquipamentoEletronicoDto>
+                {
+                    Body = null,
+                    Status = 400,
+                    Message = "Error"
+                });
             }
 
-            return Ok(retornoEquipamentoEletronicoDto);
+            return Ok(new HttpStatus<RetornoEquipamentoEletronicoDto>
+            {
+                Body = retornoEquipamentoEletronicoDto,
+                Status = 201,
+                Message = "Success"
+            });
         }
 
         [HttpPut("{id}")]
@@ -62,10 +91,20 @@ namespace DesafioInventBackend.Controller
             RetornoEquipamentoEletronicoDto retornoEquipamentoEletronicoAtualizadoDto = await _service.atualizarEquipamentoEletronico(id, equipamentoEletronicoDto);
             if (retornoEquipamentoEletronicoAtualizadoDto == null)
             {
-                return NotFound();
+                return NotFound(new HttpStatus<RetornoEquipamentoEletronicoDto>
+                {
+                    Body = null,
+                    Status = 400,
+                    Message = "Error"
+                });
             }
 
-            return Ok(retornoEquipamentoEletronicoAtualizadoDto);
+            return Ok(new HttpStatus<RetornoEquipamentoEletronicoDto>
+            {
+                Body = retornoEquipamentoEletronicoAtualizadoDto,
+                Status = 201,
+                Message = "Success"
+            });
         }
 
         [HttpDelete("{id}")]
@@ -75,12 +114,22 @@ namespace DesafioInventBackend.Controller
 
             RetornoEquipamentoEletronicoDto retornoEquipamentoEletronicoExcluidoDto = await _service.excluirEquipamentoEletronico(id);
 
-            if (retornoEquipamentoEletronicoExcluidoDto.DataExclusao == null)
+            if (retornoEquipamentoEletronicoExcluidoDto != null)
             {
-                throw new SystemException("Não foi possível excluir este equipamento eletrônico.");
+                return NotFound(new HttpStatus<RetornoEquipamentoEletronicoDto>
+                {
+                    Body = null,
+                    Status = 400,
+                    Message = "Error"
+                });
             }
 
-            return Ok();
+            return Ok(new HttpStatus<RetornoEquipamentoEletronicoDto>
+            {
+                Body = null,
+                Status = 400,
+                Message = "Error"
+            });
         }
 
     }

@@ -8,13 +8,13 @@ export class TipoEquipamentoPipe implements PipeTransform {
 
 	transform(value: number): string {
 		switch (value) {
-			case 0:
-				return 'PC';
 			case 1:
-				return 'Notebook';
+				return 'PC';
 			case 2:
-				return 'Mouse';
+				return 'Notebook';
 			case 3:
+				return 'Mouse';
+			case 4:
 				return 'Teclado';
 			default:
 				return 'undefined';

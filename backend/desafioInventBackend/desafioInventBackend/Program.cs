@@ -5,9 +5,17 @@ using DesafioInventBackend.Repository.Contract;
 using DesafioInventBackend.Service;
 using DesafioInventBackend.Service.Contract;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAngularApp",
+        policy => policy.WithOrigins("http://localhost:4200")
+                        .AllowAnyHeader()
+                        .AllowAnyMethod());
+});
+
 
 builder.Services.AddControllers();
 builder.Services.AddScoped<IEquipamentoEletronicoService, EquipamentoEletronicoService>();
@@ -37,8 +45,7 @@ if (app.Environment.IsDevelopment())
 
 }
 
-app.UseHttpsRedirection();
-
+app.UseCors("AllowAngularApp");
 app.UseAuthorization();
 
 app.MapControllers();

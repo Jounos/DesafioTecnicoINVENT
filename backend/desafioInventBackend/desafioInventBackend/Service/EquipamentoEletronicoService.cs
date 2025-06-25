@@ -24,10 +24,8 @@ namespace DesafioInventBackend.Service
         public async Task<ICollection<RetornoEquipamentoEletronicoDto>> listarEquipamentosEletronicos()
         {
             ICollection<EquipamentoEletronico> listaEquipamentosEletronicos = await _repository.listarEquipamentosEletronicos();
-            if (listaEquipamentosEletronicos.Count == 0)
-            {
-                throw new FormatException("Nenhum equipamento encontrado.");
-            }
+            return null;
+           
 
             ICollection<RetornoEquipamentoEletronicoDto> listaEquipamentosEletronicosDto = _mapper.Map<ICollection<RetornoEquipamentoEletronicoDto>>(listaEquipamentosEletronicos);
 
@@ -85,12 +83,12 @@ namespace DesafioInventBackend.Service
             RetornoEquipamentoEletronicoDto retornoEquipamentoEletronicoDto = await this.buscarEquipamentoEletronicoPorId(id);
             if (retornoEquipamentoEletronicoDto.DataExclusao != null)
             {
-                throw new FormatException("Equipamento já excluído.");
+                return null;
             }
 
             if (retornoEquipamentoEletronicoDto.TemEstoque)
             {
-                throw new FormatException("Este equipamento não pode ser excluído, pois ainda há em estoque");
+                return null;
             }
 
             retornoEquipamentoEletronicoDto.DataExclusao = DateTime.Now;
