@@ -1,13 +1,12 @@
 import { HttpResponse } from '@angular/common/http';
 import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, Route } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import Swal from 'sweetalert2';
+import { AtualizarEquipamentoEletronico } from '../../../library/models/atualizar-equipamento-eletronico.model';
 import { EquipamentoEletronico } from '../../../library/models/equipamento-eletronico.model';
 import { IRetornoEquipamentoEletronico } from '../../../library/models/retorno-equipamento-eleronico.model';
 import { EquipamentoEletronicoService } from '../../../services/equipamento-eletronico-service';
-import { Router } from 'express';
-import { AtualizarEquipamentoEletronico } from '../../../library/models/atualizar-equipamento-eletronico.model';
 
 @Component({
 	selector: 'app-salvar-page',
@@ -39,7 +38,8 @@ export class SalvarPage implements OnInit {
 	constructor(
 		private equipamentoEletronicoService: EquipamentoEletronicoService,
 		private cdr: ChangeDetectorRef,
-		private route: ActivatedRoute
+		private route: ActivatedRoute,
+		private router: Router
 	) { }
 
 	ngOnInit(): void {

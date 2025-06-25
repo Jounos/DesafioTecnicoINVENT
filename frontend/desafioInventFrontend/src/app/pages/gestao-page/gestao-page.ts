@@ -35,6 +35,7 @@ export class GestaoPage implements OnInit {
 	ngOnInit(): void {
 		this.listar();
 		this.cdr.detectChanges();
+		this.cdr.detach();
 	}
 
 	listar() {
@@ -56,7 +57,6 @@ export class GestaoPage implements OnInit {
 
 	excluir(ee: IRetornoEquipamentoEletronico) {
 
-		console.table(ee);
 		if (ee.temEstoque) {
 			Swal.fire({
 				icon: 'warning',

@@ -24,8 +24,10 @@ namespace DesafioInventBackend.Service
         public async Task<ICollection<RetornoEquipamentoEletronicoDto>> listarEquipamentosEletronicos()
         {
             ICollection<EquipamentoEletronico> listaEquipamentosEletronicos = await _repository.listarEquipamentosEletronicos();
-            return null;
-           
+            if (listaEquipamentosEletronicos.Count == 0)
+            {
+                throw new FormatException("Nenhum equipamento encontrado.");
+            }
 
             ICollection<RetornoEquipamentoEletronicoDto> listaEquipamentosEletronicosDto = _mapper.Map<ICollection<RetornoEquipamentoEletronicoDto>>(listaEquipamentosEletronicos);
 

@@ -20,3 +20,7 @@ Diferencial:
 2. Criar os 2 projetos conectados um como back-end e outro como front-end
 
 O prazo para entrega seria até quarta-feira da próxima semana 
+
+# Implementação
+
+Implementado um processo CRUD utilizando .NET 9 no backend e angular 20 no frontend
