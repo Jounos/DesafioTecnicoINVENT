@@ -35,8 +35,6 @@ builder.Services.AddDbContext<DataContext>(
 );
 
 
-//builder.Services.AddAutoMapper(typeof(DtoMapping));
-
 builder.Services.AddAutoMapper(cfg => cfg.CreateMap<EquipamentoEletronico, RetornoEquipamentoEletronicoDto>());
 
 var app = builder.Build();
