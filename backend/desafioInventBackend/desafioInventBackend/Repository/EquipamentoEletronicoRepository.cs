@@ -30,17 +30,7 @@ namespace DesafioInventBackend.Repository
 
         public async Task<EquipamentoEletronico> buscarEquipamentoEletronicoPorId(int id)
         {
-            EquipamentoEletronico equipamentoEletronico = await _dataContext.equipamentoEletronico.Select(ee => new EquipamentoEletronico
-            {
-                Id = ee.Id,
-                Nome = ee.Nome,
-                TipoEquipamento = ee.TipoEquipamento,
-                QuantidadeEstoque = ee.QuantidadeEstoque,
-                TemEstoque = ee.QuantidadeEstoque > 0,
-                DataInclusao = ee.DataInclusao,
-                DataExclusao = ee.DataExclusao
-            }).FirstAsync();
-            return equipamentoEletronico;
+            return await _dataContext.equipamentoEletronico.SingleAsync(e => e.Id == id);
         }
 
         public async Task<EquipamentoEletronico> cadastrarEquipamentoEletronico(EquipamentoEletronico equipamentoEletronico)

@@ -23,19 +23,10 @@ namespace DesafioInventBackend.Service
 
         public async Task<EquipamentoEletronico> buscarEquipamentoEletronicoPorId(int id)
         {
-            EquipamentoEletronico equipamentoEletronico = await _repository.buscarEquipamentoEletronicoPorId(id);
-            EquipamentoEletronicoValidator validator = new EquipamentoEletronicoValidator();
-
-            ValidationResult result = validator.Validate(equipamentoEletronico);
-            if (!result.IsValid)
-            {
-                return null;
-            }
-
-            return equipamentoEletronico;
+            return await _repository.buscarEquipamentoEletronicoPorId(id);
         }
 
-        public async Task<EquipamentoEletronico> cadastrarEquipamentoEletronico(EquipamentoEletronico equipamentoEletronico)
+        public async Task<EquipamentoEletronico?> cadastrarEquipamentoEletronico(EquipamentoEletronico equipamentoEletronico)
         {
 
             EquipamentoEletronicoValidator validator = new EquipamentoEletronicoValidator();
@@ -51,7 +42,7 @@ namespace DesafioInventBackend.Service
             return equipamentoEletronicoCadastrado;
         }
 
-        public async Task<EquipamentoEletronico> atualizarEquipamentoEletronico(int id, EquipamentoEletronico equipamentoEletronico)
+        public async Task<EquipamentoEletronico?> atualizarEquipamentoEletronico(int id, EquipamentoEletronico equipamentoEletronico)
         {
 
             EquipamentoEletronicoValidator validator = new EquipamentoEletronicoValidator();
@@ -65,7 +56,7 @@ namespace DesafioInventBackend.Service
             return await _repository.atualizarEquipamentoEletronico(equipamentoEletronico);
         }
 
-        public async Task<EquipamentoEletronico> excluirEquipamentoEletronico(int id)
+        public async Task<EquipamentoEletronico?> excluirEquipamentoEletronico(int id)
         {
             
             EquipamentoEletronico equipamentoEletronico = await this.buscarEquipamentoEletronicoPorId(id);
