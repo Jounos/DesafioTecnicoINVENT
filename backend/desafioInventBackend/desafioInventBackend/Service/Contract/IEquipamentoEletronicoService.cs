@@ -1,17 +1,18 @@
 ﻿using DesafioInventBackend.Model.DTO;
+using DesafioInventBackend.Model.Entity;
 
 namespace DesafioInventBackend.Service.Contract
 {
     public interface IEquipamentoEletronicoService
     {
-        public Task<ICollection<RetornoEquipamentoEletronicoDto>> listarEquipamentosEletronicos();
+        public Task<ICollection<EquipamentoEletronico>> listarEquipamentosEletronicos();
 
-        public Task<RetornoEquipamentoEletronicoDto> buscarEquipamentoEletronicoPorId(int id);
+        public Task<EquipamentoEletronico> buscarEquipamentoEletronicoPorId(int id);
 
-        public Task<RetornoEquipamentoEletronicoDto> cadastrarEquipamentoEletronico(EquipamentoEletronicoDto equipamentoEletronico);
+        public Task<EquipamentoEletronico> cadastrarEquipamentoEletronico(EquipamentoEletronico equipamentoEletronico);
         
-        public Task<RetornoEquipamentoEletronicoDto> atualizarEquipamentoEletronico(int id, AtualizarEquipamentoEletronicoDto equipamentoEletronico);
+        public Task<EquipamentoEletronico> atualizarEquipamentoEletronico(int id, EquipamentoEletronico equipamentoEletronico);
 
-        public Task<RetornoEquipamentoEletronicoDto> excluirEquipamentoEletronico(int id);
+        public Task<EquipamentoEletronico> excluirEquipamentoEletronico(int id);
     }
 }

@@ -1,4 +1,5 @@
 ﻿
+using AutoMapper;
 using DesafioInventBackend.Model.DTO;
 using DesafioInventBackend.Model.Entity;
 using DesafioInventBackend.Service.Contract;
@@ -14,17 +15,23 @@ namespace DesafioInventBackend.Controller
     {
 
         private readonly IEquipamentoEletronicoService _service;
+        private readonly IMapper _mapper;
 
-        public EquipamentoEletronicoController(IEquipamentoEletronicoService equipamentoEletronicoService)
+        public EquipamentoEletronicoController(
+            IEquipamentoEletronicoService equipamentoEletronicoService,
+            IMapper mapper
+            )
         {
             this._service = equipamentoEletronicoService;
+            this._mapper = mapper;
         }
 
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<RetornoEquipamentoEletronicoDto>))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(List<RetornoEquipamentoEletronicoDto>))]
         public async Task<ActionResult<ICollection<RetornoEquipamentoEletronicoDto>>> listarTodosEquipamentosEletronicos()
         {
-            ICollection<RetornoEquipamentoEletronicoDto> listaEquipamentosEletronicos = await _service.listarEquipamentosEletronicos();
+            ICollection<EquipamentoEletronico> listaEquipamentosEletronicos = await _service.listarEquipamentosEletronicos();
             if (listaEquipamentosEletronicos.Count == 0)
             {
                 return NotFound(new HttpStatus<ICollection<RetornoEquipamentoEletronicoDto>>
@@ -35,9 +42,11 @@ namespace DesafioInventBackend.Controller
                 });
             }
 
+            ICollection<RetornoEquipamentoEletronicoDto> retorno = _mapper.Map<ICollection<RetornoEquipamentoEletronicoDto>>(listaEquipamentosEletronicos);
+
             return Ok(new HttpStatus<ICollection<RetornoEquipamentoEletronicoDto>>
             {
-                Body = listaEquipamentosEletronicos,
+                Body = retorno,
                 Status = 201,
                 Message = "Success"
             });
@@ -47,15 +56,17 @@ namespace DesafioInventBackend.Controller
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<RetornoEquipamentoEletronicoDto>))]
         public async Task<ActionResult<RetornoEquipamentoEletronicoDto>> buscarEquipamentoEletronicoPorId(int id)
         {
-            RetornoEquipamentoEletronicoDto equipamentoEletronicoDto = await _service.buscarEquipamentoEletronicoPorId(id);
-            if (equipamentoEletronicoDto == null)
+            EquipamentoEletronico equipamentoEletronico = await _service.buscarEquipamentoEletronicoPorId(id);
+            if (equipamentoEletronico == null)
             {
                 return NotFound();
             }
 
+            RetornoEquipamentoEletronicoDto retorno = _mapper.Map<RetornoEquipamentoEletronicoDto>(equipamentoEletronico);
+
             return Ok(new HttpStatus<RetornoEquipamentoEletronicoDto>
             {
-                Body = equipamentoEletronicoDto,
+                Body = retorno,
                 Status = 201,
                 Message = "Success"
             });
@@ -67,8 +78,8 @@ namespace DesafioInventBackend.Controller
         public async Task<ActionResult<RetornoEquipamentoEletronicoDto>> cadastrarEquipamentoEletronico(EquipamentoEletronicoDto equipamentoEletronicoDto)
         {
 
-            RetornoEquipamentoEletronicoDto retornoEquipamentoEletronicoDto = await _service.cadastrarEquipamentoEletronico(equipamentoEletronicoDto);
-            if (retornoEquipamentoEletronicoDto == null)
+            EquipamentoEletronico equipamentoEletronico = await _service.cadastrarEquipamentoEletronico(_mapper.Map<EquipamentoEletronico>(equipamentoEletronicoDto));
+            if (equipamentoEletronico == null)
             {
                 return NotFound(new HttpStatus<RetornoEquipamentoEletronicoDto>
                 {
@@ -78,9 +89,11 @@ namespace DesafioInventBackend.Controller
                 });
             }
 
+            RetornoEquipamentoEletronicoDto retorno = _mapper.Map<RetornoEquipamentoEletronicoDto>(equipamentoEletronico);
+
             return Ok(new HttpStatus<RetornoEquipamentoEletronicoDto>
             {
-                Body = retornoEquipamentoEletronicoDto,
+                Body = retorno,
                 Status = 201,
                 Message = "Success"
             });
@@ -89,8 +102,9 @@ namespace DesafioInventBackend.Controller
         [HttpPut("{id}")]
         public async Task<ActionResult<RetornoEquipamentoEletronicoDto>> atualizarEquipamentoEletronico(int id, AtualizarEquipamentoEletronicoDto equipamentoEletronicoDto)
         {
-            RetornoEquipamentoEletronicoDto retornoEquipamentoEletronicoAtualizadoDto = await _service.atualizarEquipamentoEletronico(id, equipamentoEletronicoDto);
-            if (retornoEquipamentoEletronicoAtualizadoDto == null)
+
+            EquipamentoEletronico equipamentoEletronico = await _service.atualizarEquipamentoEletronico(id, _mapper.Map<EquipamentoEletronico>(equipamentoEletronicoDto));
+            if (equipamentoEletronico == null)
             {
                 return NotFound(new HttpStatus<RetornoEquipamentoEletronicoDto>
                 {
@@ -100,22 +114,26 @@ namespace DesafioInventBackend.Controller
                 });
             }
 
+            RetornoEquipamentoEletronicoDto retorno = _mapper.Map<RetornoEquipamentoEletronicoDto>(equipamentoEletronico);
+
             return Ok(new HttpStatus<RetornoEquipamentoEletronicoDto>
             {
-                Body = retornoEquipamentoEletronicoAtualizadoDto,
+                Body = retorno,
                 Status = 201,
-                Message = "Success"
+                Message = "Success",
             });
         }
 
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult> excluirEquipamentoEletronico(int id)
         {
 
-            RetornoEquipamentoEletronicoDto retornoEquipamentoEletronicoExcluidoDto = await _service.excluirEquipamentoEletronico(id);
+            EquipamentoEletronico equipamentoEletronico = await _service.excluirEquipamentoEletronico(id);
+            RetornoEquipamentoEletronicoDto retorno = _mapper.Map<RetornoEquipamentoEletronicoDto>(equipamentoEletronico);
 
-            if (retornoEquipamentoEletronicoExcluidoDto != null)
+            if (equipamentoEletronico != null)
             {
                 return NotFound(new HttpStatus<RetornoEquipamentoEletronicoDto>
                 {
@@ -127,7 +145,7 @@ namespace DesafioInventBackend.Controller
 
             return Ok(new HttpStatus<RetornoEquipamentoEletronicoDto>
             {
-                Body = null,
+                Body = retorno,
                 Status = 400,
                 Message = "Error"
             });

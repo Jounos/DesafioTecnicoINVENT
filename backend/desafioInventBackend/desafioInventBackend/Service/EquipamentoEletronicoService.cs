@@ -1,10 +1,7 @@
-﻿using AutoMapper;
-using DesafioInventBackend.Model.DTO;
-using DesafioInventBackend.Model.Entity;
+﻿using DesafioInventBackend.Model.Entity;
 using DesafioInventBackend.Model.Validator;
 using DesafioInventBackend.Repository.Contract;
 using DesafioInventBackend.Service.Contract;
-using FluentValidation;
 using FluentValidation.Results;
 
 namespace DesafioInventBackend.Service
@@ -13,43 +10,33 @@ namespace DesafioInventBackend.Service
     {
 
         private readonly IEquipamentoEletronicoRepository _repository;
-        private readonly IMapper _mapper;
 
-        public EquipamentoEletronicoService(
-            IEquipamentoEletronicoRepository equipamentoEletronicoRepositry,
-            IMapper mapper
-            )
+        public EquipamentoEletronicoService(IEquipamentoEletronicoRepository equipamentoEletronicoRepositry)
         {
             this._repository = equipamentoEletronicoRepositry;
-            this._mapper = mapper;
         }
 
-        public async Task<ICollection<RetornoEquipamentoEletronicoDto>> listarEquipamentosEletronicos()
+        public async Task<ICollection<EquipamentoEletronico>> listarEquipamentosEletronicos()
         {
-            ICollection<EquipamentoEletronico> listaEquipamentosEletronicos = await _repository.listarEquipamentosEletronicos();
-            ICollection<RetornoEquipamentoEletronicoDto> listaEquipamentosEletronicosDto = _mapper.Map<ICollection<RetornoEquipamentoEletronicoDto>>(listaEquipamentosEletronicos);
-
-            return listaEquipamentosEletronicosDto;
+            return await _repository.listarEquipamentosEletronicos();
         }
 
-        public async Task<RetornoEquipamentoEletronicoDto> buscarEquipamentoEletronicoPorId(int id)
+        public async Task<EquipamentoEletronico> buscarEquipamentoEletronicoPorId(int id)
         {
             EquipamentoEletronico equipamentoEletronico = await _repository.buscarEquipamentoEletronicoPorId(id);
-            if (equipamentoEletronico == null)
+            EquipamentoEletronicoValidator validator = new EquipamentoEletronicoValidator();
+
+            ValidationResult result = validator.Validate(equipamentoEletronico);
+            if (!result.IsValid)
             {
-                throw new FormatException("Equipamento eletrônico não encontrado.");
+                return null;
             }
 
-            RetornoEquipamentoEletronicoDto equipamentoEletronicoDto = _mapper.Map<RetornoEquipamentoEletronicoDto>(equipamentoEletronico);
-
-            return equipamentoEletronicoDto;
+            return equipamentoEletronico;
         }
 
-        public async Task<RetornoEquipamentoEletronicoDto> cadastrarEquipamentoEletronico(EquipamentoEletronicoDto equipamentoEletronicoDto)
+        public async Task<EquipamentoEletronico> cadastrarEquipamentoEletronico(EquipamentoEletronico equipamentoEletronico)
         {
-
-         
-            EquipamentoEletronico equipamentoEletronico = new EquipamentoEletronico(equipamentoEletronicoDto);
 
             EquipamentoEletronicoValidator validator = new EquipamentoEletronicoValidator();
             ValidationResult result = validator.Validate(equipamentoEletronico);
@@ -61,49 +48,37 @@ namespace DesafioInventBackend.Service
 
             EquipamentoEletronico equipamentoEletronicoCadastrado = await _repository.cadastrarEquipamentoEletronico(equipamentoEletronico);
 
-            return _mapper.Map<RetornoEquipamentoEletronicoDto>(equipamentoEletronicoCadastrado);
+            return equipamentoEletronicoCadastrado;
         }
 
-        public async Task<RetornoEquipamentoEletronicoDto> atualizarEquipamentoEletronico(int id, AtualizarEquipamentoEletronicoDto atualizarEquipamentoEletronicoDto)
+        public async Task<EquipamentoEletronico> atualizarEquipamentoEletronico(int id, EquipamentoEletronico equipamentoEletronico)
         {
 
-            RetornoEquipamentoEletronicoDto retornoEquipamentoEletronicoDto = await this.buscarEquipamentoEletronicoPorId(id);
-            if (retornoEquipamentoEletronicoDto == null)
-            {
-                throw new FormatException("Equipamento Eletrônico não encontrado.");
-            }
+            EquipamentoEletronicoValidator validator = new EquipamentoEletronicoValidator();
+            ValidationResult result = validator.Validate(equipamentoEletronico);
             
-            if (retornoEquipamentoEletronicoDto.DataExclusao != null)
+            if (!result.IsValid)
             {
-                throw new FormatException("Este equipamento não pode ser editado, pois já foi excluído.");
+                return null;
             }
 
-
-            atualizarEquipamentoEletronicoDto.Id = id;
-            atualizarEquipamentoEletronicoDto.DataInclusao = retornoEquipamentoEletronicoDto.DataInclusao;
-            EquipamentoEletronico equipamentoEletronico = new EquipamentoEletronico(atualizarEquipamentoEletronicoDto);
-            equipamentoEletronico = await _repository.atualizarEquipamentoEletronico(equipamentoEletronico);
-
-            RetornoEquipamentoEletronicoDto retornoEquipamentoEletronicoAtualizadoDto = await this.buscarEquipamentoEletronicoPorId(id);
-
-            return retornoEquipamentoEletronicoAtualizadoDto;
+            return await _repository.atualizarEquipamentoEletronico(equipamentoEletronico);
         }
 
-        public async Task<RetornoEquipamentoEletronicoDto> excluirEquipamentoEletronico(int id)
+        public async Task<EquipamentoEletronico> excluirEquipamentoEletronico(int id)
         {
-            RetornoEquipamentoEletronicoDto retornoEquipamentoEletronicoDto = await this.buscarEquipamentoEletronicoPorId(id);
-            if (retornoEquipamentoEletronicoDto.DataExclusao != null)
+            
+            EquipamentoEletronico equipamentoEletronico = await this.buscarEquipamentoEletronicoPorId(id);
+            EquipamentoEletronicoDeleteValidator validator = new EquipamentoEletronicoDeleteValidator();
+            ValidationResult result = validator.Validate(equipamentoEletronico);
+
+            if (!result.IsValid)
             {
                 return null;
             }
 
-            if (retornoEquipamentoEletronicoDto.TemEstoque)
-            {
-                return null;
-            }
-
-            retornoEquipamentoEletronicoDto.DataExclusao = DateTime.Now;
-            await _repository.atualizarEquipamentoEletronico(new EquipamentoEletronico(retornoEquipamentoEletronicoDto));
+            equipamentoEletronico.DataExclusao = DateTime.Now;
+            await _repository.atualizarEquipamentoEletronico(equipamentoEletronico);
 
             return await this.buscarEquipamentoEletronicoPorId(id);
         }

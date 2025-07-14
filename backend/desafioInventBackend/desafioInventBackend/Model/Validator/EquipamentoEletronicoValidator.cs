@@ -13,6 +13,7 @@ namespace DesafioInventBackend.Model.Validator
             RuleFor(ee => ee.QuantidadeEstoque).NotNull();
             RuleFor(ee => ee.TemEstoque).NotNull();
             RuleFor(ee => ee.DataInclusao).NotNull();
+            RuleFor(ee => ee.DataExclusao).Null();
         }
     }
 }
