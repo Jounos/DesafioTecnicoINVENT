@@ -1,8 +1,11 @@
 ﻿using AutoMapper;
 using DesafioInventBackend.Model.DTO;
 using DesafioInventBackend.Model.Entity;
+using DesafioInventBackend.Model.Validator;
 using DesafioInventBackend.Repository.Contract;
 using DesafioInventBackend.Service.Contract;
+using FluentValidation;
+using FluentValidation.Results;
 
 namespace DesafioInventBackend.Service
 {
@@ -24,11 +27,6 @@ namespace DesafioInventBackend.Service
         public async Task<ICollection<RetornoEquipamentoEletronicoDto>> listarEquipamentosEletronicos()
         {
             ICollection<EquipamentoEletronico> listaEquipamentosEletronicos = await _repository.listarEquipamentosEletronicos();
-            if (listaEquipamentosEletronicos.Count == 0)
-            {
-                throw new FormatException("Nenhum equipamento encontrado.");
-            }
-
             ICollection<RetornoEquipamentoEletronicoDto> listaEquipamentosEletronicosDto = _mapper.Map<ICollection<RetornoEquipamentoEletronicoDto>>(listaEquipamentosEletronicos);
 
             return listaEquipamentosEletronicosDto;
@@ -50,9 +48,20 @@ namespace DesafioInventBackend.Service
         public async Task<RetornoEquipamentoEletronicoDto> cadastrarEquipamentoEletronico(EquipamentoEletronicoDto equipamentoEletronicoDto)
         {
 
-            EquipamentoEletronico equipamentoEletronico = await _repository.cadastrarEquipamentoEletronico(new EquipamentoEletronico(equipamentoEletronicoDto));
+         
+            EquipamentoEletronico equipamentoEletronico = new EquipamentoEletronico(equipamentoEletronicoDto);
 
-            return _mapper.Map<RetornoEquipamentoEletronicoDto>(equipamentoEletronico);
+            EquipamentoEletronicoValidator validator = new EquipamentoEletronicoValidator();
+            ValidationResult result = validator.Validate(equipamentoEletronico);
+
+            if (!result.IsValid) 
+            {
+                return null;
+            }
+
+            EquipamentoEletronico equipamentoEletronicoCadastrado = await _repository.cadastrarEquipamentoEletronico(equipamentoEletronico);
+
+            return _mapper.Map<RetornoEquipamentoEletronicoDto>(equipamentoEletronicoCadastrado);
         }
 
         public async Task<RetornoEquipamentoEletronicoDto> atualizarEquipamentoEletronico(int id, AtualizarEquipamentoEletronicoDto atualizarEquipamentoEletronicoDto)

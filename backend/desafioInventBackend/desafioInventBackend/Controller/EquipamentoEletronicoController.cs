@@ -63,6 +63,7 @@ namespace DesafioInventBackend.Controller
 
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(RetornoEquipamentoEletronicoDto))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(RetornoEquipamentoEletronicoDto))]
         public async Task<ActionResult<RetornoEquipamentoEletronicoDto>> cadastrarEquipamentoEletronico(EquipamentoEletronicoDto equipamentoEletronicoDto)
         {
 

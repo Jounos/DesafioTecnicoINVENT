@@ -7,6 +7,7 @@ import { AtualizarEquipamentoEletronico } from '../../../library/models/atualiza
 import { EquipamentoEletronico } from '../../../library/models/equipamento-eletronico.model';
 import { IRetornoEquipamentoEletronico } from '../../../library/models/retorno-equipamento-eleronico.model';
 import { EquipamentoEletronicoService } from '../../../services/equipamento-eletronico-service';
+import { setThrowInvalidWriteToSignalError } from '@angular/core/primitives/signals';
 
 @Component({
 	selector: 'app-salvar-page',
@@ -94,6 +95,9 @@ export class SalvarPage implements OnInit {
 					icon: 'success',
 					title: 'Sucesso',
 					text: 'Equipamento eletrônico cadastrado com sucesso.',
+					timer: 3000
+				}).then(() => {
+					this.router.navigate(['/']);
 				});
 			},
 			error: () => {
