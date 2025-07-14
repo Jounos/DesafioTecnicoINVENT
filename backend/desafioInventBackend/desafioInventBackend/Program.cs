@@ -1,5 +1,6 @@
 using DesafioInventBackend.Context;
-using DesafioInventBackend.Model.Mapper;
+using DesafioInventBackend.Model.DTO;
+using DesafioInventBackend.Model.Entity;
 using DesafioInventBackend.Repository;
 using DesafioInventBackend.Repository.Contract;
 using DesafioInventBackend.Service;
@@ -34,7 +35,9 @@ builder.Services.AddDbContext<DataContext>(
 );
 
 
-builder.Services.AddAutoMapper(typeof(DtoMapping));
+//builder.Services.AddAutoMapper(typeof(DtoMapping));
+
+builder.Services.AddAutoMapper(cfg => cfg.CreateMap<EquipamentoEletronico, RetornoEquipamentoEletronicoDto>());
 
 var app = builder.Build();
 
