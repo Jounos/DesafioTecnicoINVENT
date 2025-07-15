@@ -1,4 +1,5 @@
 using DesafioInventBackend.Context;
+using DesafioInventBackend.Data;
 using DesafioInventBackend.Model.DTO;
 using DesafioInventBackend.Model.Entity;
 using DesafioInventBackend.Repository;
@@ -17,14 +18,10 @@ builder.Services.AddCors(options =>
                         .AllowAnyMethod());
 });
 
-
 builder.Services.AddControllers();
 builder.Services.AddScoped<IEquipamentoEletronicoService, EquipamentoEletronicoService>();
 builder.Services.AddScoped<IEquipamentoEletronicoRepository, EquipamentoEletronicoRepository>();
-
-// Add services to the container.
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-builder.Services.AddOpenApi();
+builder.Services.AddAutoMapper(cfg => cfg.CreateMap<EquipamentoEletronico, RetornoEquipamentoEletronicoDto>());
 
 builder.Services.AddDbContext<DataContext>(
     opt =>
@@ -34,16 +31,15 @@ builder.Services.AddDbContext<DataContext>(
     }
 );
 
-
-builder.Services.AddAutoMapper(cfg => cfg.CreateMap<EquipamentoEletronico, RetornoEquipamentoEletronicoDto>());
+builder.Services.AddSingleton<RavenDbContext>();
+builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
-{
-    app.MapOpenApi();
-
+{   
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
 
 app.UseCors("AllowAngularApp");
