@@ -3,7 +3,9 @@
     "http": {
       "commandName": "Project",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "ravenDbServer": "http://127.0.0.1:8080",
+        "ravenDbName": "EquipamentoEletronicoRavenDb"
       },
       "dotnetRunMessages": true,
       "applicationUrl": "http://localhost:5031",

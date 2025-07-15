@@ -8,7 +8,7 @@ namespace DesafioInventBackend.Data
 
         private static Lazy<IDocumentStore> store = new Lazy<IDocumentStore>(CreateStore);
 
-        private static IDocumentStore Store => store.Value;
+        public static IDocumentStore Store => store.Value;
 
         private static IDocumentStore CreateStore()
         {
