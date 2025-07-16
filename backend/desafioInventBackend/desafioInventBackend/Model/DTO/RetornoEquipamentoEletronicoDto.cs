@@ -2,20 +2,19 @@
 
 namespace DesafioInventBackend.Model.DTO
 {
-    public class RetornoEquipamentoEletronicoDto: EquipamentoEletronicoDto
+    public class RetornoEquipamentoEletronicoDTO: EquipamentoEletronicoDTO
     {
 
-        public int Id { get; set; }
+        public string Id { get; set; } = string.Empty;
         
-        public bool TemEstoque { get; set; }
+        public bool TemEstoque { get { return this.QuantidadeEstoque > 0; } }
 
-        public DateTime? DataInclusao { get; set; }
+        public DateTime DataInclusao { get; set; }
 
         public DateTime? DataExclusao { get; set; }
 
-
-        public RetornoEquipamentoEletronicoDto(): base() {
-            this.TemEstoque = (this.QuantidadeEstoque > 0);
+        public RetornoEquipamentoEletronicoDTO(): base() {
+            
         }
     }
 }

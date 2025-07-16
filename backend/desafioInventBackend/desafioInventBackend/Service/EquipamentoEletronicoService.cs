@@ -1,7 +1,7 @@
 ﻿using DesafioInventBackend.Model.Entity;
 using DesafioInventBackend.Model.Validator;
 using DesafioInventBackend.Repository;
-using FluentValidation.Results;
+using FluentValidation;
 
 namespace DesafioInventBackend.Service
 {
@@ -20,52 +20,48 @@ namespace DesafioInventBackend.Service
             return _repository.GetAll();
         }
 
-        public EquipamentoEletronico BuscarPorId(int id)
+        public EquipamentoEletronico BuscarPorId(string id)
         {
             return _repository.GetById(id);
         }
 
         public void Cadastrar(EquipamentoEletronico equipamentoEletronico)
         {
-
+            equipamentoEletronico.DataInclusao = DateTime.Now;
+            
             EquipamentoEletronicoValidator validator = new EquipamentoEletronicoValidator();
-            ValidationResult result = validator.Validate(equipamentoEletronico);
-
-            if (!result.IsValid) 
-            {
-                return;
-            }
+            validator.ValidateAndThrow(equipamentoEletronico);
 
             _repository.Insert(equipamentoEletronico);
         }
 
-        public void Atualizar(int id, EquipamentoEletronico equipamentoEletronico)
+        public EquipamentoEletronico Atualizar(string id, EquipamentoEletronico equipamentoEletronicoModificado)
         {
 
+            EquipamentoEletronico equipamentoEletronico = this.BuscarPorId(id);
+            equipamentoEletronico.Nome = equipamentoEletronicoModificado.Nome;
+            equipamentoEletronico.TipoEquipamento = equipamentoEletronicoModificado.TipoEquipamento;
+            equipamentoEletronico.QuantidadeEstoque = equipamentoEletronicoModificado.QuantidadeEstoque;
+
             EquipamentoEletronicoValidator validator = new EquipamentoEletronicoValidator();
-            ValidationResult result = validator.Validate(equipamentoEletronico);
-            
-            if (!result.IsValid)
-            {
-                return;
-            }
+            validator.ValidateAndThrow(equipamentoEletronico);
 
             _repository.Update(id, equipamentoEletronico);
+
+            return this.BuscarPorId(id);
         }
 
-        public void Excluir(int id)
+        public void Excluir(string id)
         {
             
             EquipamentoEletronico equipamentoEletronico = this.BuscarPorId(id);
+            equipamentoEletronico.DataExclusao = DateTime.Now;
+            
             EquipamentoEletronicoDeleteValidator validator = new EquipamentoEletronicoDeleteValidator();
-            ValidationResult result = validator.Validate(equipamentoEletronico);
+            validator.ValidateAndThrow(equipamentoEletronico);
 
-            if (!result.IsValid)
-            {
-                return;
-            }
 
-            _repository.Delete(id);
+            _repository.Update(id, equipamentoEletronico);
         }
 
     }

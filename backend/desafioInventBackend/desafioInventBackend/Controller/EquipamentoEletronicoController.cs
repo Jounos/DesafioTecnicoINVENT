@@ -8,8 +8,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace DesafioInventBackend.Controller
 {
-    [Route("api/equipamento-eletronico")]
     [ApiController]
+    [Route("api/equipamento-eletronico")]
     [EnableCors("AllowAngularApp")]
     public class EquipamentoEletronicoController : ControllerBase
     {
@@ -27,38 +27,23 @@ namespace DesafioInventBackend.Controller
         }
 
 
-
         [HttpGet]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<RetornoEquipamentoEletronicoDto>))]
-        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(List<RetornoEquipamentoEletronicoDto>))]
-        public ActionResult<ICollection<RetornoEquipamentoEletronicoDto>> ListarTodosEquipamentosEletronicos()
+        public ActionResult<ICollection<RetornoEquipamentoEletronicoDTO>> ListarTodosEquipamentosEletronicos()
         {
             IEnumerable<EquipamentoEletronico> listaEquipamentosEletronicos = _service.Listar();
             if (listaEquipamentosEletronicos.Count() == 0)
             {
-                return NotFound(new HttpStatus<ICollection<RetornoEquipamentoEletronicoDto>>
-                {
-                    Body = null,
-                    Status = 404,
-                    Message = "Not Found"
-                });
+                return NotFound();
             }
 
-            ICollection<RetornoEquipamentoEletronicoDto> retorno = _mapper.Map<ICollection<RetornoEquipamentoEletronicoDto>>(listaEquipamentosEletronicos);
-
-            return Ok(new HttpStatus<ICollection<RetornoEquipamentoEletronicoDto>>
-            {
-                Body = retorno,
-                Status = 201,
-                Message = "Success"
-            });
+            ICollection<RetornoEquipamentoEletronicoDTO> retorno = _mapper.Map<ICollection<RetornoEquipamentoEletronicoDTO>>(listaEquipamentosEletronicos);
+            return Ok(retorno);
         }
 
 
 
         [HttpGet("{id}")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<RetornoEquipamentoEletronicoDto>))]
-        public ActionResult<RetornoEquipamentoEletronicoDto> buscarEquipamentoEletronicoPorId(int id)
+        public ActionResult<RetornoEquipamentoEletronicoDTO> buscarEquipamentoEletronicoPorId(string id)
         {
             EquipamentoEletronico equipamentoEletronico = _service.BuscarPorId(id);
             if (equipamentoEletronico == null)
@@ -66,40 +51,35 @@ namespace DesafioInventBackend.Controller
                 return NotFound();
             }
 
-            RetornoEquipamentoEletronicoDto retorno = _mapper.Map<RetornoEquipamentoEletronicoDto>(equipamentoEletronico);
+            RetornoEquipamentoEletronicoDTO retorno = _mapper.Map<RetornoEquipamentoEletronicoDTO>(equipamentoEletronico);
 
-            return Ok(new HttpStatus<RetornoEquipamentoEletronicoDto>
-            {
-                Body = retorno,
-                Status = 201,
-                Message = "Success"
-            });
+            return Ok(retorno);
         }
 
         [HttpPost]
-        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(RetornoEquipamentoEletronicoDto))]
-        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(RetornoEquipamentoEletronicoDto))]
-        public void cadastrarEquipamentoEletronico(EquipamentoEletronicoDto equipamentoEletronicoDto)
+        public void cadastrarEquipamentoEletronico(EquipamentoEletronicoDTO equipamentoEletronicoDto)
         {
-
             _service.Cadastrar(_mapper.Map<EquipamentoEletronico>(equipamentoEletronicoDto));
         }
 
         [HttpPut("{id}")]
-        public void atualizarEquipamentoEletronico(int id, AtualizarEquipamentoEletronicoDto equipamentoEletronicoDto)
+        public ActionResult<RetornoEquipamentoEletronicoDTO> atualizarEquipamentoEletronico(string id, EquipamentoEletronicoDTO equipamentoEletronicoDto)
         {
+            EquipamentoEletronico equipamentoEletronico = _service.Atualizar(id, _mapper.Map<EquipamentoEletronico>(equipamentoEletronicoDto));
+            if (equipamentoEletronico == null)
+            {
+                return NotFound();
+            }
 
-            _service.Atualizar(id, _mapper.Map<EquipamentoEletronico>(equipamentoEletronicoDto));
+            return _mapper.Map<RetornoEquipamentoEletronicoDTO>(equipamentoEletronico);
         }
 
         [HttpDelete("{id}")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public void excluirEquipamentoEletronico(int id)
+        public void excluirEquipamentoEletronico(string id)
         {
-
             _service.Excluir(id);
         }
 
     }
 }
+

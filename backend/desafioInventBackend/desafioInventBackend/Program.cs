@@ -4,7 +4,6 @@ using DesafioInventBackend.Model.DTO;
 using DesafioInventBackend.Model.Entity;
 using DesafioInventBackend.Repository;
 using DesafioInventBackend.Service;
-using NuGet.Protocol.Core.Types;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,11 +18,15 @@ builder.Services.AddCors(options =>
 builder.Services.AddSingleton<RavenDbContext>();
 
 builder.Services.AddControllers();
-//builder.Services.AddScoped<IRepository<EquipamentoEletronico>, RavenDbRepository<EquipamentoEletronico>>();
 builder.Services.AddScoped<IRepositoryEquipamentoEletronico<EquipamentoEletronico>, RavenDbRepository<EquipamentoEletronico>>();
 builder.Services.AddScoped<EquipamentoEletronicoService>();
 
-builder.Services.AddAutoMapper(cfg => cfg.CreateMap<EquipamentoEletronico, RetornoEquipamentoEletronicoDto>());
+builder.Services.AddAutoMapper(cfg =>
+    {
+        cfg.CreateMap<EquipamentoEletronico, EquipamentoEletronicoDTO>().ReverseMap();
+        cfg.CreateMap<EquipamentoEletronico, RetornoEquipamentoEletronicoDTO>();
+    }
+);
 
 builder.Services.AddSwaggerGen();
 

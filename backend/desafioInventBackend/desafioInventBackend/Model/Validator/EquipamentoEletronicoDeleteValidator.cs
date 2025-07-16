@@ -7,9 +7,8 @@ namespace DesafioInventBackend.Model.Validator
     {
         public EquipamentoEletronicoDeleteValidator()
         {
-            RuleFor(ee => ee.QuantidadeEstoque).GreaterThan(0);
-            RuleFor(ee => ee.TemEstoque).Equal(true);
-            RuleFor(ee => ee.DataExclusao).Null();
+            RuleFor(ee => ee.QuantidadeEstoque).Equal(0);
+            RuleFor(ee => ee.DataExclusao).NotNull();
         }
     }
 }

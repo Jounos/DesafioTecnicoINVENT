@@ -3,9 +3,9 @@
     public interface IRepositoryEquipamentoEletronico<T>
     {
         IEnumerable<T> GetAll();
-        T GetById(int id);
+        T GetById(string id);
         void Insert(T entity);
-        void Update(int id, T entity);
-        void Delete(int id);
+        void Update(string id, T entity);
+        void Delete(string id);
     }
 }

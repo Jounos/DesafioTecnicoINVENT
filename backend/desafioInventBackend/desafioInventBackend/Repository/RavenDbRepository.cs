@@ -21,7 +21,7 @@ namespace DesafioInventBackend.Repository
             return list;
         }
 
-        public T GetById(int id)
+        public T GetById(string id)
         {
             T entity;
             var idDecodificado = HttpUtility.UrlDecode(id.ToString());
@@ -42,17 +42,17 @@ namespace DesafioInventBackend.Repository
             }
         }
 
-        public void Update(int id, T entity)
+        public void Update(string id, T entity)
         {
+            var idDecodificado = HttpUtility.UrlDecode(id.ToString());
             using (IDocumentSession session = _store.OpenSession())
             {
-                T t = session.Load<T>(id.ToString());
-                t = entity;
+                session.Store(entity, id);
                 session.SaveChanges();
             }
         }
 
-        public void Delete(int id)
+        public void Delete(string id)
         {
             using (IDocumentSession session = _store.OpenSession())
             {

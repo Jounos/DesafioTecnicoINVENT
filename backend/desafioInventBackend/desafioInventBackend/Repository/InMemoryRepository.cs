@@ -19,7 +19,7 @@ namespace DesafioInventBackend.Repository
             return _dbSet.ToList();
         }
         
-        public T GetById(int id)
+        public T GetById(string id)
         {
             return _dbSet.Find(id);
         }
@@ -29,14 +29,14 @@ namespace DesafioInventBackend.Repository
             _dbSet.Add(entity);
         }
 
-        public void Update(int id, T entityModified)
+        public void Update(string id, T entityModified)
         {
             T entity = _dbSet.Find(id);
             entity = entityModified;
             _context.Entry(entity).State = EntityState.Modified;
         }
 
-        public void Delete(int id)
+        public void Delete(string id)
         {   
 
             T entity = GetById(id);

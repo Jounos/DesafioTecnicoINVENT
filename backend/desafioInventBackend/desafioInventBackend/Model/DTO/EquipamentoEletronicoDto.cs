@@ -1,19 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using DesafioInventBackend.Model.Entity;
 
 namespace DesafioInventBackend.Model.DTO
 {
-    public class EquipamentoEletronicoDto
+    public class EquipamentoEletronicoDTO
     {
-              
-        public string? Nome { get; set; }
-
-        public int TipoEquipamento { get; set; }
-
+        public string Nome { get; set; } = string.Empty;
+        public TipoEquipamento TipoEquipamento { get; set; }
         public int QuantidadeEstoque { get; set; }
-
-        public EquipamentoEletronicoDto()
-        {
-
-        }
     }
 }

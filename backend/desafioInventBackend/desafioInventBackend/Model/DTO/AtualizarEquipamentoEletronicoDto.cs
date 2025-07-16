@@ -2,10 +2,10 @@
 
 namespace DesafioInventBackend.Model.DTO
 {
-    public class AtualizarEquipamentoEletronicoDto : EquipamentoEletronicoDto
+    public class AtualizarEquipamentoEletronicoDto
     {
 
-        public int Id { get; set; }
+        public string? Id { get; set; }
 
         public DateTime? DataInclusao { get; set; }
 
