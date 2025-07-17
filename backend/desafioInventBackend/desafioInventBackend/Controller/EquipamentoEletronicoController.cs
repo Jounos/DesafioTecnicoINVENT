@@ -11,7 +11,7 @@ namespace DesafioInventBackend.Controller
     [ApiController]
     [Route("api/equipamento-eletronico")]
     [EnableCors("AllowAngularApp")]
-    public class EquipamentoEletronicoController : ControllerBase
+    public class EquipamentoEletronicoController: ControllerBase
     {
 
         private readonly EquipamentoEletronicoService _service;
@@ -57,9 +57,15 @@ namespace DesafioInventBackend.Controller
         }
 
         [HttpPost]
-        public void cadastrarEquipamentoEletronico(EquipamentoEletronicoDTO equipamentoEletronicoDto)
+        public ActionResult<RetornoEquipamentoEletronicoDTO> cadastrarEquipamentoEletronico(EquipamentoEletronicoDTO equipamentoEletronicoDto)
         {
-            _service.Cadastrar(_mapper.Map<EquipamentoEletronico>(equipamentoEletronicoDto));
+            EquipamentoEletronico ee = _service.Cadastrar(_mapper.Map<EquipamentoEletronico>(equipamentoEletronicoDto));
+            if (ee == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(_mapper.Map<RetornoEquipamentoEletronicoDTO>(ee));
         }
 
         [HttpPut("{id}")]

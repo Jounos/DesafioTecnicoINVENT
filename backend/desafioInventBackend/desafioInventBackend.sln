@@ -5,7 +5,7 @@ VisualStudioVersion = 17.14.36212.18
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DesafioInventBackend", "DesafioInventBackend\DesafioInventBackend.csproj", "{26D5F170-B308-411C-A660-749150BFE1BF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DesafioInventTest", "DesafioInventTest\DesafioInventTest.csproj", "{E144D635-5D79-4CBB-89CA-1D4A4B861AC8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DesafioInventTest", "DesafioInventTest\DesafioInventTest.csproj", "{F192B2F9-6636-4043-91FB-DA3D25759512}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +17,10 @@ Global
 		{26D5F170-B308-411C-A660-749150BFE1BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{26D5F170-B308-411C-A660-749150BFE1BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{26D5F170-B308-411C-A660-749150BFE1BF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E144D635-5D79-4CBB-89CA-1D4A4B861AC8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E144D635-5D79-4CBB-89CA-1D4A4B861AC8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E144D635-5D79-4CBB-89CA-1D4A4B861AC8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E144D635-5D79-4CBB-89CA-1D4A4B861AC8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F192B2F9-6636-4043-91FB-DA3D25759512}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F192B2F9-6636-4043-91FB-DA3D25759512}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F192B2F9-6636-4043-91FB-DA3D25759512}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F192B2F9-6636-4043-91FB-DA3D25759512}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

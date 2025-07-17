@@ -33,23 +33,25 @@ namespace DesafioInventBackend.Repository
             return entity;
         }
 
-        public void Insert(T entity)
+        public T Insert(T entity)
         {
             using (IDocumentSession session = _store.OpenSession())
             {
                 session.Store(entity);
                 session.SaveChanges();
             }
+            return entity;
         }
 
-        public void Update(string id, T entity)
+        public T Update(string id, T entity)
         {
             var idDecodificado = HttpUtility.UrlDecode(id.ToString());
             using (IDocumentSession session = _store.OpenSession())
             {
-                session.Store(entity, id);
+                session.Store(entity, idDecodificado);
                 session.SaveChanges();
             }
+            return entity;
         }
 
         public void Delete(string id)

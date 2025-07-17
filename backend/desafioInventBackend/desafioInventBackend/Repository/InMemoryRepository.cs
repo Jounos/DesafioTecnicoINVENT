@@ -1,39 +1,41 @@
-﻿using DesafioInventBackend.Context;
-using Microsoft.EntityFrameworkCore;
+﻿using DesafioInventBackend.Model.Entity;
 
 namespace DesafioInventBackend.Repository
 {
-    public class InMemoryRepository<T>: IRepositoryEquipamentoEletronico<T> where T : class
+    public class InMemoryRepository<T>: IRepositoryEquipamentoEletronico<T> where T : class, IEntity
     {
-        private readonly DataContext _context;
-        private readonly DbSet<T> _dbSet;
-
-        public InMemoryRepository(DataContext context)
-        {
-            _context = context;
-            _dbSet = _context.Set<T>();
-        }
+        
+        private readonly List<T> _items = new List<T>();
            
         public IEnumerable<T> GetAll()
         {
-            return _dbSet.ToList();
+            return _items;
         }
         
         public T GetById(string id)
         {
-            return _dbSet.Find(id);
+            if (_items.Count == 0)
+            {
+                return null;
+            }
+
+            return _items.Find(i => i.Id == id);
         }
 
-        public void Insert(T entity)
+        public T Insert(T entity)
         {
-            _dbSet.Add(entity);
+            entity.Id = $"{_items.Count + 1}";
+            _items.Add(entity);
+            return entity;
         }
 
-        public void Update(string id, T entityModified)
+        public T Update(string id, T entityModified)
         {
-            T entity = _dbSet.Find(id);
-            entity = entityModified;
-            _context.Entry(entity).State = EntityState.Modified;
+
+            T entity = this.GetById(id);
+            _items[_items.IndexOf(entity)] = entityModified;
+
+            return entityModified;
         }
 
         public void Delete(string id)
@@ -41,7 +43,7 @@ namespace DesafioInventBackend.Repository
 
             T entity = GetById(id);
 
-            _dbSet.Remove(entity);
+            this._items.Remove(entity);
         }
     }
 }

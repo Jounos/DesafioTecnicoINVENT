@@ -2,7 +2,7 @@
 
 namespace DesafioInventBackend.Model.Entity
 {
-    public class EquipamentoEletronico
+    public class EquipamentoEletronico: IEntity
     {
 
         public string Id { get; set; } = string.Empty;

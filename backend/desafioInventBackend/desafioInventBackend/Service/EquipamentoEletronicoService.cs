@@ -25,14 +25,14 @@ namespace DesafioInventBackend.Service
             return _repository.GetById(id);
         }
 
-        public void Cadastrar(EquipamentoEletronico equipamentoEletronico)
+        public EquipamentoEletronico Cadastrar(EquipamentoEletronico equipamentoEletronico)
         {
             equipamentoEletronico.DataInclusao = DateTime.Now;
             
             EquipamentoEletronicoValidator validator = new EquipamentoEletronicoValidator();
             validator.ValidateAndThrow(equipamentoEletronico);
 
-            _repository.Insert(equipamentoEletronico);
+            return _repository.Insert(equipamentoEletronico);
         }
 
         public EquipamentoEletronico Atualizar(string id, EquipamentoEletronico equipamentoEletronicoModificado)
@@ -43,12 +43,10 @@ namespace DesafioInventBackend.Service
             equipamentoEletronico.TipoEquipamento = equipamentoEletronicoModificado.TipoEquipamento;
             equipamentoEletronico.QuantidadeEstoque = equipamentoEletronicoModificado.QuantidadeEstoque;
 
-            EquipamentoEletronicoValidator validator = new EquipamentoEletronicoValidator();
+            EquipamentoEletronicoAlterarValidator validator = new EquipamentoEletronicoAlterarValidator();
             validator.ValidateAndThrow(equipamentoEletronico);
 
-            _repository.Update(id, equipamentoEletronico);
-
-            return this.BuscarPorId(id);
+            return _repository.Update(id, equipamentoEletronico);
         }
 
         public void Excluir(string id)
@@ -59,7 +57,6 @@ namespace DesafioInventBackend.Service
             
             EquipamentoEletronicoDeleteValidator validator = new EquipamentoEletronicoDeleteValidator();
             validator.ValidateAndThrow(equipamentoEletronico);
-
 
             _repository.Update(id, equipamentoEletronico);
         }
