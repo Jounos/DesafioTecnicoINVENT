@@ -77,13 +77,15 @@ namespace DesafioInventBackend.Controller
                 return NotFound();
             }
 
-            return _mapper.Map<RetornoEquipamentoEletronicoDTO>(equipamentoEletronico);
+            return Ok(_mapper.Map<RetornoEquipamentoEletronicoDTO>(equipamentoEletronico));
         }
 
         [HttpDelete("{id}")]
-        public void excluirEquipamentoEletronico(string id)
+        public bool excluirEquipamentoEletronico(string id)
         {
-            _service.Excluir(id);
+            EquipamentoEletronico ee = _service.Excluir(id);
+
+            return ee.DataExclusao != DateTime.MinValue;
         }
 
     }

@@ -49,7 +49,7 @@ namespace DesafioInventBackend.Service
             return _repository.Update(id, equipamentoEletronico);
         }
 
-        public void Excluir(string id)
+        public EquipamentoEletronico Excluir(string id)
         {
             
             EquipamentoEletronico equipamentoEletronico = this.BuscarPorId(id);
@@ -58,8 +58,7 @@ namespace DesafioInventBackend.Service
             EquipamentoEletronicoDeleteValidator validator = new EquipamentoEletronicoDeleteValidator();
             validator.ValidateAndThrow(equipamentoEletronico);
 
-            _repository.Update(id, equipamentoEletronico);
+            return _repository.Update(id, equipamentoEletronico);
         }
-
     }
 }

@@ -7,6 +7,21 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Repository\Contract\**" />
+    <Compile Remove="Repository\NovaPasta\**" />
+    <Compile Remove="Responser\**" />
+    <Content Remove="Repository\Contract\**" />
+    <Content Remove="Repository\NovaPasta\**" />
+    <Content Remove="Responser\**" />
+    <EmbeddedResource Remove="Repository\Contract\**" />
+    <EmbeddedResource Remove="Repository\NovaPasta\**" />
+    <EmbeddedResource Remove="Responser\**" />
+    <None Remove="Repository\Contract\**" />
+    <None Remove="Repository\NovaPasta\**" />
+    <None Remove="Responser\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Remove="Model\DTO\AtualizarEquipamentoEletronicoDto.cs" />
   </ItemGroup>
 
@@ -25,10 +40,6 @@
     <PackageReference Include="RavenDB.Client" Version="7.1.0" />
     <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="9.0.3" />
     <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="9.0.3" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Repository\Contract\" />
   </ItemGroup>
 
 </Project>

@@ -2,7 +2,7 @@ using DesafioInventBackend.Model.Entity;
 using DesafioInventBackend.Model.Validator;
 using DesafioInventBackend.Repository;
 using DesafioInventBackend.Service;
-using FluentValidation
+using FluentValidation;
 
 namespace DesafioInventTest
 {
@@ -96,8 +96,7 @@ namespace DesafioInventTest
             var eeResult = _service.Atualizar("1", ee);
 
             const string ID_EQUIPAMENTO_ELETROONICO = "1";
-            _service.Excluir(ID_EQUIPAMENTO_ELETROONICO);
-            ee = _service.BuscarPorId(ID_EQUIPAMENTO_ELETROONICO);
+            ee = _service.Excluir(ID_EQUIPAMENTO_ELETROONICO);
 
             EquipamentoEletronicoDeleteValidator eeValidator = new EquipamentoEletronicoDeleteValidator();
             Assert.True(eeValidator.Validate(ee).IsValid);
