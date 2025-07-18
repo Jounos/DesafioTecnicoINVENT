@@ -28,16 +28,25 @@ namespace DesafioInventBackend.Controller
 
 
         [HttpGet]
-        public ActionResult<ICollection<RetornoEquipamentoEletronicoDTO>> ListarTodosEquipamentosEletronicos()
+        public ActionResult<HttpStatus<ICollection<RetornoEquipamentoEletronicoDTO>>> ListarTodosEquipamentosEletronicos()
         {
             IEnumerable<EquipamentoEletronico> listaEquipamentosEletronicos = _service.Listar();
             if (listaEquipamentosEletronicos.Count() == 0)
             {
-                return NotFound();
+                return NotFound(new HttpStatus<IEnumerable<EquipamentoEletronico>>
+                {
+                    Body = null,
+                    Status = StatusCodes.Status404NotFound,
+                    StatusText = "Nenhum equipamento eletrônico foi encontrado."
+                });
             }
 
-            ICollection<RetornoEquipamentoEletronicoDTO> retorno = _mapper.Map<ICollection<RetornoEquipamentoEletronicoDTO>>(listaEquipamentosEletronicos);
-            return Ok(retorno);
+            IEnumerable<RetornoEquipamentoEletronicoDTO> retorno = _mapper.Map<IEnumerable<RetornoEquipamentoEletronicoDTO>>(listaEquipamentosEletronicos);
+            return Ok(new HttpStatus<IEnumerable<RetornoEquipamentoEletronicoDTO>>
+            {
+                Body = retorno,
+                Status = StatusCodes.Status200OK,
+            });
         }
 
 

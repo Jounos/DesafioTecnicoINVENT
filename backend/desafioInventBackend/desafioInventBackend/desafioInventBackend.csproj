@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net9.0</TargetFramework>
@@ -7,18 +7,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="NovaPasta\**" />
     <Compile Remove="Repository\Contract\**" />
     <Compile Remove="Repository\NovaPasta\**" />
-    <Compile Remove="Responser\**" />
+    <Content Remove="NovaPasta\**" />
     <Content Remove="Repository\Contract\**" />
     <Content Remove="Repository\NovaPasta\**" />
-    <Content Remove="Responser\**" />
+    <EmbeddedResource Remove="NovaPasta\**" />
     <EmbeddedResource Remove="Repository\Contract\**" />
     <EmbeddedResource Remove="Repository\NovaPasta\**" />
-    <EmbeddedResource Remove="Responser\**" />
+    <None Remove="NovaPasta\**" />
     <None Remove="Repository\Contract\**" />
     <None Remove="Repository\NovaPasta\**" />
-    <None Remove="Responser\**" />
   </ItemGroup>
 
   <ItemGroup>

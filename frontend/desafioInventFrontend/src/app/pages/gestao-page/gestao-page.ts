@@ -1,8 +1,8 @@
 import { HttpResponse } from '@angular/common/http';
-import { ChangeDetectorRef, Component, computed, model, OnInit, signal } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import Swal from 'sweetalert2';
 import { IRetornoEquipamentoEletronico } from '../../../library/models/retorno-equipamento-eleronico.model';
 import { EquipamentoEletronicoService } from '../../../services/equipamento-eletronico-service';
-import Swal from 'sweetalert2';
 
 @Component({
 	selector: 'app-gestao-page',
@@ -18,10 +18,10 @@ export class GestaoPage implements OnInit {
 	protected tipoEquipamento = null;
 
 	listaTiposEquipamento = [
-		{ id: 1, label: 'PC'},
-		{ id: 2, label: 'Notebook'},
-		{ id: 3, label: 'Mouse'},
-		{ id: 4, label: 'Teclado'},
+		{ id: 1, label: 'PC' },
+		{ id: 2, label: 'Notebook' },
+		{ id: 3, label: 'Mouse' },
+		{ id: 4, label: 'Teclado' },
 	]
 
 	listaEquipamentosEletronicos: IRetornoEquipamentoEletronico[] = [];
@@ -35,7 +35,6 @@ export class GestaoPage implements OnInit {
 	ngOnInit(): void {
 		this.listar();
 		this.cdr.detectChanges();
-		this.cdr.detach();
 	}
 
 	listar() {
@@ -52,7 +51,37 @@ export class GestaoPage implements OnInit {
 	}
 
 	filtrar() {
-		this.listaEquipamentosEletronicosFiltrada = this.listaEquipamentosEletronicos.filter((ee) => ee.nome.toUpperCase().includes(this.nome.toUpperCase()) || ee.tipoEquipamento == this.tipoEquipamento);
+		if (!this.listaEquipamentosEletronicos || this.listaEquipamentosEletronicos?.length === 0) {
+			return
+		}
+
+		if ((this.nome === '' || !this.nome) && !this.tipoEquipamento) {
+			this.listaEquipamentosEletronicosFiltrada = this.listaEquipamentosEletronicos;
+			return;
+		}
+
+		var lista = this.listaEquipamentosEletronicos.filter((ee) => {
+
+			if ((this.nome !== '' || this.nome) && this.tipoEquipamento) {
+				return (this.nome.length > 0 && ee.nome.toUpperCase().includes(this.nome.toUpperCase())) && ee.tipoEquipamento === this.tipoEquipamento;
+			}
+
+			if (!this.tipoEquipamento) {
+				return this.nome.length > 0 && ee.nome.toUpperCase().includes(this.nome.toUpperCase());
+			}
+
+			return ee.tipoEquipamento === this.tipoEquipamento;
+		});
+
+		this.listaEquipamentosEletronicosFiltrada = lista;
+	}
+
+	filtrarAoLimparTipoEquipamento() {
+		if (this.nome === '' || !this.nome) {
+			this.listaEquipamentosEletronicosFiltrada = this.listaEquipamentosEletronicos;
+		}
+
+		this.listaEquipamentosEletronicosFiltrada = this.listaEquipamentosEletronicos.filter((ee) => ee.nome.toUpperCase().includes(this.nome.toUpperCase()));
 	}
 
 	excluir(ee: IRetornoEquipamentoEletronico) {
