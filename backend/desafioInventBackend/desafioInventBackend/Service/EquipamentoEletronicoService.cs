@@ -51,14 +51,20 @@ namespace DesafioInventBackend.Service
 
         public EquipamentoEletronico Excluir(string id)
         {
-            
             EquipamentoEletronico equipamentoEletronico = this.BuscarPorId(id);
+            
+            
+            EquipamentoEletronicoValidator validator = new EquipamentoEletronicoValidator();
+            validator.ValidateAndThrow(equipamentoEletronico);
+            
             equipamentoEletronico.DataExclusao = DateTime.Now;
             
-            EquipamentoEletronicoDeleteValidator validator = new EquipamentoEletronicoDeleteValidator();
-            validator.ValidateAndThrow(equipamentoEletronico);
+            equipamentoEletronico = _repository.Update(id, equipamentoEletronico);
+            
+            EquipamentoEletronicoDeleteValidator validatorDelete = new EquipamentoEletronicoDeleteValidator();
+            validatorDelete.ValidateAndThrow(equipamentoEletronico);
 
-            return _repository.Update(id, equipamentoEletronico);
+            return equipamentoEletronico;
         }
     }
 }

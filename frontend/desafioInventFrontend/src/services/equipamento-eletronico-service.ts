@@ -19,7 +19,7 @@ export class EquipamentoEletronicoService {
 		return this.http.get<HttpResponse<IRetornoEquipamentoEletronico[]>>(this.endpoint, { observe: 'body',  responseType: 'json' });
 	}
 
-	buscarEquipamentoEletronicoPorId(id: number): Observable<HttpResponse<IRetornoEquipamentoEletronico>> {
+	buscarEquipamentoEletronicoPorId(id: string): Observable<HttpResponse<IRetornoEquipamentoEletronico>> {
 		return this.http.get<HttpResponse<IRetornoEquipamentoEletronico>>(`${this.endpoint}/${id}`, { observe: 'body',  responseType: 'json' });
 	}
 
@@ -27,7 +27,7 @@ export class EquipamentoEletronicoService {
 		return this.http.post<HttpResponse<IRetornoEquipamentoEletronico>>(this.endpoint, equipamentoEletronico, { observe: 'body', responseType: 'json' });
 	}
 
-	atualiarEquipamentoEletronico(id: number, equipamentoEletronico: IAtualizarEquipamentoEletronico): Observable<HttpResponse<IRetornoEquipamentoEletronico>> {
+	atualiarEquipamentoEletronico(id: string, equipamentoEletronico: IEquipamentoEletronico): Observable<HttpResponse<IRetornoEquipamentoEletronico>> {
 		return this.http.put<HttpResponse<IRetornoEquipamentoEletronico>>(`${this.endpoint}/${id}`, equipamentoEletronico, { observe: 'body', responseType: 'json' });
 	}
 

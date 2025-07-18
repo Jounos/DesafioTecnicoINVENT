@@ -12,7 +12,7 @@ namespace DesafioInventBackend.Model.Validator
             RuleFor(ee => (int)ee.TipoEquipamento).NotNull().InclusiveBetween(1, 4);
             RuleFor(ee => ee.QuantidadeEstoque).NotNull().GreaterThanOrEqualTo(0);
             RuleFor(ee => ee.DataInclusao).NotNull().Must(DeveSerDataRecente);
-            RuleFor(ee => ee.DataExclusao);
+            RuleFor(ee => ee.DataExclusao).Null();
         }
 
         protected bool DeveSerDataRecente(DateTime date)
