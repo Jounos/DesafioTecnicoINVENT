@@ -85,6 +85,16 @@ export class GestaoPage implements OnInit {
 
 	excluir(ee: IRetornoEquipamentoEletronico) {
 
+		if (ee.dataExclusao) {
+			Swal.fire({
+				icon: 'info',
+				title: 'Atenção',
+				text: 'Este equipamento eletrônico já foi excluído',
+				showConfirmButton: false,
+			});
+			return;
+		}
+
 		if (ee.temEstoque) {
 			Swal.fire({
 				icon: 'warning',
