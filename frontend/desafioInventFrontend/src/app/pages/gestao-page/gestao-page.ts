@@ -2,7 +2,7 @@ import { HttpResponse } from '@angular/common/http';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import Swal from 'sweetalert2';
 import { IRetornoEquipamentoEletronico } from '../../../library/models/retorno-equipamento-eleronico.model';
-import { EquipamentoEletronicoService } from '../../../services/equipamento-eletronico-service';
+import { EquipamentoEletronicoService } from '../../services/equipamento-eletronico-service';
 
 @Component({
 	selector: 'app-gestao-page',
@@ -89,7 +89,7 @@ export class GestaoPage implements OnInit {
 			Swal.fire({
 				icon: 'warning',
 				title: 'Atenção',
-				text: 'Este equipamento não pode ser excluído,\n pois ainda há em estoque.',
+				html: 'Este equipamento não pode ser excluído,<br/>Pois ainda há produtos em estoque.',
 				timer: 3000,
 				showConfirmButton: false,
 			});
@@ -103,7 +103,7 @@ export class GestaoPage implements OnInit {
 						if (result.body) {
 							Swal.fire({
 								icon: 'success',
-								title: 'equipamento excluido com sucesso.',
+								title: 'equipamento excluído com sucesso.',
 								timer: 3000
 							});
 						}

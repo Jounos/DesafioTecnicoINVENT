@@ -59,12 +59,7 @@ namespace DesafioInventBackend.Service
             
             equipamentoEletronico.DataExclusao = DateTime.Now;
             
-            equipamentoEletronico = _repository.Update(id, equipamentoEletronico);
-            
-            EquipamentoEletronicoDeleteValidator validatorDelete = new EquipamentoEletronicoDeleteValidator();
-            validatorDelete.ValidateAndThrow(equipamentoEletronico);
-
-            return equipamentoEletronico;
+            return _repository.Update(id, equipamentoEletronico);            
         }
     }
 }

@@ -77,9 +77,9 @@ namespace DesafioInventBackend.Controller
         [HttpPost]
         public ActionResult<RetornoEquipamentoEletronicoDTO> cadastrarEquipamentoEletronico(EquipamentoEletronicoDTO equipamentoEletronicoDto)
         {
-            EquipamentoEletronico equipamentoEletronico = _service.Cadastrar(_mapper.Map<EquipamentoEletronico>(equipamentoEletronicoDto));
+                EquipamentoEletronico equipamentoEletronico = _service.Cadastrar(_mapper.Map<EquipamentoEletronico>(equipamentoEletronicoDto));
             if (equipamentoEletronico == null)
-            {
+                {
                 return NotFound();
             }
 
@@ -109,10 +109,10 @@ namespace DesafioInventBackend.Controller
 
         [HttpDelete("{id}")]
         public bool excluirEquipamentoEletronico(string id)
-        {
-            EquipamentoEletronico equipamentoEletronico = _service.Excluir(id);
+        {   
+                EquipamentoEletronico equipamentoEletronico = _service.Excluir(id);
 
-            return equipamentoEletronico.DataExclusao != DateTime.MinValue;
+                return equipamentoEletronico.DataExclusao != DateTime.MinValue;
         }
 
     }

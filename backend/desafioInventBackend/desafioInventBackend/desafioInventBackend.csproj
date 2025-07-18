@@ -7,16 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="NovaPasta\**" />
     <Compile Remove="Repository\Contract\**" />
     <Compile Remove="Repository\NovaPasta\**" />
-    <Content Remove="NovaPasta\**" />
     <Content Remove="Repository\Contract\**" />
     <Content Remove="Repository\NovaPasta\**" />
-    <EmbeddedResource Remove="NovaPasta\**" />
     <EmbeddedResource Remove="Repository\Contract\**" />
     <EmbeddedResource Remove="Repository\NovaPasta\**" />
-    <None Remove="NovaPasta\**" />
     <None Remove="Repository\Contract\**" />
     <None Remove="Repository\NovaPasta\**" />
   </ItemGroup>

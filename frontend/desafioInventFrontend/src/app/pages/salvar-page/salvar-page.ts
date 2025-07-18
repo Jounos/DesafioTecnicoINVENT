@@ -5,7 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { EquipamentoEletronico } from '../../../library/models/equipamento-eletronico.model';
 import { IRetornoEquipamentoEletronico } from '../../../library/models/retorno-equipamento-eleronico.model';
-import { EquipamentoEletronicoService } from '../../../services/equipamento-eletronico-service';
+import { EquipamentoEletronicoService } from '../../services/equipamento-eletronico-service';
 
 @Component({
 	selector: 'app-salvar-page',
@@ -55,7 +55,7 @@ export class SalvarPage implements OnInit {
 					Swal.fire({
 						icon: 'error',
 						title: 'Error',
-						text: "Atenção: error ao buscar o equipamento eletrônico\nEntre em contato com a equipe de desenvolvimento!",
+						text: "Atenção: error ao buscar o equipamento eletrônico<br/>Entre em contato com a equipe de desenvolvimento!",
 						showConfirmButton: false,
 					}).then(() => {
 						return;
@@ -63,10 +63,6 @@ export class SalvarPage implements OnInit {
 				}
 				this.preencherFormulario((value.body as IRetornoEquipamentoEletronico));
 			},
-			error: (err: HttpErrorResponse) => {
-				this.getErrorMessage().fire({ text: "Atenção: error ao buscar equipamento eletrônicao\nEntre em contato com a equipe de desenvolvimento!" });
-				console.log(err);
-			}
 		});
 	}
 
@@ -91,16 +87,18 @@ export class SalvarPage implements OnInit {
 	private cadastrar() {
 		this.equipamentoEletronicoService.cadastrarEquipamentoEletronico(this.getEquipamentoEletronico()).subscribe({
 			next: (value: HttpResponse<IRetornoEquipamentoEletronico>) => {
-				Swal.fire({
-					icon: 'success',
-					title: 'Sucesso',
-					text: 'Equipamento eletrônico cadastrado com sucesso.',
-					timer: 3000
-				}).then(() => {
-					this.router.navigate(['/']);
-				});
+				if (value.status === 200) {
+					Swal.fire({
+						icon: 'success',
+						title: 'Sucesso',
+						text: 'Equipamento eletrônico cadastrado com sucesso.',
+						showConfirmButton: true,
+						timer: 3000
+					}).then(() => {
+						this.router.navigate(['/']);
+					});
+				}
 			},
-			error: () => this.getErrorMessage(),
 		});
 	}
 
@@ -111,12 +109,12 @@ export class SalvarPage implements OnInit {
 					icon: 'success',
 					title: 'Sucesso',
 					text: 'Equipamento eletrônico editado com sucesso.',
-					showConfirmButton: false
+					showConfirmButton: false,
+					timer: 3000
 				}).then(() => {
 					this.preencherFormulario(value.body!);
 				});
 			},
-			error: () => this.getErrorMessage().fire({ text: 'Entre em contato com a equipe de desenvolviemnto.' }),
 		})
 	}
 
@@ -128,11 +126,4 @@ export class SalvarPage implements OnInit {
 		};
 	}
 
-	private getErrorMessage() {
-		return Swal.mixin({
-			icon: 'error',
-			title: 'Ocorreu um error',
-			showConfirmButton: false
-		})
-	}
 }
