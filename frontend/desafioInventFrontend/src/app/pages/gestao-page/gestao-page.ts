@@ -43,9 +43,8 @@ export class GestaoPage implements OnInit {
 				if (value.body !== null) {
 					this.listaEquipamentosEletronicos = value.body;
 					this.listaEquipamentosEletronicosFiltrada = value.body;
-					return;
+					this.cdr.detectChanges();
 				}
-
 			}
 		});
 	}
