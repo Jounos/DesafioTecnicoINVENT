@@ -31,7 +31,7 @@ export class EquipamentoEletronicoService {
 		return this.http.put<HttpResponse<IRetornoEquipamentoEletronico>>(`${this.endpoint}/${id}`, equipamentoEletronico, { observe: 'body', responseType: 'json' });
 	}
 
-	deletarEquipamentoEletronico(id: number): Observable<HttpResponse<void>> {
-		return this.http.delete<HttpResponse<void>>(`${this.endpoint}/${id}`, { observe: 'body', responseType: 'json' })
+	deletarEquipamentoEletronico(id: string): Observable<HttpResponse<boolean>> {
+		return this.http.delete<HttpResponse<boolean>>(`${this.endpoint}/${id}`, { observe: 'body', responseType: 'json' })
 	}
 }

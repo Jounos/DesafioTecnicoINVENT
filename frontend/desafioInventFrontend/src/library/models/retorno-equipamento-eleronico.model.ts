@@ -1,7 +1,7 @@
 import { EquipamentoEletronico, IEquipamentoEletronico } from "./equipamento-eletronico.model";
 
 export interface IRetornoEquipamentoEletronico extends IEquipamentoEletronico {
-	id: number;
+	id: string;
 	temEstoque: boolean;
 	dataInclusao?: string;
 	dataExclusao?: string;
@@ -9,7 +9,7 @@ export interface IRetornoEquipamentoEletronico extends IEquipamentoEletronico {
 
 export class RetornoEquipamentoEletronico extends EquipamentoEletronico implements IRetornoEquipamentoEletronico {
 	constructor(
-		public id: number,
+		public id: string,
 		public temEstoque: boolean,
 		public dataInclusao: string,
 		public dataExclusao: string,

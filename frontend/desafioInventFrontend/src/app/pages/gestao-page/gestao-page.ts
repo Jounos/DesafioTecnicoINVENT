@@ -99,12 +99,14 @@ export class GestaoPage implements OnInit {
 		this.confirmarExclusao().then((result) => {
 			if (result.isConfirmed) {
 				this.equipamentoEletronicoService.deletarEquipamentoEletronico(ee.id).subscribe({
-					next: (result: HttpResponse<void>) => {
-						Swal.fire({
-							icon: 'success',
-							title: 'equipamento excluido com sucesso.',
-							timer: 3000
-						});
+					next: (result: HttpResponse<boolean>) => {
+						if (result.body) {
+							Swal.fire({
+								icon: 'success',
+								title: 'equipamento excluido com sucesso.',
+								timer: 3000
+							});
+						}
 
 						this.listar();
 					}

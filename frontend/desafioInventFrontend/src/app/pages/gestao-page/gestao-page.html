@@ -32,6 +32,7 @@
 							<th class="text-center">Há em estoque</th>
 							<th class="text-center">Quantidade</th>
 							<th class="text-center">Inclusão</th>
+							<th class="text-center text-danger">Exclusão</th>
 							<th class="text-center">Ações</th>
 						</tr>
 					</thead>
@@ -43,13 +44,13 @@
 								<td class="text-center">
 									@if (equipamentoEletronico.temEstoque) {
 										<small [ngClass]="{'d-inline-flex px-3 py-1 fw-semibold text-success bg-success-subtle border border-success-subtle rounded-2': equipamentoEletronico.temEstoque}">Sim</small>
-									}
-									@if (!equipamentoEletronico.temEstoque) {
+									} @else {
 										<small [ngClass]="{'d-inline-flex px-3 py-1 fw-semibold text-danger bg-danger-subtle border border-danger-subtle rounded-2': !equipamentoEletronico.temEstoque}">Não</small>
 									}
 								</td>
 								<td class="text-center">{{ equipamentoEletronico.quantidadeEstoque }}</td>
 								<td class="text-center">{{ equipamentoEletronico.dataInclusao | date: 'dd/MM/yyyy' }}</td>
+								<td class="text-center text-danger fw-medium">{{ equipamentoEletronico.dataExclusao | date: 'dd/MM/yyyy' }}</td>
 								<td class="text-center">
 									<div class="d-flex justify-content-evenly">
 										<button class="btn btn-outline-danger btn-sm" (click)="excluir(equipamentoEletronico)">
