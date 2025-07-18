@@ -7,7 +7,7 @@
 		}
 	</div>
 	<div class="card-body">
-		<form [formGroup]="form" (ngSubmit)="salvar()">
+		<form [formGroup]="form" (ngSubmit)="salvar()" class="needs-validation">
 			<div class="row">
 				<div class="col-xl-7 col-lg-8 col-md-8 col-sm-12 col-12">
 					<label for="nome" class="form-label">Nome</label>
@@ -20,12 +20,14 @@
 							<ng-option [value]="tipoEquipamento.id">{{ tipoEquipamento.label }}</ng-option>
 						}
 					</ng-select>
+					<app-error-msg [control]="form.get('tipoEquipamento')" [label]="'Tipo de Equipamento'"></app-error-msg>
 				</div>
 			</div>
 			<div class="row mt-4">
 				<div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
 					<label for="quantidade" class="form-label">Quantidade</label>
-					<input type="number" class="form-control" formControlName="quantidadeEstoque">
+					<input type="number" class="form-control" formControlName="quantidadeEstoque" [class.is-invalid]="form.get('quantidadeEstoque')!.invalid && form.get('quantidadeEstoque')!.touched">
+					<app-error-msg [control]="form.get('quantidadeEstoque')" [label]="'Quantidade'"></app-error-msg>
 				</div>
 			</div>
 			<div class="row border-top border-1 mt-4">

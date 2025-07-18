@@ -11,6 +11,7 @@ import { GestaoPage } from './gestao-page/gestao-page';
 import { PagesRoutingModule } from './pages-routing-module';
 import { SalvarPage } from './salvar-page/salvar-page';
 import { ErrorInterceptor } from '../interceptors/error-interceptor.depracated';
+import { ErrorMsg } from '../../library/components/error-msg/error-msg';
 
 
 @NgModule({
@@ -25,6 +26,7 @@ import { ErrorInterceptor } from '../interceptors/error-interceptor.depracated';
 		ReactiveFormsModule,
 		TipoEquipamentoPipe,
 		NgbPagination,
+		ErrorMsg,
 		PagesRoutingModule,
 	],
 	providers: [

@@ -1,6 +1,6 @@
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { EquipamentoEletronico } from '../../../library/models/equipamento-eletronico.model';
@@ -20,8 +20,8 @@ export class SalvarPage implements OnInit {
 	private formBuilder = inject(FormBuilder);
 
 	protected form: FormGroup = this.formBuilder.group({
-		nome: [null, Validators.required],
-		tipoEquipamento: [null, Validators.required],
+		nome: [null, [Validators.required, Validators.minLength(3), Validators.maxLength(10)]],
+		tipoEquipamento: [null, [Validators.required, Validators.min(1), Validators.max(4)]],
 		quantidadeEstoque: [null, [Validators.required, Validators.min(0)]]
 	});;
 
@@ -76,6 +76,17 @@ export class SalvarPage implements OnInit {
 
 	public salvar() {
 
+		if (this.form.invalid) {
+
+			Swal.fire({
+				icon: 'info',
+				title: 'Atenção',
+				text: 'Informe todos os campos.',
+				showConfirmButton: false
+			});
+			return;
+		}
+
 		if (!this.equipamentoEletronicoId) {
 			this.cadastrar();
 			return;
@@ -124,6 +135,17 @@ export class SalvarPage implements OnInit {
 			tipoEquipamento: this.form.value.tipoEquipamento,
 			quantidadeEstoque: this.form.value.quantidadeEstoque,
 		};
+	}
+
+	verificaValidTouched(campo: string) {
+		return !this.form.controls[campo].valid && !this.form.controls[campo].touched;
+	}
+
+	aplicaCssErro(campo: string) {
+		return {
+			'has-error' : this.verificaValidTouched(campo),
+			'has-feedback' : this.verificaValidTouched(campo)
+		}
 	}
 
 }
