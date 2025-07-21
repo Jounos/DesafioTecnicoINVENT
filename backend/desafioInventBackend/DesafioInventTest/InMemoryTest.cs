@@ -98,8 +98,7 @@ namespace DesafioInventTest
             const string ID_EQUIPAMENTO_ELETROONICO = "1";
             ee = _service.Excluir(ID_EQUIPAMENTO_ELETROONICO);
 
-            EquipamentoEletronicoDeleteValidator eeValidator = new EquipamentoEletronicoDeleteValidator();
-            Assert.True(eeValidator.Validate(ee).IsValid);
+            Assert.True(ee.DataExclusao != DateTime.MinValue);
         }
 
         [Fact]

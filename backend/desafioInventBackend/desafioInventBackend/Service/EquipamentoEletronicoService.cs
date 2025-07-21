@@ -53,8 +53,7 @@ namespace DesafioInventBackend.Service
         {
             EquipamentoEletronico equipamentoEletronico = this.BuscarPorId(id);
             
-            
-            EquipamentoEletronicoValidator validator = new EquipamentoEletronicoValidator();
+            EquipamentoEletronicoDeleteValidator validator = new EquipamentoEletronicoDeleteValidator();
             validator.ValidateAndThrow(equipamentoEletronico);
             
             equipamentoEletronico.DataExclusao = DateTime.Now;

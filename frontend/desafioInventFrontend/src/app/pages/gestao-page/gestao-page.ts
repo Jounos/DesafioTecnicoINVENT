@@ -59,7 +59,7 @@ export class GestaoPage implements OnInit {
 			return;
 		}
 
-		var lista = this.listaEquipamentosEletronicos.filter((ee) => {
+		this.listaEquipamentosEletronicosFiltrada = this.listaEquipamentosEletronicos.filter((ee) => {
 
 			if ((this.nome !== '' || this.nome) && this.tipoEquipamento) {
 				return (this.nome.length > 0 && ee.nome.toUpperCase().includes(this.nome.toUpperCase())) && ee.tipoEquipamento === this.tipoEquipamento;
@@ -71,8 +71,6 @@ export class GestaoPage implements OnInit {
 
 			return ee.tipoEquipamento === this.tipoEquipamento;
 		});
-
-		this.listaEquipamentosEletronicosFiltrada = lista;
 	}
 
 	filtrarAoLimparTipoEquipamento() {
@@ -114,7 +112,8 @@ export class GestaoPage implements OnInit {
 							Swal.fire({
 								icon: 'success',
 								title: 'equipamento excluído com sucesso.',
-								timer: 3000
+								timer: 3000,
+								showConfirmButton: false,
 							});
 						}
 

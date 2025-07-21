@@ -103,7 +103,7 @@ export class SalvarPage implements OnInit {
 						icon: 'success',
 						title: 'Sucesso',
 						text: 'Equipamento eletrônico cadastrado com sucesso.',
-						showConfirmButton: true,
+						showConfirmButton: false,
 						timer: 3000
 					}).then(() => {
 						this.router.navigate(['/']);

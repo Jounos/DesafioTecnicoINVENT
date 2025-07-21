@@ -77,13 +77,21 @@ namespace DesafioInventBackend.Controller
         [HttpPost]
         public ActionResult<RetornoEquipamentoEletronicoDTO> cadastrarEquipamentoEletronico(EquipamentoEletronicoDTO equipamentoEletronicoDto)
         {
-                EquipamentoEletronico equipamentoEletronico = _service.Cadastrar(_mapper.Map<EquipamentoEletronico>(equipamentoEletronicoDto));
+            EquipamentoEletronico equipamentoEletronico = _service.Cadastrar(_mapper.Map<EquipamentoEletronico>(equipamentoEletronicoDto));
             if (equipamentoEletronico == null)
+            {
+                return NotFound(new HttpStatus<RetornoEquipamentoEletronicoDTO>
                 {
-                return NotFound();
+                    Body = null,
+                    Status = StatusCodes.Status200OK,
+                    StatusText = "Erro ao cadastrar este equipamento eletrônico",
+                });
             }
 
-            return Ok(_mapper.Map<RetornoEquipamentoEletronicoDTO>(equipamentoEletronico));
+            return Ok(new HttpStatus<RetornoEquipamentoEletronicoDTO> {
+                Body = _mapper.Map<RetornoEquipamentoEletronicoDTO>(equipamentoEletronico),
+                Status = StatusCodes.Status200OK
+            });
         }
 
         [HttpPut("{id}")]
@@ -108,11 +116,25 @@ namespace DesafioInventBackend.Controller
         }
 
         [HttpDelete("{id}")]
-        public bool excluirEquipamentoEletronico(string id)
+        public ActionResult<HttpStatus<bool>> excluirEquipamentoEletronico(string id)
         {   
-                EquipamentoEletronico equipamentoEletronico = _service.Excluir(id);
+            EquipamentoEletronico equipamentoEletronico = _service.Excluir(id);
 
-                return equipamentoEletronico.DataExclusao != DateTime.MinValue;
+            if  (equipamentoEletronico.DataExclusao == DateTime.MinValue)
+            {
+                return NotFound(new HttpStatus<bool>
+                {
+                    Body = false,
+                    Status = StatusCodes.Status500InternalServerError,
+                    StatusText = "Error ao tentar excluir o equipamento eletrônico"
+                });
+            }
+
+            return Ok(new HttpStatus<bool>
+            {
+                Body = true,
+                Status = StatusCodes.Status200OK,
+            });
         }
 
     }
