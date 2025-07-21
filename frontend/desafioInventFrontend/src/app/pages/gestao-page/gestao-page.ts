@@ -3,6 +3,7 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import Swal from 'sweetalert2';
 import { IRetornoEquipamentoEletronico } from '../../../library/models/retorno-equipamento-eleronico.model';
 import { EquipamentoEletronicoService } from '../../services/equipamento-eletronico-service';
+import dayjs from 'dayjs';
 
 @Component({
 	selector: 'app-gestao-page',
@@ -14,6 +15,9 @@ export class GestaoPage implements OnInit {
 
 	protected page = 1;
 	protected itemsPerPage: number = 10;
+	sortColumn = '';
+	sortDirection = 'asc';
+
 
 	protected nome = "";
 	protected tipoEquipamento = null;
@@ -27,11 +31,12 @@ export class GestaoPage implements OnInit {
 
 	listaEquipamentosEletronicos: IRetornoEquipamentoEletronico[] = [];
 	listaEquipamentosEletronicosFiltrada: IRetornoEquipamentoEletronico[] = [];
+	listaPaginada: IRetornoEquipamentoEletronico[] = [];
 
 	constructor(
 		private equipamentoEletronicoService: EquipamentoEletronicoService,
 		private cdr: ChangeDetectorRef
-	) {	}
+	) { }
 
 	ngOnInit(): void {
 		this.listar();
@@ -43,7 +48,14 @@ export class GestaoPage implements OnInit {
 			next: (value: HttpResponse<IRetornoEquipamentoEletronico[]>) => {
 				if (value.body !== null) {
 					this.listaEquipamentosEletronicos = value.body;
-					this.listaEquipamentosEletronicosFiltrada = value.body;
+					this.listaEquipamentosEletronicosFiltrada = value.body.sort((a, b) => {
+						if (dayjs(b.dataInclusao).isBefore(a.dataInclusao)) {
+							return -1;
+						} else {
+							return 1;
+						}
+					});
+					this.updatePagination();
 					this.cdr.detectChanges();
 				}
 			}
@@ -57,6 +69,7 @@ export class GestaoPage implements OnInit {
 
 		if ((this.nome === '' || !this.nome) && !this.tipoEquipamento) {
 			this.listaEquipamentosEletronicosFiltrada = this.listaEquipamentosEletronicos;
+			this.updatePagination();
 			return;
 		}
 
@@ -72,6 +85,8 @@ export class GestaoPage implements OnInit {
 
 			return ee.tipoEquipamento === this.tipoEquipamento;
 		});
+		this.updatePagination();
+		this.cdr.detectChanges();
 	}
 
 	filtrarAoLimparTipoEquipamento() {
@@ -80,6 +95,8 @@ export class GestaoPage implements OnInit {
 		}
 
 		this.listaEquipamentosEletronicosFiltrada = this.listaEquipamentosEletronicos.filter((ee) => ee.nome.toUpperCase().includes(this.nome.toUpperCase()));
+		this.updatePagination();
+		this.cdr.detectChanges();
 	}
 
 	excluir(ee: IRetornoEquipamentoEletronico) {
@@ -139,4 +156,9 @@ export class GestaoPage implements OnInit {
 		});
 	}
 
+	updatePagination() {
+		const startIndex = (this.page - 1) * this.itemsPerPage;
+		const endIndex = startIndex + this.itemsPerPage;
+		this.listaPaginada = this.listaEquipamentosEletronicosFiltrada.slice(startIndex, endIndex);
+	}
 }

@@ -37,7 +37,7 @@
 						</tr>
 					</thead>
 					<tbody>
-						@for(equipamentoEletronico of listaEquipamentosEletronicosFiltrada | slice: ((page - 1) * itemsPerPage) : (page * itemsPerPage); track equipamentoEletronico.nome) {
+						@for(equipamentoEletronico of listaPaginada; track equipamentoEletronico.nome) {
 							<tr>
 								<td class="text-center">{{ equipamentoEletronico.nome }}</td>
 								<td class="text-center">{{ equipamentoEletronico.tipoEquipamento | tipoEquipamento }}</td>
@@ -69,8 +69,8 @@
 				</table>
 				<ngb-pagination class="d-flex justify-content-center"
 					[collectionSize]="listaEquipamentosEletronicosFiltrada.length"
-					[(page)]="page" [maxSize]="5" [rotate]="true" [ellipses]="false"
-					[boundaryLinks]="true">
+					[(page)]="page" [pageSize]="itemsPerPage" [rotate]="true" [ellipses]="false"
+					(pageChange)="updatePagination()" [boundaryLinks]="true">
 				</ngb-pagination>
 			</div>
 		</div>
