@@ -7,12 +7,12 @@ namespace DesafioInventBackend.Repository
         
         private readonly List<EquipamentoEletronico> _items = new List<EquipamentoEletronico>();
            
-        public IEnumerable<EquipamentoEletronico> GetAll()
+        public IEnumerable<EquipamentoEletronico> ListarTodos()
         {
             return _items;
         }
         
-        public EquipamentoEletronico GetById(string id)
+        public EquipamentoEletronico BuscarPorId(string id)
         {
             if (_items.Count == 0)
             {
@@ -22,17 +22,19 @@ namespace DesafioInventBackend.Repository
             return _items.Find(i => i.Id == id);
         }
 
-        public EquipamentoEletronico Insert(EquipamentoEletronico entity)
+        public EquipamentoEletronico Cadastrar(EquipamentoEletronico entity)
         {
             entity.Id = $"{_items.Count + 1}";
+            entity.DataInclusao = DateTimeOffset.Now;
+
             _items.Add(entity);
             return entity;
         }
 
-        public EquipamentoEletronico Update(string id, EquipamentoEletronico entityModified)
+        public EquipamentoEletronico Atualizar(string id, EquipamentoEletronico entityModified)
         {
 
-            EquipamentoEletronico entity = GetById(id);
+            EquipamentoEletronico entity = BuscarPorId(id);
             var index = _items.IndexOf(entity);
 
             entity.Nome = entityModified.Nome;
@@ -44,10 +46,10 @@ namespace DesafioInventBackend.Repository
             return entityModified;
         }
 
-        public void Delete(string id)
+        public void Deletar(string id)
         {
 
-            EquipamentoEletronico entity = GetById(id);
+            EquipamentoEletronico entity = BuscarPorId(id);
 
             _items.Remove(entity);
         }

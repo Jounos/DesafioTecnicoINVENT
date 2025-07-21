@@ -30,7 +30,7 @@ namespace DesafioInventBackend.Controller
         [HttpGet]
         public OkObjectResult ListarTodosEquipamentosEletronicos()
         {
-            return new OkObjectResult(_service.Listar());
+            return new OkObjectResult(_service.ListarTodos());
         }
 
         [HttpGet("{id}")]

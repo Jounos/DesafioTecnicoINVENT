@@ -10,27 +10,30 @@ namespace DesafioInventBackend.Repository
 
         private readonly IDocumentStore _store = RavenDbContext.Store;
 
-        public IEnumerable<EquipamentoEletronico> GetAll()
+        public IEnumerable<EquipamentoEletronico> ListarTodos()
         {
             using IDocumentSession session = _getOpenedSession();
             return session.Query<EquipamentoEletronico>().ToList();
         }
 
-        public EquipamentoEletronico GetById(string id)
+        public EquipamentoEletronico BuscarPorId(string id)
         {
             using IDocumentSession session = _getOpenedSession();
             return session.Load<EquipamentoEletronico>(id) ?? null;
         }
 
-        public EquipamentoEletronico Insert(EquipamentoEletronico entity)
+        public EquipamentoEletronico Cadastrar(EquipamentoEletronico entity)
         {
+
+            entity.DataInclusao = DateTimeOffset.Now;
+
             using IDocumentSession session = _getOpenedSession();
             session.Store(entity);
             session.SaveChanges();
             return entity;
         }
 
-        public EquipamentoEletronico Update(string id, EquipamentoEletronico entity)
+        public EquipamentoEletronico Atualizar(string id, EquipamentoEletronico entity)
         {
             using IDocumentSession session = _getOpenedSession();
 
@@ -43,7 +46,7 @@ namespace DesafioInventBackend.Repository
             return equipamentoEletronico;
         }
 
-        public void Delete(string id)
+        public void Deletar(string id)
         {
             using IDocumentSession session = _getOpenedSession();
             session.Delete(id);

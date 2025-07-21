@@ -2,10 +2,10 @@
 {
     public interface IRepositoryEquipamentoEletronico<T>
     {
-        IEnumerable<T> GetAll();
-        T GetById(string id);
-        T Insert(T entity);
-        T Update(string id, T entity);
-        void Delete(string id);
+        IEnumerable<T> ListarTodos();
+        T BuscarPorId(string id);
+        T Cadastrar(T entity);
+        T Atualizar(string id, T entity);
+        void Deletar(string id);
     }
 }
