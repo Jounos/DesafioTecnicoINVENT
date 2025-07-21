@@ -12,7 +12,8 @@ namespace DesafioInventTest
         public EquipamentoEletronicoService _service;
         public IRepositoryEquipamentoEletronico<EquipamentoEletronico> _repository;
 
-        public InMemoryTest() {
+        public InMemoryTest()
+        {
             _repository = new InMemoryRepository<EquipamentoEletronico>();
             _service = new EquipamentoEletronicoService(_repository);
         }
