@@ -2,17 +2,17 @@
 
 namespace DesafioInventBackend.Repository
 {
-    public class InMemoryRepository<T>: IRepositoryEquipamentoEletronico<T> where T : class, IEntity
+    public class InMemoryRepository: IRepositoryEquipamentoEletronico<EquipamentoEletronico>
     {
         
-        private readonly List<T> _items = new List<T>();
+        private readonly List<EquipamentoEletronico> _items = new List<EquipamentoEletronico>();
            
-        public IEnumerable<T> GetAll()
+        public IEnumerable<EquipamentoEletronico> GetAll()
         {
             return _items;
         }
         
-        public T GetById(string id)
+        public EquipamentoEletronico GetById(string id)
         {
             if (_items.Count == 0)
             {
@@ -22,28 +22,34 @@ namespace DesafioInventBackend.Repository
             return _items.Find(i => i.Id == id);
         }
 
-        public T Insert(T entity)
+        public EquipamentoEletronico Insert(EquipamentoEletronico entity)
         {
             entity.Id = $"{_items.Count + 1}";
             _items.Add(entity);
             return entity;
         }
 
-        public T Update(string id, T entityModified)
+        public EquipamentoEletronico Update(string id, EquipamentoEletronico entityModified)
         {
 
-            T entity = this.GetById(id);
-            _items[_items.IndexOf(entity)] = entityModified;
+            EquipamentoEletronico entity = GetById(id);
+            var index = _items.IndexOf(entity);
+
+            entity.Nome = entityModified.Nome;
+            entity.TipoEquipamento = entityModified.TipoEquipamento;
+            entity.QuantidadeEstoque = entityModified.QuantidadeEstoque;
+
+            _items[index] = entity;
 
             return entityModified;
         }
 
         public void Delete(string id)
-        {   
+        {
 
-            T entity = GetById(id);
+            EquipamentoEletronico entity = GetById(id);
 
-            this._items.Remove(entity);
+            _items.Remove(entity);
         }
     }
 }

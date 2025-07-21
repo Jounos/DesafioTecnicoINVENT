@@ -18,7 +18,7 @@ builder.Services.AddCors(options =>
 builder.Services.AddSingleton<RavenDbContext>();
 
 builder.Services.AddControllers();
-builder.Services.AddScoped<IRepositoryEquipamentoEletronico<EquipamentoEletronico>, RavenDbRepository<EquipamentoEletronico>>();
+builder.Services.AddScoped<IRepositoryEquipamentoEletronico<EquipamentoEletronico>, RavenDbRepository>();
 builder.Services.AddScoped<EquipamentoEletronicoService>();
 
 builder.Services.AddAutoMapper(cfg =>

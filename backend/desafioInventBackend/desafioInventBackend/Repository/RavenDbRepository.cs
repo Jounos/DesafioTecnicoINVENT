@@ -1,66 +1,58 @@
 ﻿using DesafioInventBackend.Data;
+using DesafioInventBackend.Model.Entity;
 using Raven.Client.Documents;
 using Raven.Client.Documents.Session;
-using System.Web;
 
 namespace DesafioInventBackend.Repository
 {
-    public class RavenDbRepository<T>: IRepositoryEquipamentoEletronico<T> where T : class
+    public class RavenDbRepository : IRepositoryEquipamentoEletronico<EquipamentoEletronico>
     {
 
         private readonly IDocumentStore _store = RavenDbContext.Store;
 
-        public IEnumerable<T> GetAll()
+        public IEnumerable<EquipamentoEletronico> GetAll()
         {
-            List<T> list = new List<T>();
-            using (IDocumentSession session = _store.OpenSession())
-            {
-                list = session.Query<T>().ToList();
-            }
-
-            return list;
+            using IDocumentSession session = _getOpenedSession();
+            return session.Query<EquipamentoEletronico>().ToList();
         }
 
-        public T GetById(string id)
+        public EquipamentoEletronico GetById(string id)
         {
-            T entity;
-            var idDecodificado = HttpUtility.UrlDecode(id.ToString());
-            using (IDocumentSession session = _store.OpenSession())
-            {
-                entity = session.Load<T>(idDecodificado);
-            }
+            using IDocumentSession session = _getOpenedSession();
+            return session.Load<EquipamentoEletronico>(id) ?? null;
+        }
 
+        public EquipamentoEletronico Insert(EquipamentoEletronico entity)
+        {
+            using IDocumentSession session = _getOpenedSession();
+            session.Store(entity);
+            session.SaveChanges();
             return entity;
         }
 
-        public T Insert(T entity)
+        public EquipamentoEletronico Update(string id, EquipamentoEletronico entity)
         {
-            using (IDocumentSession session = _store.OpenSession())
-            {
-                session.Store(entity);
-                session.SaveChanges();
-            }
-            return entity;
-        }
+            using IDocumentSession session = _getOpenedSession();
 
-        public T Update(string id, T entity)
-        {
-            var idDecodificado = HttpUtility.UrlDecode(id.ToString());
-            using (IDocumentSession session = _store.OpenSession())
-            {
-                session.Store(entity, idDecodificado);
-                session.SaveChanges();
-            }
-            return entity;
+            EquipamentoEletronico equipamentoEletronico = session.Load<EquipamentoEletronico>(id);
+            equipamentoEletronico.Nome = entity.Nome;
+            equipamentoEletronico.TipoEquipamento = entity.TipoEquipamento;
+            equipamentoEletronico.QuantidadeEstoque = entity.QuantidadeEstoque;
+
+            session.SaveChanges();
+            return equipamentoEletronico;
         }
 
         public void Delete(string id)
         {
-            using (IDocumentSession session = _store.OpenSession())
-            {
-                session.Delete(id.ToString());
-                session.SaveChanges();
-            }
+            using IDocumentSession session = _getOpenedSession();
+            session.Delete(id);
+            session.SaveChanges();
+        }
+
+        private IDocumentSession _getOpenedSession()
+        {
+            return _store.OpenSession();
         }
     }
 }

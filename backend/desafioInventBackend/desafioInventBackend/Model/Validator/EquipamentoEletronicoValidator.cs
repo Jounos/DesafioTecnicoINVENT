@@ -15,7 +15,7 @@ namespace DesafioInventBackend.Model.Validator
             RuleFor(ee => ee.DataExclusao).Null();
         }
 
-        protected bool DeveSerDataRecente(DateTimeOffset date)
+        private bool DeveSerDataRecente(DateTimeOffset date)
         {
             if (date.Equals(DateTimeOffset.MinValue))
             {
