@@ -12,7 +12,6 @@ namespace DesafioInventBackend.Model.Validator
             RuleFor(ee => (int)ee.TipoEquipamento).NotNull().InclusiveBetween(1, 4);
             RuleFor(ee => ee.QuantidadeEstoque).NotNull().GreaterThanOrEqualTo(0);
             RuleFor(ee => ee.DataInclusao).NotNull().Must(_deveSerDataRecente);
-            RuleFor(ee => ee.DataExclusao).Null();
         }
 
         private bool _deveSerDataRecente(DateTimeOffset date)

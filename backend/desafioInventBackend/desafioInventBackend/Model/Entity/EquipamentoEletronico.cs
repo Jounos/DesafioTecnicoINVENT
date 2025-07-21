@@ -2,7 +2,7 @@
 
 namespace DesafioInventBackend.Model.Entity
 {
-    public class EquipamentoEletronico: IEntity
+    public class EquipamentoEletronico
     {
 
         public string Id { get; set; } = string.Empty;
@@ -11,7 +11,6 @@ namespace DesafioInventBackend.Model.Entity
         public int QuantidadeEstoque { get; set; }
         public bool TemEstoque { get { return QuantidadeEstoque > 0; } }
         public DateTimeOffset  DataInclusao { get; set; }
-        public DateTimeOffset? DataExclusao { get; set; }
 
         public EquipamentoEletronico()
         {
