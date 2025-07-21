@@ -12,7 +12,8 @@ import { EquipamentoEletronicoService } from '../../services/equipamento-eletron
 })
 export class GestaoPage implements OnInit {
 
-	page = 4;
+	protected page = 1;
+	protected itemsPerPage: number = 10;
 
 	protected nome = "";
 	protected tipoEquipamento = null;
