@@ -20,154 +20,154 @@ namespace DesafioInventTest
 
 
         [Fact]
-        public void CadastrarEquipamentoEletronico_DeveRetornarUmEquipamentoEletronicoValido()
+        public void Cadastrar_equipamento_eletronico_deve_retornar_um_equipamento_eletronico_valido()
         {
             
-            EquipamentoEletronico ee = new EquipamentoEletronico
+            EquipamentoEletronico equipamentoEletronico = new EquipamentoEletronico
             {
                 Nome = "Alienware",
                 TipoEquipamento = TipoEquipamento.PC,
                 QuantidadeEstoque = 2,
             };
 
-            var eeResult = _service.Cadastrar(ee);
+            var equipamentoEletronicoResult = _service.Cadastrar(equipamentoEletronico);
             
-            EquipamentoEletronicoValidator eeValidator = new EquipamentoEletronicoValidator();
-            Assert.True(eeValidator.Validate(eeResult).IsValid);
+            EquipamentoEletronicoValidator equipamentoEletronicoeValidator = new EquipamentoEletronicoValidator();
+            Assert.True(equipamentoEletronicoeValidator.Validate(equipamentoEletronicoResult).IsValid);
         }
 
         [Fact]
-        public void CadastrarEquipamentoEletronico_DeveLancarUmaExcecaoValidationException()
+        public void Cadastrar_equipamento_eletronico_deve_lancar_uma_excecao_ValidationException_ja_que_equipamento_eletronico_nao_tem_informacoes_minimas_exigidas()
         {
 
-            EquipamentoEletronico ee = new EquipamentoEletronico
+            EquipamentoEletronico equipamentoEletronico = new EquipamentoEletronico
             {
                 Nome = "Positivo",
             };
 
-            Assert.Throws<ValidationException>(() => _service.Cadastrar(ee));
+            Assert.Throws<ValidationException>(() => _service.Cadastrar(equipamentoEletronico));
         }
 
         [Fact]
-        public void EditarEquipamentoEletronico_DeveRetornarUmEquipamentoEletronicoValido()
+        public void Editar_equipamento_eletronico_deve_retornar_um_equipamento_eletronico_valido()
         {
             
-            this.CadastrarEquipamentoEletronico_DeveRetornarUmEquipamentoEletronicoValido();
+            this.Cadastrar_equipamento_eletronico_deve_retornar_um_equipamento_eletronico_valido();
 
-            EquipamentoEletronico ee = new EquipamentoEletronico
+            EquipamentoEletronico equipamentoEletronico = new EquipamentoEletronico
             {
                 Nome = "Positivo",
                 TipoEquipamento = TipoEquipamento.PC,
                 QuantidadeEstoque = 2,
             };
 
-            var eeResult = _service.Atualizar("1", ee);
+            var equipamentoEletronicoResult = _service.Atualizar("1", equipamentoEletronico);
 
-            EquipamentoEletronicoAlterarValidator eeValidator = new EquipamentoEletronicoAlterarValidator();
-            Assert.True(eeValidator.Validate(eeResult).IsValid);
+            EquipamentoEletronicoAlterarValidator equipamentoEletronicoeValidator = new EquipamentoEletronicoAlterarValidator();
+            Assert.True(equipamentoEletronicoeValidator.Validate(equipamentoEletronicoResult).IsValid);
         }
 
         [Fact]
-        public void EditarEquipamentoEletronico_DeveLancarUmaExcessao()
+        public void Editar_equipamento_eletronico_deve_lancar_uma_excessao_por_tentar_salvar_um_equipamento_eletronico_sem_nome()
         {
 
-            this.CadastrarEquipamentoEletronico_DeveRetornarUmEquipamentoEletronicoValido();
+            this.Cadastrar_equipamento_eletronico_deve_retornar_um_equipamento_eletronico_valido();
 
-            EquipamentoEletronico ee = new EquipamentoEletronico
+            EquipamentoEletronico equipamentoEletronico = new EquipamentoEletronico
             {
                 Nome = string.Empty,
                 TipoEquipamento = TipoEquipamento.PC,
                 QuantidadeEstoque = 2,
             };
 
-            Assert.Throws<ValidationException>(() => _service.Atualizar("1", ee));
+            Assert.Throws<ValidationException>(() => _service.Atualizar("1", equipamentoEletronico));
         }
 
         [Fact]
-        public void ExcluirEquipamentoEletronico_DeveRetornarUmEquipamentoExcluido()
+        public void Excluir_equipamento_eletronico_deve_retornar_um_equipamento_excluido()
         {
-            this.CadastrarEquipamentoEletronico_DeveRetornarUmEquipamentoEletronicoValido();
-            EquipamentoEletronico ee = new EquipamentoEletronico
+            this.Cadastrar_equipamento_eletronico_deve_retornar_um_equipamento_eletronico_valido();
+            EquipamentoEletronico equipamentoEletronico= new EquipamentoEletronico
             {
                 Nome = "Positivo",
                 TipoEquipamento = TipoEquipamento.PC,
                 QuantidadeEstoque = 0,
             };
 
-            var eeResult = _service.Atualizar("1", ee);
+            _service.Atualizar("1", equipamentoEletronico);
 
             const string ID_EQUIPAMENTO_ELETROONICO = "1";
-            ee = _service.Excluir(ID_EQUIPAMENTO_ELETROONICO);
+            equipamentoEletronico = _service.Excluir(ID_EQUIPAMENTO_ELETROONICO);
 
-            Assert.True(ee.DataExclusao != DateTime.MinValue);
+            Assert.True(equipamentoEletronico.DataExclusao != DateTime.MinValue);
         }
 
         [Fact]
-        public void ExcluirEquipamentoEletronico_DeveRetornarUmaExcessao_PorNaoPoderExcluirProdutoComEstoque()
+        public void Excluir_equipamento_eletronico_deve_retornar_uma_excessao_por_tentar_excluir_produto_com_estoque()
         {
-            this.CadastrarEquipamentoEletronico_DeveRetornarUmEquipamentoEletronicoValido();
+            this.Cadastrar_equipamento_eletronico_deve_retornar_um_equipamento_eletronico_valido();
 
             const string ID_EQUIPAMENTO_ELETRONICO = "1";
             Assert.Throws<ValidationException>(() => _service.Excluir(ID_EQUIPAMENTO_ELETRONICO));
         }
 
         [Fact]
-        public void BuscarEquipamentoEletronicoPorId_DeveRetornarUmEquipamentoEletronico()
+        public void Buscar_equipamento_eletronico_por_id_deve_retornar_um_equipamento_eletronico()
         {
 
             const string ID_ESPERADO = "3";
-            this.CadastrarEquipamentoEletronico_DeveRetornarUmEquipamentoEletronicoValido();
-            this.CadastrarEquipamentoEletronico_DeveRetornarUmEquipamentoEletronicoValido();
-            this.CadastrarEquipamentoEletronico_DeveRetornarUmEquipamentoEletronicoValido();
-            this.CadastrarEquipamentoEletronico_DeveRetornarUmEquipamentoEletronicoValido();
+            this.Cadastrar_equipamento_eletronico_deve_retornar_um_equipamento_eletronico_valido();
+            this.Cadastrar_equipamento_eletronico_deve_retornar_um_equipamento_eletronico_valido();
+            this.Cadastrar_equipamento_eletronico_deve_retornar_um_equipamento_eletronico_valido();
+            this.Cadastrar_equipamento_eletronico_deve_retornar_um_equipamento_eletronico_valido();
 
-            EquipamentoEletronico ee = _service.BuscarPorId(ID_ESPERADO);
+            EquipamentoEletronico equipamentoEletronico = _service.BuscarPorId(ID_ESPERADO);
 
-            Assert.Equal(ID_ESPERADO, ee.Id);
+            Assert.Equal(ID_ESPERADO, equipamentoEletronico.Id);
         }
 
         [Fact]
-        public void BuscarEquipamentoEletronicoPorId_NenhumEquipamentoDeveSerEncontrado()
+        public void Buscar_equipamento_eletronico_por_id_nenhum_equipamento_deve_ser_encontrado()
         {
 
             const string ID_ESPERADO = "5";
-            this.CadastrarEquipamentoEletronico_DeveRetornarUmEquipamentoEletronicoValido();
-            this.CadastrarEquipamentoEletronico_DeveRetornarUmEquipamentoEletronicoValido();
-            this.CadastrarEquipamentoEletronico_DeveRetornarUmEquipamentoEletronicoValido();
-            this.CadastrarEquipamentoEletronico_DeveRetornarUmEquipamentoEletronicoValido();
+            this.Cadastrar_equipamento_eletronico_deve_retornar_um_equipamento_eletronico_valido();
+            this.Cadastrar_equipamento_eletronico_deve_retornar_um_equipamento_eletronico_valido();
+            this.Cadastrar_equipamento_eletronico_deve_retornar_um_equipamento_eletronico_valido();
+            this.Cadastrar_equipamento_eletronico_deve_retornar_um_equipamento_eletronico_valido();
 
-            EquipamentoEletronico ee =_service.BuscarPorId(ID_ESPERADO);
+            EquipamentoEletronico equipamentoEletronico =_service.BuscarPorId(ID_ESPERADO);
 
-            Assert.Null(ee);
+            Assert.Null(equipamentoEletronico);
         }
 
         [Fact]
-        public void ListarEquipamentosEletronicos_DeveRetornarTodosOsEquipamentosEletronicos()
+        public void Listar_equipamentos_eletronicos_deve_retornar_todos_equipamentos_letronicos_e_todos_devem_ser_validos()
         {
 
-            this.CadastrarEquipamentoEletronico_DeveRetornarUmEquipamentoEletronicoValido();
-            this.CadastrarEquipamentoEletronico_DeveRetornarUmEquipamentoEletronicoValido();
-            this.CadastrarEquipamentoEletronico_DeveRetornarUmEquipamentoEletronicoValido();
-            this.CadastrarEquipamentoEletronico_DeveRetornarUmEquipamentoEletronicoValido();
+            this.Cadastrar_equipamento_eletronico_deve_retornar_um_equipamento_eletronico_valido();
+            this.Cadastrar_equipamento_eletronico_deve_retornar_um_equipamento_eletronico_valido();
+            this.Cadastrar_equipamento_eletronico_deve_retornar_um_equipamento_eletronico_valido();
+            this.Cadastrar_equipamento_eletronico_deve_retornar_um_equipamento_eletronico_valido();
 
 
-            IEnumerable<EquipamentoEletronico> lista = _service.Listar();
+            IEnumerable<EquipamentoEletronico> listaEquipamentosEletronicos = _service.Listar();
 
-            EquipamentoEletronicoValidator eeValidator = new EquipamentoEletronicoValidator();
-            Assert.Collection(lista,
-                    e => Assert.True(eeValidator.Validate(e).IsValid),
-                    e => Assert.True(eeValidator.Validate(e).IsValid),
-                    e => Assert.True(eeValidator.Validate(e).IsValid),
-                    e => Assert.True(eeValidator.Validate(e).IsValid)
+            EquipamentoEletronicoValidator equipamentoEletronicoValidator = new EquipamentoEletronicoValidator();
+            Assert.Collection(listaEquipamentosEletronicos,
+                    equipamentoEletronico => Assert.True(equipamentoEletronicoValidator.Validate(equipamentoEletronico).IsValid),
+                    equipamentoEletronico => Assert.True(equipamentoEletronicoValidator.Validate(equipamentoEletronico).IsValid),
+                    equipamentoEletronico => Assert.True(equipamentoEletronicoValidator.Validate(equipamentoEletronico).IsValid),
+                    equipamentoEletronico => Assert.True(equipamentoEletronicoValidator.Validate(equipamentoEletronico).IsValid)
                 );
         }
 
         [Fact]
-        public void ListarEquipamentosEletronicos_NenhumEquipamentoDeveSerEncontrado()
+        public void Listar_equipamentos_eletronicos_nenhum_equipamento_deve_ser_encontrado()
         {
-            IEnumerable<EquipamentoEletronico> lista = _service.Listar();
+            IEnumerable<EquipamentoEletronico> listaEquipamentosEletronicos = _service.Listar();
 
-            Assert.Empty(lista);
+            Assert.Empty(listaEquipamentosEletronicos);
         }
     }
 }
