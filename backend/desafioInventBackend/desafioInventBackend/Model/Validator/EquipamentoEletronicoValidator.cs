@@ -15,24 +15,24 @@ namespace DesafioInventBackend.Model.Validator
             RuleFor(ee => ee.DataExclusao).Null();
         }
 
-        protected bool DeveSerDataRecente(DateTime date)
+        protected bool DeveSerDataRecente(DateTimeOffset date)
         {
-            if (date.Equals(DateTime.MinValue))
+            if (date.Equals(DateTimeOffset.MinValue))
             {
                 return false;
             }
 
-            if (date.Equals(DateTime.MaxValue))
+            if (date.Equals(DateTimeOffset.MaxValue))
             {
                 return false;
             }
 
-            if (DateTime.Compare(date, new DateTime(2009, 12, 31)) < 0)
+            if (DateTimeOffset.Compare(date, new DateTime(2009, 12, 31)) < 0)
             {
                 return false;
             }
 
-            if (DateTime.Compare(date, new DateTime(2030, 1, 1)) > 0)
+            if (DateTimeOffset.Compare(date, new DateTime(2030, 1, 1)) > 0)
             {
                 return false;
             }

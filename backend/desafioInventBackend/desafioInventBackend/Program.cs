@@ -24,7 +24,6 @@ builder.Services.AddScoped<EquipamentoEletronicoService>();
 builder.Services.AddAutoMapper(cfg =>
     {
         cfg.CreateMap<EquipamentoEletronico, EquipamentoEletronicoDTO>().ReverseMap();
-        cfg.CreateMap<EquipamentoEletronico, RetornoEquipamentoEletronicoDTO>();
     }
 );
 
