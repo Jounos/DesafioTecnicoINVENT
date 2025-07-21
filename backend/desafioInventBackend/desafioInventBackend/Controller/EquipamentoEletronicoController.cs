@@ -28,113 +28,35 @@ namespace DesafioInventBackend.Controller
 
 
         [HttpGet]
-        public ActionResult<HttpStatus<ICollection<RetornoEquipamentoEletronicoDTO>>> ListarTodosEquipamentosEletronicos()
+        public OkObjectResult ListarTodosEquipamentosEletronicos()
         {
-            IEnumerable<EquipamentoEletronico> listaEquipamentosEletronicos = _service.Listar();
-            if (listaEquipamentosEletronicos.Count() == 0)
-            {
-                return NotFound(new HttpStatus<IEnumerable<EquipamentoEletronico>>
-                {
-                    Body = null,
-                    Status = StatusCodes.Status500InternalServerError,
-                    StatusText = "Nenhum equipamento eletrônico foi encontrado.",
-                });
-            }
-
-            IEnumerable<RetornoEquipamentoEletronicoDTO> eeDTO = _mapper.Map<IEnumerable<RetornoEquipamentoEletronicoDTO>>(listaEquipamentosEletronicos);
-            return Ok(new HttpStatus<IEnumerable<RetornoEquipamentoEletronicoDTO>>
-            {
-                Body = eeDTO,
-                Status = StatusCodes.Status200OK,
-            });
+            return new OkObjectResult(_service.Listar());
         }
 
-
-
         [HttpGet("{id}")]
-        public ActionResult<RetornoEquipamentoEletronicoDTO> buscarEquipamentoEletronicoPorId(string id)
+        public ObjectResult buscarEquipamentoEletronicoPorId(string id)
         {
-            EquipamentoEletronico equipamentoEletronico = _service.BuscarPorId(id);
-            if (equipamentoEletronico == null)
-            {
-                return NotFound(new HttpStatus<EquipamentoEletronico>
-                {
-                    Body = null,
-                    Status = StatusCodes.Status500InternalServerError,
-                    StatusText = "Equipamento Eletrônico selecionando não encontrado.",
-                });
-            }
-
-            RetornoEquipamentoEletronicoDTO equipamentoEletronicoDTO= _mapper.Map<RetornoEquipamentoEletronicoDTO>(equipamentoEletronico);
-
-            return Ok(new HttpStatus<RetornoEquipamentoEletronicoDTO>
-            {
-                Body = equipamentoEletronicoDTO,
-                Status = StatusCodes.Status200OK,
-            });
+            return new OkObjectResult(_service.BuscarPorId(id));
         }
 
         [HttpPost]
-        public ActionResult<RetornoEquipamentoEletronicoDTO> cadastrarEquipamentoEletronico(EquipamentoEletronicoDTO equipamentoEletronicoDto)
+        public CreatedResult cadastrarEquipamentoEletronico(EquipamentoEletronicoDTO equipamentoEletronicoDto)
         {
-            EquipamentoEletronico equipamentoEletronico = _service.Cadastrar(_mapper.Map<EquipamentoEletronico>(equipamentoEletronicoDto));
-            if (equipamentoEletronico == null)
-            {
-                return NotFound(new HttpStatus<RetornoEquipamentoEletronicoDTO>
-                {
-                    Body = null,
-                    Status = StatusCodes.Status200OK,
-                    StatusText = "Erro ao cadastrar este equipamento eletrônico",
-                });
-            }
-
-            return Ok(new HttpStatus<RetornoEquipamentoEletronicoDTO> {
-                Body = _mapper.Map<RetornoEquipamentoEletronicoDTO>(equipamentoEletronico),
-                Status = StatusCodes.Status200OK
-            });
+            return new CreatedResult("/api/equipamento-eletronico", _service.Cadastrar(_mapper.Map<EquipamentoEletronico>(equipamentoEletronicoDto)));
         }
 
         [HttpPut("{id}")]
-        public ActionResult<RetornoEquipamentoEletronicoDTO> atualizarEquipamentoEletronico(string id, EquipamentoEletronicoDTO equipamentoEletronicoDto)
+        public NoContentResult atualizarEquipamentoEletronico(string id, EquipamentoEletronicoDTO equipamentoEletronicoDto)
         {
-            EquipamentoEletronico equipamentoEletronico = _service.Atualizar(id, _mapper.Map<EquipamentoEletronico>(equipamentoEletronicoDto));
-            if (equipamentoEletronico == null)
-            {
-                return NotFound(new HttpStatus<EquipamentoEletronico>
-                {
-                    Body = null,
-                    Status = StatusCodes.Status500InternalServerError,
-                    StatusText = "Erro ao tentar alterar equipamento eletrônico.",
-                });
-            }
-
-            return Ok(new HttpStatus<RetornoEquipamentoEletronicoDTO>
-            {
-                Body = _mapper.Map<RetornoEquipamentoEletronicoDTO>(equipamentoEletronico),
-                Status = StatusCodes.Status200OK,
-            });
+            _service.Atualizar(id, _mapper.Map<EquipamentoEletronico>(equipamentoEletronicoDto));
+            return new NoContentResult();
         }
 
         [HttpDelete("{id}")]
-        public ActionResult<HttpStatus<bool>> excluirEquipamentoEletronico(string id)
-        {   
-            EquipamentoEletronico equipamentoEletronico = _service.Excluir(id);
-
-            if  (equipamentoEletronico.DataExclusao == DateTime.MinValue)
-            {
-                return NotFound(new HttpStatus<bool>
-                {
-                    Body = false,
-                    Status = StatusCodes.Status500InternalServerError,
-                    StatusText = "Error ao tentar excluir o equipamento eletrônico"
-                });
-            }
-
-            return Ok(new HttpStatus<bool>
-            {
-                Body = true,
-                Status = StatusCodes.Status200OK,
-            });
+        public NoContentResult excluirEquipamentoEletronico(string id)
+        {
+            _service.Excluir(id);
+            return new NoContentResult();
         }
 
     }
