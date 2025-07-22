@@ -14,8 +14,8 @@ namespace DesafioInventTest
 
         public InMemoryTest()
         {
-            _repository = new InMemoryRepository<EquipamentoEletronico>();
-            _service = new EquipamentoEletronicoService(_repository);
+            _repository = new InMemoryRepository();
+            _service = new EquipamentoEletronicoService(_repository, new EquipamentoEletronicoValidator(), new EquipamentoEletronicoAlterarValidator(), new EquipamentoEletronicoDeleteValidator());
         }
 
 
@@ -53,9 +53,11 @@ namespace DesafioInventTest
         {
             
             this.Cadastrar_equipamento_eletronico_deve_retornar_um_equipamento_eletronico_valido();
+            const string ID_EQUIPAMENTO_ELETRONICO = "1";
 
             EquipamentoEletronico equipamentoEletronico = new EquipamentoEletronico
-            {
+            {   
+                Id = ID_EQUIPAMENTO_ELETRONICO,
                 Nome = "Positivo",
                 TipoEquipamento = TipoEquipamento.PC,
                 QuantidadeEstoque = 2,
@@ -86,26 +88,28 @@ namespace DesafioInventTest
         [Fact]
         public void Excluir_equipamento_eletronico_deve_retornar_um_equipamento_excluido()
         {
-            this.Cadastrar_equipamento_eletronico_deve_retornar_um_equipamento_eletronico_valido();
+            const string ID_EQUIPAMENTO_ELETRONICO = "1";
+            
+            Cadastrar_equipamento_eletronico_deve_retornar_um_equipamento_eletronico_valido();
             EquipamentoEletronico equipamentoEletronico= new EquipamentoEletronico
             {
+                Id = ID_EQUIPAMENTO_ELETRONICO,
                 Nome = "Positivo",
                 TipoEquipamento = TipoEquipamento.PC,
                 QuantidadeEstoque = 0,
             };
 
-            _service.Atualizar("1", equipamentoEletronico);
+            _service.Atualizar(ID_EQUIPAMENTO_ELETRONICO, equipamentoEletronico);
 
-            const string ID_EQUIPAMENTO_ELETROONICO = "1";
-            equipamentoEletronico = _service.Excluir(ID_EQUIPAMENTO_ELETROONICO);
+            _service.Excluir(ID_EQUIPAMENTO_ELETRONICO);
 
-            Assert.True(equipamentoEletronico.DataExclusao != DateTime.MinValue);
+            Assert.Null(_service.BuscarPorId(ID_EQUIPAMENTO_ELETRONICO));
         }
 
         [Fact]
         public void Excluir_equipamento_eletronico_deve_retornar_uma_excessao_por_tentar_excluir_produto_com_estoque()
         {
-            this.Cadastrar_equipamento_eletronico_deve_retornar_um_equipamento_eletronico_valido();
+            Cadastrar_equipamento_eletronico_deve_retornar_um_equipamento_eletronico_valido();
 
             const string ID_EQUIPAMENTO_ELETRONICO = "1";
             Assert.Throws<ValidationException>(() => _service.Excluir(ID_EQUIPAMENTO_ELETRONICO));
@@ -116,10 +120,10 @@ namespace DesafioInventTest
         {
 
             const string ID_ESPERADO = "3";
-            this.Cadastrar_equipamento_eletronico_deve_retornar_um_equipamento_eletronico_valido();
-            this.Cadastrar_equipamento_eletronico_deve_retornar_um_equipamento_eletronico_valido();
-            this.Cadastrar_equipamento_eletronico_deve_retornar_um_equipamento_eletronico_valido();
-            this.Cadastrar_equipamento_eletronico_deve_retornar_um_equipamento_eletronico_valido();
+            Cadastrar_equipamento_eletronico_deve_retornar_um_equipamento_eletronico_valido();
+            Cadastrar_equipamento_eletronico_deve_retornar_um_equipamento_eletronico_valido();
+            Cadastrar_equipamento_eletronico_deve_retornar_um_equipamento_eletronico_valido();
+            Cadastrar_equipamento_eletronico_deve_retornar_um_equipamento_eletronico_valido();
 
             EquipamentoEletronico equipamentoEletronico = _service.BuscarPorId(ID_ESPERADO);
 
@@ -131,10 +135,10 @@ namespace DesafioInventTest
         {
 
             const string ID_ESPERADO = "5";
-            this.Cadastrar_equipamento_eletronico_deve_retornar_um_equipamento_eletronico_valido();
-            this.Cadastrar_equipamento_eletronico_deve_retornar_um_equipamento_eletronico_valido();
-            this.Cadastrar_equipamento_eletronico_deve_retornar_um_equipamento_eletronico_valido();
-            this.Cadastrar_equipamento_eletronico_deve_retornar_um_equipamento_eletronico_valido();
+            Cadastrar_equipamento_eletronico_deve_retornar_um_equipamento_eletronico_valido();
+            Cadastrar_equipamento_eletronico_deve_retornar_um_equipamento_eletronico_valido();
+            Cadastrar_equipamento_eletronico_deve_retornar_um_equipamento_eletronico_valido();
+            Cadastrar_equipamento_eletronico_deve_retornar_um_equipamento_eletronico_valido();
 
             EquipamentoEletronico equipamentoEletronico =_service.BuscarPorId(ID_ESPERADO);
 
@@ -145,13 +149,13 @@ namespace DesafioInventTest
         public void Listar_equipamentos_eletronicos_deve_retornar_todos_equipamentos_letronicos_e_todos_devem_ser_validos()
         {
 
-            this.Cadastrar_equipamento_eletronico_deve_retornar_um_equipamento_eletronico_valido();
-            this.Cadastrar_equipamento_eletronico_deve_retornar_um_equipamento_eletronico_valido();
-            this.Cadastrar_equipamento_eletronico_deve_retornar_um_equipamento_eletronico_valido();
-            this.Cadastrar_equipamento_eletronico_deve_retornar_um_equipamento_eletronico_valido();
+            Cadastrar_equipamento_eletronico_deve_retornar_um_equipamento_eletronico_valido();
+            Cadastrar_equipamento_eletronico_deve_retornar_um_equipamento_eletronico_valido();
+            Cadastrar_equipamento_eletronico_deve_retornar_um_equipamento_eletronico_valido();
+            Cadastrar_equipamento_eletronico_deve_retornar_um_equipamento_eletronico_valido();
 
 
-            IEnumerable<EquipamentoEletronico> listaEquipamentosEletronicos = _service.Listar();
+            IEnumerable<EquipamentoEletronico> listaEquipamentosEletronicos = _service.ListarTodos();
 
             EquipamentoEletronicoValidator equipamentoEletronicoValidator = new EquipamentoEletronicoValidator();
             Assert.Collection(listaEquipamentosEletronicos,
@@ -165,7 +169,7 @@ namespace DesafioInventTest
         [Fact]
         public void Listar_equipamentos_eletronicos_nenhum_equipamento_deve_ser_encontrado()
         {
-            IEnumerable<EquipamentoEletronico> listaEquipamentosEletronicos = _service.Listar();
+            IEnumerable<EquipamentoEletronico> listaEquipamentosEletronicos = _service.ListarTodos();
 
             Assert.Empty(listaEquipamentosEletronicos);
         }

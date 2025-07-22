@@ -2,6 +2,7 @@
 using DesafioInventBackend.Data;
 using DesafioInventBackend.Model.DTO;
 using DesafioInventBackend.Model.Entity;
+using DesafioInventBackend.Model.Validator;
 using DesafioInventBackend.Repository;
 using DesafioInventBackend.Service;
 
@@ -19,6 +20,9 @@ builder.Services.AddSingleton<RavenDbContext>();
 
 builder.Services.AddControllers();
 builder.Services.AddScoped<IRepositoryEquipamentoEletronico<EquipamentoEletronico>, RavenDbRepository>();
+builder.Services.AddScoped<EquipamentoEletronicoValidator>();
+builder.Services.AddScoped<EquipamentoEletronicoAlterarValidator>();
+builder.Services.AddScoped<EquipamentoEletronicoDeleteValidator>();
 builder.Services.AddScoped<EquipamentoEletronicoService>();
 
 builder.Services.AddAutoMapper(cfg =>

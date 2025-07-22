@@ -33,14 +33,14 @@ namespace DesafioInventBackend.Repository
             return entity;
         }
 
-        public EquipamentoEletronico Atualizar(string id, EquipamentoEletronico entity)
+        public EquipamentoEletronico Atualizar(string id, EquipamentoEletronico equipamentoEletronicoModificado)
         {
             using IDocumentSession session = _getOpenedSession();
 
             EquipamentoEletronico equipamentoEletronico = session.Load<EquipamentoEletronico>(id);
-            equipamentoEletronico.Nome = entity.Nome;
-            equipamentoEletronico.TipoEquipamento = entity.TipoEquipamento;
-            equipamentoEletronico.QuantidadeEstoque = entity.QuantidadeEstoque;
+            equipamentoEletronico.Nome = equipamentoEletronicoModificado.Nome;
+            equipamentoEletronico.TipoEquipamento = equipamentoEletronicoModificado.TipoEquipamento;
+            equipamentoEletronico.QuantidadeEstoque = equipamentoEletronicoModificado.QuantidadeEstoque;
 
             session.SaveChanges();
             return equipamentoEletronico;

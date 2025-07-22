@@ -32,7 +32,6 @@
 							<th class="text-center">Há em estoque</th>
 							<th class="text-center">Quantidade</th>
 							<th class="text-center">Inclusão</th>
-							<th class="text-center text-danger">Exclusão</th>
 							<th class="text-center">Ações</th>
 						</tr>
 					</thead>
@@ -50,17 +49,16 @@
 								</td>
 								<td class="text-center">{{ equipamentoEletronico.quantidadeEstoque }}</td>
 								<td class="text-center">{{ equipamentoEletronico.dataInclusao | date: 'dd/MM/yyyy' }}</td>
-								<td class="text-center text-danger fw-medium">{{ equipamentoEletronico.dataExclusao | date: 'dd/MM/yyyy' }}</td>
 								<td class="text-center">
 									<div class="d-flex justify-content-evenly">
-										<button class="btn btn-outline-danger btn-sm" (click)="excluir(equipamentoEletronico)">
-											<i class="bi bi-trash"></i>
-										</button>
-										@if (equipamentoEletronico.dataExclusao == null) {
-											<button class="btn btn-outline-warning btn-sm" [routerLink]="['editar', equipamentoEletronico.id]">
-												<i class="bi bi-pencil-square"></i>
+										@if (!equipamentoEletronico.temEstoque) {
+											<button class="btn btn-outline-danger btn-sm" (click)="excluir(equipamentoEletronico)">
+												<i class="bi bi-trash"></i>
 											</button>
 										}
+										<button class="btn btn-outline-warning btn-sm" [routerLink]="['editar', equipamentoEletronico.id]">
+											<i class="bi bi-pencil-square"></i>
+										</button>
 									</div>
 								</td>
 							</tr>

@@ -41,9 +41,8 @@ namespace DesafioInventBackend.Service
 
         public EquipamentoEletronico Atualizar(string id, EquipamentoEletronico equipamentoEletronicoModificado)
         {
-            EquipamentoEletronico equipamentoEletronico = this.BuscarPorId(id);
-            _equipamentoEletronicoAlterarValidator.ValidateAndThrow(equipamentoEletronico);
-            return _repository.Atualizar(id, equipamentoEletronico);
+            _equipamentoEletronicoAlterarValidator.ValidateAndThrow(equipamentoEletronicoModificado);
+            return _repository.Atualizar(id, equipamentoEletronicoModificado);
         }
 
         public void Excluir(string id)

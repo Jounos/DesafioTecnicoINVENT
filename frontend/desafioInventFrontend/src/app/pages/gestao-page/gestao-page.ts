@@ -1,9 +1,9 @@
 import { HttpResponse } from '@angular/common/http';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import Swal from 'sweetalert2';
-import { IRetornoEquipamentoEletronico } from '../../../library/models/retorno-equipamento-eleronico.model';
-import { EquipamentoEletronicoService } from '../../services/equipamento-eletronico-service';
 import dayjs from 'dayjs';
+import Swal from 'sweetalert2';
+import { EquipamentoEletronicoService } from '../../services/equipamento-eletronico-service';
+import { IEquipamentoEletronico } from '../../../library/models/equipamento-eletronico.model';
 
 @Component({
 	selector: 'app-gestao-page',
@@ -29,9 +29,9 @@ export class GestaoPage implements OnInit {
 		{ id: 4, label: 'Teclado' },
 	]
 
-	listaEquipamentosEletronicos: IRetornoEquipamentoEletronico[] = [];
-	listaEquipamentosEletronicosFiltrada: IRetornoEquipamentoEletronico[] = [];
-	listaPaginada: IRetornoEquipamentoEletronico[] = [];
+	listaEquipamentosEletronicos: IEquipamentoEletronico[] = [];
+	listaEquipamentosEletronicosFiltrada: IEquipamentoEletronico[] = [];
+	listaPaginada: IEquipamentoEletronico[] = [];
 
 	constructor(
 		private equipamentoEletronicoService: EquipamentoEletronicoService,
@@ -45,10 +45,10 @@ export class GestaoPage implements OnInit {
 
 	listar() {
 		this.equipamentoEletronicoService.listarEquipamentosEleronicos().subscribe({
-			next: (value: HttpResponse<IRetornoEquipamentoEletronico[]>) => {
+			next: (value: HttpResponse<IEquipamentoEletronico[]>) => {
 				if (value.body !== null) {
 					this.listaEquipamentosEletronicos = value.body;
-					this.listaEquipamentosEletronicosFiltrada = value.body.sort((a, b) => {
+					this.listaEquipamentosEletronicosFiltrada = value.body?.sort((a, b) => {
 						if (dayjs(b.dataInclusao).isBefore(a.dataInclusao)) {
 							return -1;
 						} else {
@@ -73,17 +73,17 @@ export class GestaoPage implements OnInit {
 			return;
 		}
 
-		this.listaEquipamentosEletronicosFiltrada = this.listaEquipamentosEletronicos.filter((ee) => {
+		this.listaEquipamentosEletronicosFiltrada = this.listaEquipamentosEletronicos.filter((equipamentoEletronico) => {
 
 			if ((this.nome !== '' || this.nome) && this.tipoEquipamento) {
-				return (this.nome.length > 0 && ee.nome.toUpperCase().includes(this.nome.toUpperCase())) && ee.tipoEquipamento === this.tipoEquipamento;
+				return (this.nome.length > 0 && equipamentoEletronico.nome.toUpperCase().includes(this.nome.toUpperCase())) && equipamentoEletronico.tipoEquipamento === this.tipoEquipamento;
 			}
 
 			if (!this.tipoEquipamento) {
-				return this.nome.length > 0 && ee.nome.toUpperCase().includes(this.nome.toUpperCase());
+				return this.nome.length > 0 && equipamentoEletronico.nome.toUpperCase().includes(this.nome.toUpperCase());
 			}
 
-			return ee.tipoEquipamento === this.tipoEquipamento;
+			return equipamentoEletronico.tipoEquipamento === this.tipoEquipamento;
 		});
 		this.updatePagination();
 		this.cdr.detectChanges();
@@ -94,24 +94,14 @@ export class GestaoPage implements OnInit {
 			this.listaEquipamentosEletronicosFiltrada = this.listaEquipamentosEletronicos;
 		}
 
-		this.listaEquipamentosEletronicosFiltrada = this.listaEquipamentosEletronicos.filter((ee) => ee.nome.toUpperCase().includes(this.nome.toUpperCase()));
+		this.listaEquipamentosEletronicosFiltrada = this.listaEquipamentosEletronicos.filter((equipamentoEletronico) => equipamentoEletronico.nome.toUpperCase().includes(this.nome.toUpperCase()));
 		this.updatePagination();
 		this.cdr.detectChanges();
 	}
 
-	excluir(ee: IRetornoEquipamentoEletronico) {
+	excluir(equipamentoEletronico: IEquipamentoEletronico) {
 
-		if (ee.dataExclusao) {
-			Swal.fire({
-				icon: 'info',
-				title: 'Atenção',
-				text: 'Este equipamento eletrônico já foi excluído',
-				showConfirmButton: false,
-			});
-			return;
-		}
-
-		if (ee.temEstoque) {
+		if (equipamentoEletronico.temEstoque) {
 			Swal.fire({
 				icon: 'warning',
 				title: 'Atenção',
@@ -124,19 +114,18 @@ export class GestaoPage implements OnInit {
 
 		this.confirmarExclusao().then((result) => {
 			if (result.isConfirmed) {
-				this.equipamentoEletronicoService.deletarEquipamentoEletronico(ee.id).subscribe({
-					next: (result: HttpResponse<boolean>) => {
-						if (result.body) {
-							Swal.fire({
-								icon: 'success',
-								title: 'equipamento excluído com sucesso.',
-								timer: 3000,
-								showConfirmButton: false,
-							});
-						}
-
-						this.listar();
-					}
+				this.equipamentoEletronicoService.deletarEquipamentoEletronico(equipamentoEletronico.id).subscribe({
+					next: () => {
+						Swal.fire({
+							icon: 'success',
+							title: 'Sucesso',
+							text: 'equipamento excluído com sucesso.',
+							timer: 3000,
+							showConfirmButton: false,
+						}).then(() => {
+							this.listar();
+						});
+					},
 				})
 			}
 		})

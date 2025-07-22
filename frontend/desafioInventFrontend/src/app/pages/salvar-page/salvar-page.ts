@@ -1,11 +1,10 @@
-import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
+import { HttpResponse } from '@angular/common/http';
 import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import Swal from 'sweetalert2';
-import { EquipamentoEletronico } from '../../../library/models/equipamento-eletronico.model';
-import { IRetornoEquipamentoEletronico } from '../../../library/models/retorno-equipamento-eleronico.model';
 import { EquipamentoEletronicoService } from '../../services/equipamento-eletronico-service';
+import { IEquipamentoEletronico } from '../../../library/models/equipamento-eletronico.model';
 
 @Component({
 	selector: 'app-salvar-page',
@@ -20,10 +19,10 @@ export class SalvarPage implements OnInit {
 	private formBuilder = inject(FormBuilder);
 
 	protected form: FormGroup = this.formBuilder.group({
-		nome: [null, [Validators.required, Validators.minLength(3), Validators.maxLength(10)]],
+		nome: [null, [Validators.required, Validators.minLength(3), Validators.maxLength(100)]],
 		tipoEquipamento: [null, [Validators.required, Validators.min(1), Validators.max(4)]],
 		quantidadeEstoque: [null, [Validators.required, Validators.min(0)]]
-	});;
+	});
 
 	protected tipoEquipamento: number = 0;
 	protected listaTiposEquipamento = [
@@ -50,7 +49,7 @@ export class SalvarPage implements OnInit {
 
 	private buscarEquipamentoEletronico(id: string) {
 		this.equipamentoEletronicoService.buscarEquipamentoEletronicoPorId(id).subscribe({
-			next: (value: HttpResponse<IRetornoEquipamentoEletronico>) => {
+			next: (value: HttpResponse<IEquipamentoEletronico>) => {
 				if (!value.body) {
 					Swal.fire({
 						icon: 'error',
@@ -61,12 +60,12 @@ export class SalvarPage implements OnInit {
 						return;
 					})
 				}
-				this.preencherFormulario((value.body as IRetornoEquipamentoEletronico));
+				this.preencherFormulario((value.body as IEquipamentoEletronico));
 			},
 		});
 	}
 
-	preencherFormulario(ee: IRetornoEquipamentoEletronico) {
+	preencherFormulario(ee: IEquipamentoEletronico) {
 		this.form.patchValue({
 			nome: ee.nome,
 			tipoEquipamento: ee.tipoEquipamento,
@@ -97,25 +96,29 @@ export class SalvarPage implements OnInit {
 
 	private cadastrar() {
 		this.equipamentoEletronicoService.cadastrarEquipamentoEletronico(this.getEquipamentoEletronico()).subscribe({
-			next: (value: HttpResponse<IRetornoEquipamentoEletronico>) => {
-				if (value.status === 200) {
-					Swal.fire({
-						icon: 'success',
-						title: 'Sucesso',
-						text: 'Equipamento eletrônico cadastrado com sucesso.',
-						showConfirmButton: false,
-						timer: 3000
-					}).then(() => {
-						this.router.navigate(['/']);
-					});
-				}
+			next: (value: HttpResponse<IEquipamentoEletronico>) => {
+				Swal.fire({
+					icon: 'success',
+					title: 'Sucesso',
+					text: 'Equipamento eletrônico cadastrado com sucesso.',
+					showConfirmButton: false,
+					timer: 3000
+				}).then(() => {
+					this.router.navigate(['/']);
+				});
 			},
 		});
 	}
 
 	private atualizar(){
-		this.equipamentoEletronicoService.atualiarEquipamentoEletronico(this.equipamentoEletronicoId!, this.getEquipamentoEletronico()).subscribe({
-			next: (value: HttpResponse<IRetornoEquipamentoEletronico>) => {
+
+		const equipamentoEletronico = {
+			id: this.equipamentoEletronicoId!,
+			...this.getEquipamentoEletronico(),
+		}
+
+		this.equipamentoEletronicoService.atualiarEquipamentoEletronico(this.equipamentoEletronicoId!,  equipamentoEletronico).subscribe({
+			next: (value: HttpResponse<IEquipamentoEletronico>) => {
 				Swal.fire({
 					icon: 'success',
 					title: 'Sucesso',
@@ -129,23 +132,11 @@ export class SalvarPage implements OnInit {
 		})
 	}
 
-	private getEquipamentoEletronico(): EquipamentoEletronico {
+	private getEquipamentoEletronico() {
 		return {
 			nome: this.form.value.nome,
 			tipoEquipamento: this.form.value.tipoEquipamento,
 			quantidadeEstoque: this.form.value.quantidadeEstoque,
 		};
 	}
-
-	verificaValidTouched(campo: string) {
-		return !this.form.controls[campo].valid && !this.form.controls[campo].touched;
-	}
-
-	aplicaCssErro(campo: string) {
-		return {
-			'has-error' : this.verificaValidTouched(campo),
-			'has-feedback' : this.verificaValidTouched(campo)
-		}
-	}
-
 }

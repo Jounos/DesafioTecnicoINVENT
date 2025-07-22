@@ -5,6 +5,7 @@ using DesafioInventBackend.Model.Entity;
 using DesafioInventBackend.Service;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 
 namespace DesafioInventBackend.Controller
 {
@@ -30,7 +31,9 @@ namespace DesafioInventBackend.Controller
         [HttpGet]
         public OkObjectResult ListarTodosEquipamentosEletronicos()
         {
-            return new OkObjectResult(_service.ListarTodos());
+
+            IEnumerable<EquipamentoEletronico> listaEquipamentosEletronicos = _service.ListarTodos();
+            return new OkObjectResult(_mapper.Map<IEnumerable<EquipamentoEletronicoDTO>>(listaEquipamentosEletronicos));
         }
 
         [HttpGet("{id}")]

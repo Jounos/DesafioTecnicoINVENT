@@ -9,7 +9,6 @@ namespace DesafioInventBackend.Model.Entity
         public string Nome { get; set; } = string.Empty;
         public TipoEquipamento TipoEquipamento { get; set; }
         public int QuantidadeEstoque { get; set; }
-        public bool TemEstoque { get { return QuantidadeEstoque > 0; } }
         public DateTimeOffset  DataInclusao { get; set; }
 
         public EquipamentoEletronico()
