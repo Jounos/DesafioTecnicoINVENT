@@ -31,7 +31,7 @@ export class GestaoPage implements OnInit {
 
 	listaEquipamentosEletronicos: IEquipamentoEletronico[] = [];
 	listaEquipamentosEletronicosFiltrada: IEquipamentoEletronico[] = [];
-	listaPaginada: IEquipamentoEletronico[] = [];
+	listaEquipamentoEletronicoPaginada: IEquipamentoEletronico[] = [];
 
 	constructor(
 		private equipamentoEletronicoService: EquipamentoEletronicoService,
@@ -148,6 +148,6 @@ export class GestaoPage implements OnInit {
 	updatePagination() {
 		const startIndex = (this.page - 1) * this.itemsPerPage;
 		const endIndex = startIndex + this.itemsPerPage;
-		this.listaPaginada = this.listaEquipamentosEletronicosFiltrada.slice(startIndex, endIndex);
+		this.listaEquipamentoEletronicoPaginada = this.listaEquipamentosEletronicosFiltrada.slice(startIndex, endIndex);
 	}
 }
