@@ -22,7 +22,7 @@ namespace DesafioInventBackend.Repository
             return session.Load<EquipamentoEletronico>(id) ?? null;
         }
 
-        public EquipamentoEletronico Cadastrar(EquipamentoEletronico entity)
+        public void Cadastrar(EquipamentoEletronico entity)
         {
 
             entity.DataInclusao = DateTimeOffset.Now;
@@ -30,10 +30,9 @@ namespace DesafioInventBackend.Repository
             using IDocumentSession session = _getOpenedSession();
             session.Store(entity);
             session.SaveChanges();
-            return entity;
         }
 
-        public EquipamentoEletronico Atualizar(string id, EquipamentoEletronico equipamentoEletronicoModificado)
+        public void Atualizar(string id, EquipamentoEletronico equipamentoEletronicoModificado)
         {
             using IDocumentSession session = _getOpenedSession();
 
@@ -43,7 +42,6 @@ namespace DesafioInventBackend.Repository
             equipamentoEletronico.QuantidadeEstoque = equipamentoEletronicoModificado.QuantidadeEstoque;
 
             session.SaveChanges();
-            return equipamentoEletronico;
         }
 
         public void Deletar(string id)

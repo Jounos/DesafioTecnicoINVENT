@@ -21,12 +21,12 @@ export class EquipamentoEletronicoService {
 		return this.http.get<IEquipamentoEletronico>(`${this.endpoint}/${id}`, { observe: 'response', responseType: 'json' });
 	}
 
-	cadastrarEquipamentoEletronico(equipamentoEletronico: { nome: string, tipoEquipamento: number, quantidadeEstoque: number }): Observable<HttpResponse<IEquipamentoEletronico>> {
-		return this.http.post<IEquipamentoEletronico>(this.endpoint, equipamentoEletronico, { observe: 'response', responseType: 'json' });
+	cadastrarEquipamentoEletronico(equipamentoEletronico: { nome: string, tipoEquipamento: number, quantidadeEstoque: number }) {
+		return this.http.post(this.endpoint, equipamentoEletronico, { observe: 'response', responseType: 'json' });
 	}
 
-	atualiarEquipamentoEletronico(id: string, equipamentoEletronico: { id: string, nome: string, tipoEquipamento: number, quantidadeEstoque: number }): Observable<HttpResponse<IEquipamentoEletronico>> {
-		return this.http.put<IEquipamentoEletronico>(`${this.endpoint}/${id}`, equipamentoEletronico, { observe: 'response', responseType: 'json' });
+	atualizarEquipamentoEletronico(id: string, equipamentoEletronico: { id: string, nome: string, tipoEquipamento: number, quantidadeEstoque: number }) {
+		return this.http.put(`${this.endpoint}/${id}`, equipamentoEletronico, { observe: 'response', responseType: 'json' });
 	}
 
 	deletarEquipamentoEletronico(id: string) {

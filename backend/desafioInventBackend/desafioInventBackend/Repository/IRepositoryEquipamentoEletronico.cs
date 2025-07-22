@@ -4,8 +4,8 @@
     {
         IEnumerable<T> ListarTodos();
         T BuscarPorId(string id);
-        T Cadastrar(T entity);
-        T Atualizar(string id, T entity);
+        void Cadastrar(T entity);
+        void Atualizar(string id, T entity);
         void Deletar(string id);
     }
 }

@@ -33,16 +33,16 @@ namespace DesafioInventBackend.Service
             return _repository.BuscarPorId(id);
         }
 
-        public EquipamentoEletronico Cadastrar(EquipamentoEletronico equipamentoEletronico)
+        public void Cadastrar(EquipamentoEletronico equipamentoEletronico)
         {
             _equipamentoEletronicoValidator.ValidateAndThrow(equipamentoEletronico);
-            return _repository.Cadastrar(equipamentoEletronico);
+            _repository.Cadastrar(equipamentoEletronico);
         }
 
-        public EquipamentoEletronico Atualizar(string id, EquipamentoEletronico equipamentoEletronicoModificado)
+        public void Atualizar(string id, EquipamentoEletronico equipamentoEletronicoModificado)
         {
             _equipamentoEletronicoAlterarValidator.ValidateAndThrow(equipamentoEletronicoModificado);
-            return _repository.Atualizar(id, equipamentoEletronicoModificado);
+            _repository.Atualizar(id, equipamentoEletronicoModificado);
         }
 
         public void Excluir(string id)

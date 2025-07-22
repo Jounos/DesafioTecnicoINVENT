@@ -60,7 +60,7 @@ export class SalvarPage implements OnInit {
 						return;
 					})
 				}
-				this.preencherFormulario((value.body as IEquipamentoEletronico));
+				this.preencherFormulario(value.body as IEquipamentoEletronico);
 			},
 		});
 	}
@@ -96,7 +96,7 @@ export class SalvarPage implements OnInit {
 
 	private cadastrar() {
 		this.equipamentoEletronicoService.cadastrarEquipamentoEletronico(this.getEquipamentoEletronico()).subscribe({
-			next: (value: HttpResponse<IEquipamentoEletronico>) => {
+			next: () => {
 				Swal.fire({
 					icon: 'success',
 					title: 'Sucesso',
@@ -117,16 +117,14 @@ export class SalvarPage implements OnInit {
 			...this.getEquipamentoEletronico(),
 		}
 
-		this.equipamentoEletronicoService.atualiarEquipamentoEletronico(this.equipamentoEletronicoId!,  equipamentoEletronico).subscribe({
-			next: (value: HttpResponse<IEquipamentoEletronico>) => {
+		this.equipamentoEletronicoService.atualizarEquipamentoEletronico(this.equipamentoEletronicoId!,  equipamentoEletronico).subscribe({
+			next: () => {
 				Swal.fire({
 					icon: 'success',
 					title: 'Sucesso',
 					text: 'Equipamento eletrônico editado com sucesso.',
 					showConfirmButton: false,
 					timer: 3000
-				}).then(() => {
-					this.preencherFormulario(value.body!);
 				});
 			},
 		})

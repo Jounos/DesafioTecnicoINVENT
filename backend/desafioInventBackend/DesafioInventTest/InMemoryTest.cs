@@ -30,10 +30,11 @@ namespace DesafioInventTest
                 QuantidadeEstoque = 2,
             };
 
-            var equipamentoEletronicoResult = _service.Cadastrar(equipamentoEletronico);
+            _service.Cadastrar(equipamentoEletronico);
             
             EquipamentoEletronicoValidator equipamentoEletronicoeValidator = new EquipamentoEletronicoValidator();
-            Assert.True(equipamentoEletronicoeValidator.Validate(equipamentoEletronicoResult).IsValid);
+            EquipamentoEletronico equipamentoEletronicoCadastrado = _service.BuscarPorId("1");
+            Assert.True(equipamentoEletronicoeValidator.Validate(equipamentoEletronicoCadastrado).IsValid);
         }
 
         [Fact]
@@ -63,10 +64,11 @@ namespace DesafioInventTest
                 QuantidadeEstoque = 2,
             };
 
-            var equipamentoEletronicoResult = _service.Atualizar("1", equipamentoEletronico);
+            _service.Atualizar("1", equipamentoEletronico);
 
             EquipamentoEletronicoAlterarValidator equipamentoEletronicoeValidator = new EquipamentoEletronicoAlterarValidator();
-            Assert.True(equipamentoEletronicoeValidator.Validate(equipamentoEletronicoResult).IsValid);
+            equipamentoEletronico = _service.BuscarPorId("1");
+            Assert.True(equipamentoEletronicoeValidator.Validate(equipamentoEletronico).IsValid);
         }
 
         [Fact]
@@ -86,7 +88,7 @@ namespace DesafioInventTest
         }
 
         [Fact]
-        public void Excluir_equipamento_eletronico_deve_retornar_um_equipamento_excluido()
+        public void Excluir_equipamento_eletronico_deve_excluir_um_equipamento_eletronico_e_nao_o_encontrar_apos_excluido()
         {
             const string ID_EQUIPAMENTO_ELETRONICO = "1";
             
@@ -107,7 +109,7 @@ namespace DesafioInventTest
         }
 
         [Fact]
-        public void Excluir_equipamento_eletronico_deve_retornar_uma_excessao_por_tentar_excluir_produto_com_estoque()
+        public void Excluir_equipamento_eletronico_deve_retornar_uma_excessao_ValidationException_por_tentar_excluir_produto_com_estoque()
         {
             Cadastrar_equipamento_eletronico_deve_retornar_um_equipamento_eletronico_valido();
 
@@ -146,7 +148,7 @@ namespace DesafioInventTest
         }
 
         [Fact]
-        public void Listar_equipamentos_eletronicos_deve_retornar_todos_equipamentos_letronicos_e_todos_devem_ser_validos()
+        public void Listar_equipamentos_eletronicos_deve_retornar_todos_equipamentos_eletronicos_e_todos_devem_ser_validos()
         {
 
             Cadastrar_equipamento_eletronico_deve_retornar_um_equipamento_eletronico_valido();

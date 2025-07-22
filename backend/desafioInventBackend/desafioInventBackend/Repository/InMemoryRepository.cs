@@ -22,16 +22,15 @@ namespace DesafioInventBackend.Repository
             return _items.Find(i => i.Id == id);
         }
 
-        public EquipamentoEletronico Cadastrar(EquipamentoEletronico entity)
+        public void Cadastrar(EquipamentoEletronico entity)
         {
             entity.Id = $"{_items.Count + 1}";
             entity.DataInclusao = DateTimeOffset.Now;
 
             _items.Add(entity);
-            return entity;
         }
 
-        public EquipamentoEletronico Atualizar(string id, EquipamentoEletronico entityModified)
+        public void Atualizar(string id, EquipamentoEletronico entityModified)
         {
 
             EquipamentoEletronico entity = BuscarPorId(id);
@@ -42,8 +41,6 @@ namespace DesafioInventBackend.Repository
             entity.QuantidadeEstoque = entityModified.QuantidadeEstoque;
 
             _items[index] = entity;
-
-            return entityModified;
         }
 
         public void Deletar(string id)

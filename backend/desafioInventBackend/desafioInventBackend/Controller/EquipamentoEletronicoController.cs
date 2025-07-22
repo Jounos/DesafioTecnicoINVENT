@@ -31,7 +31,6 @@ namespace DesafioInventBackend.Controller
         [HttpGet]
         public OkObjectResult ListarTodosEquipamentosEletronicos()
         {
-
             IEnumerable<EquipamentoEletronico> listaEquipamentosEletronicos = _service.ListarTodos();
             return new OkObjectResult(_mapper.Map<IEnumerable<EquipamentoEletronicoDTO>>(listaEquipamentosEletronicos));
         }
@@ -45,7 +44,8 @@ namespace DesafioInventBackend.Controller
         [HttpPost]
         public CreatedResult cadastrarEquipamentoEletronico(EquipamentoEletronicoDTO equipamentoEletronicoDto)
         {
-            return new CreatedResult("/api/equipamento-eletronico", _service.Cadastrar(_mapper.Map<EquipamentoEletronico>(equipamentoEletronicoDto)));
+            _service.Cadastrar(_mapper.Map<EquipamentoEletronico>(equipamentoEletronicoDto));
+            return new CreatedResult();
         }
 
         [HttpPut("{id}")]
