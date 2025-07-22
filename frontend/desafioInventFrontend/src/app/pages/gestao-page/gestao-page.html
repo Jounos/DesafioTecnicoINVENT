@@ -37,7 +37,7 @@
 					</thead>
 					<tbody>
 						@for(equipamentoEletronico of listaEquipamentoEletronicoPaginada; track equipamentoEletronico.nome) {
-							<tr>
+							<tr (click)="visualizarDetalhes(equipamentoEletronico)" role="button">
 								<td class="text-center">{{ equipamentoEletronico.nome }}</td>
 								<td class="text-center">{{ equipamentoEletronico.tipoEquipamento | tipoEquipamento }}</td>
 								<td class="text-center">

@@ -125,6 +125,8 @@ export class SalvarPage implements OnInit {
 					text: 'Equipamento eletrônico editado com sucesso.',
 					showConfirmButton: false,
 					timer: 3000
+				}).then(() => {
+					this.router.navigate(['/']);
 				});
 			},
 		})

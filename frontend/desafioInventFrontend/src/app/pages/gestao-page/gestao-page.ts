@@ -1,9 +1,11 @@
 import { HttpResponse } from '@angular/common/http';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import dayjs from 'dayjs';
 import Swal from 'sweetalert2';
-import { EquipamentoEletronicoService } from '../../services/equipamento-eletronico-service';
 import { IEquipamentoEletronico } from '../../../library/models/equipamento-eletronico.model';
+import { EquipamentoEletronicoService } from '../../services/equipamento-eletronico-service';
+import { DetalhesModal } from './detalhes-modal/detalhes-modal';
 
 @Component({
 	selector: 'app-gestao-page',
@@ -35,7 +37,8 @@ export class GestaoPage implements OnInit {
 
 	constructor(
 		private equipamentoEletronicoService: EquipamentoEletronicoService,
-		private cdr: ChangeDetectorRef
+		private cdr: ChangeDetectorRef,
+		private ngbModal: NgbModal
 	) { }
 
 	ngOnInit(): void {
@@ -143,6 +146,17 @@ export class GestaoPage implements OnInit {
 			denyButtonText: 'Não',
 			reverseButtons: true,
 		});
+	}
+
+	visualizarDetalhes(equipamentoEletronico: IEquipamentoEletronico) {
+		const modalRef = this.ngbModal.open(DetalhesModal, { backdrop: 'static', size: 'lg', centered: true });
+		modalRef.componentInstance.equipamentoEletronico = equipamentoEletronico;
+		modalRef.result.then((flagExcluir: boolean) => {
+			if (flagExcluir) {
+				this.excluir(equipamentoEletronico);
+				this.cdr.detectChanges();
+			}
+		})
 	}
 
 	updatePagination() {
