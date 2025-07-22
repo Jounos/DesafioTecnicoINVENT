@@ -31,7 +31,7 @@
 	<div class="container">
 		<div class="row d-flex justify-content-between">
 			<div class="col-auto">
-				@if (equipamentoEletronico.quantidadeEstoque == 0) {
+				@if (!equipamentoEletronico.temEstoque) {
 					<button class="btn btn-danger" (click)="fechar(true)">
 						<i class="bi bi-trash me-2"></i><span>Excluir</span>
 					</button>
