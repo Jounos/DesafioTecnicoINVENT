@@ -5,42 +5,63 @@ namespace DesafioInventBackend.Repository
     public class InMemoryRepository: IRepositoryEquipamentoEletronico<EquipamentoEletronico>
     {
         
-        private readonly List<EquipamentoEletronico> _items = new List<EquipamentoEletronico>();
+        private readonly List<EquipamentoEletronico> _itens = new List<EquipamentoEletronico>();
            
-        public IEnumerable<EquipamentoEletronico> ListarTodos()
+        public IEnumerable<EquipamentoEletronico> BuscarPorFiltros(string? nome, TipoEquipamento? tipoEquipamento)
         {
-            return _items;
+            if (nome == null && tipoEquipamento == null)
+            {
+                return _itens;
+            }
+
+            IEnumerable<EquipamentoEletronico> itensOrdenados = _itens.OrderByDescending(ee => ee.DataInclusao);
+
+            return itensOrdenados.Where(ee => 
+            { 
+                
+                if (nome == null)
+                {
+                    return ee.TipoEquipamento == tipoEquipamento;
+                }
+                
+                if (tipoEquipamento == null)
+                {
+                    return ee.Nome.Contains(nome);
+                }
+
+                return (nome != null && ee.Nome.Contains(nome)) && ee.TipoEquipamento == tipoEquipamento;
+            });
         }
         
         public EquipamentoEletronico BuscarPorId(string id)
         {
-            if (_items.Count == 0)
+            if (_itens.Count == 0)
             {
                 return null;
             }
 
-            return _items.Find(i => i.Id == id);
+            return _itens.Find(i => i.Id == id);
         }
 
         public void Cadastrar(EquipamentoEletronico entity)
         {
-            entity.Id = $"{_items.Count + 1}";
+            entity.Id = $"{_itens.Count + 1}";
             entity.DataInclusao = DateTimeOffset.Now;
 
-            _items.Add(entity);
+            _itens.Add(entity);
         }
 
         public void Atualizar(string id, EquipamentoEletronico entityModified)
         {
 
             EquipamentoEletronico entity = BuscarPorId(id);
-            var index = _items.IndexOf(entity);
+            var index = _itens.IndexOf(entity);
 
             entity.Nome = entityModified.Nome;
             entity.TipoEquipamento = entityModified.TipoEquipamento;
             entity.QuantidadeEstoque = entityModified.QuantidadeEstoque;
 
-            _items[index] = entity;
+            _itens[index] = entity;
         }
 
         public void Deletar(string id)
@@ -48,7 +69,7 @@ namespace DesafioInventBackend.Repository
 
             EquipamentoEletronico entity = BuscarPorId(id);
 
-            _items.Remove(entity);
+            _itens.Remove(entity);
         }
     }
 }

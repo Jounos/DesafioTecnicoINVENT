@@ -1,8 +1,9 @@
-import { HttpClient, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment.development';
 import { IEquipamentoEletronico } from '../../library/models/equipamento-eletronico.model';
+import { TipoEquipamentoEnum } from '../../library/enums/tipo-equipamento.enum';
 
 @Injectable({
 	providedIn: 'root'
@@ -13,8 +14,10 @@ export class EquipamentoEletronicoService {
 
 	constructor(private http: HttpClient) { }
 
-	listarEquipamentosEleronicos(): Observable<HttpResponse<IEquipamentoEletronico[]>> {
-		return this.http.get<IEquipamentoEletronico[]>(this.endpoint, { observe: 'response', responseType: 'json' });
+	buscarEquipamentosEleronicosPorFiltros(nome: string, tipoEquipamento: number): Observable<HttpResponse<IEquipamentoEletronico[]>> {
+		const params = new HttpParams().append("nome", nome).append("tipoEquipamento", tipoEquipamento);
+
+		return this.http.get<IEquipamentoEletronico[]>(this.endpoint, { observe: 'response', params, responseType: 'json' });
 	}
 
 	buscarEquipamentoEletronicoPorId(id: string): Observable<HttpResponse<IEquipamentoEletronico>> {

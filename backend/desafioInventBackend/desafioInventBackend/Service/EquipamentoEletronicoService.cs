@@ -23,9 +23,9 @@ namespace DesafioInventBackend.Service
             _equipamentoEletronicoDeletarValidator = equipamentoEletronicoDeletarValidator;
         }
         
-        public IEnumerable<EquipamentoEletronico> ListarTodos()
+        public IEnumerable<EquipamentoEletronico> BuscarPorFiltros(string? nome, TipoEquipamento? tipoEquipamento)
         {
-            return _repository.ListarTodos();
+            return _repository.BuscarPorFiltros(nome, tipoEquipamento);
         }
 
         public EquipamentoEletronico BuscarPorId(string id)

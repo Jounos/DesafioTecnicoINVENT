@@ -29,34 +29,34 @@ namespace DesafioInventBackend.Controller
 
 
         [HttpGet]
-        public OkObjectResult ListarTodosEquipamentosEletronicos()
+        public OkObjectResult BuscarEquipamentosEletronicosPorFiltros([FromQuery] string? nome, [FromQuery] int tipoEquipamento)
         {
-            IEnumerable<EquipamentoEletronico> listaEquipamentosEletronicos = _service.ListarTodos();
+            IEnumerable<EquipamentoEletronico> listaEquipamentosEletronicos = _service.BuscarPorFiltros(nome, (TipoEquipamento)tipoEquipamento);
             return new OkObjectResult(_mapper.Map<IEnumerable<EquipamentoEletronicoDTO>>(listaEquipamentosEletronicos));
         }
 
         [HttpGet("{id}")]
-        public ObjectResult buscarEquipamentoEletronicoPorId(string id)
+        public ObjectResult buscarEquipamentoEletronicoPorId([FromRoute] string id)
         {
             return new OkObjectResult(_service.BuscarPorId(id));
         }
 
         [HttpPost]
-        public CreatedResult cadastrarEquipamentoEletronico(EquipamentoEletronicoDTO equipamentoEletronicoDto)
+        public CreatedResult cadastrarEquipamentoEletronico([FromBody] EquipamentoEletronicoDTO equipamentoEletronicoDto)
         {
             _service.Cadastrar(_mapper.Map<EquipamentoEletronico>(equipamentoEletronicoDto));
             return new CreatedResult();
         }
 
         [HttpPut("{id}")]
-        public NoContentResult atualizarEquipamentoEletronico(string id, EquipamentoEletronicoDTO equipamentoEletronicoDto)
+        public NoContentResult atualizarEquipamentoEletronico([FromRoute] string id, [FromBody] EquipamentoEletronicoDTO equipamentoEletronicoDto)
         {
             _service.Atualizar(id, _mapper.Map<EquipamentoEletronico>(equipamentoEletronicoDto));
             return new NoContentResult();
         }
 
         [HttpDelete("{id}")]
-        public NoContentResult excluirEquipamentoEletronico(string id)
+        public NoContentResult excluirEquipamentoEletronico([FromRoute] string id)
         {
             _service.Excluir(id);
             return new NoContentResult();

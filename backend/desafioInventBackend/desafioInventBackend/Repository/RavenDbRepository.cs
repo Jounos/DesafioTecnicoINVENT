@@ -2,6 +2,7 @@
 using DesafioInventBackend.Model.Entity;
 using Raven.Client.Documents;
 using Raven.Client.Documents.Session;
+using System.Collections.Generic;
 
 namespace DesafioInventBackend.Repository
 {
@@ -10,10 +11,22 @@ namespace DesafioInventBackend.Repository
 
         private readonly IDocumentStore _store = RavenDbContext.Store;
 
-        public IEnumerable<EquipamentoEletronico> ListarTodos()
+        public IEnumerable<EquipamentoEletronico> BuscarPorFiltros(string? nome, TipoEquipamento? tipoEquipamento)
         {
             using IDocumentSession session = _getOpenedSession();
-            return session.Query<EquipamentoEletronico>().ToList();
+
+            if (nome == null && tipoEquipamento == 0)
+            {
+                return session.Query<EquipamentoEletronico>().OrderByDescending(ee => ee.DataInclusao).ToList();
+            }
+            
+            if (nome != null)
+            {
+                return session.Query<EquipamentoEletronico>().Where(ee => (nome == null ? ee.Nome.Contains(nome) : false)).OrderByDescending(ee => ee.DataInclusao).ToList();
+            }
+            
+            
+           return session.Query<EquipamentoEletronico>().Where(ee => ((int)tipoEquipamento != 0 ? ee.TipoEquipamento == tipoEquipamento : false)).ToList();
         }
 
         public EquipamentoEletronico BuscarPorId(string id)
