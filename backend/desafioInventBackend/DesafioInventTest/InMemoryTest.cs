@@ -10,7 +10,7 @@ namespace DesafioInventTest
     {
 
         public EquipamentoEletronicoService _service;
-        public IRepositoryEquipamentoEletronico<EquipamentoEletronico> _repository;
+        public IRepositoryEquipamentoEletronico _repository;
 
         public InMemoryTest()
         {

@@ -8,13 +8,13 @@ namespace DesafioInventBackend.Service
     public class EquipamentoEletronicoService
     {
 
-        private readonly IRepositoryEquipamentoEletronico<EquipamentoEletronico> _repository;
+        private readonly IRepositoryEquipamentoEletronico _repository;
         private readonly EquipamentoEletronicoValidator _equipamentoEletronicoValidator;
         private readonly EquipamentoEletronicoAlterarValidator _equipamentoEletronicoAlterarValidator;
         private readonly EquipamentoEletronicoDeleteValidator _equipamentoEletronicoDeletarValidator;
 
 
-        public EquipamentoEletronicoService(IRepositoryEquipamentoEletronico<EquipamentoEletronico> repository, EquipamentoEletronicoValidator equipamentoEletronicoValidator,
+        public EquipamentoEletronicoService(IRepositoryEquipamentoEletronico repository, EquipamentoEletronicoValidator equipamentoEletronicoValidator,
             EquipamentoEletronicoAlterarValidator equipamentoEletronicoAlterarValidator, EquipamentoEletronicoDeleteValidator equipamentoEletronicoDeletarValidator)
         {
             _repository = repository;

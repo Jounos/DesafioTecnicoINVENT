@@ -26,39 +26,38 @@ namespace DesafioInventBackend.Controller
             this._mapper = mapper;
         }
 
-
         [HttpGet]
         public OkObjectResult ListarTodosEquipamentosEletronicos()
         {
             IEnumerable<EquipamentoEletronico> listaEquipamentosEletronicos = _service.ListarTodos();
-            return new OkObjectResult(_mapper.Map<IEnumerable<EquipamentoEletronicoDTO>>(listaEquipamentosEletronicos));
+            return Ok(_mapper.Map<IEnumerable<EquipamentoEletronicoDTO>>(listaEquipamentosEletronicos));
         }
 
         [HttpGet("{id}")]
         public ObjectResult buscarEquipamentoEletronicoPorId([FromRoute] string id)
         {
-            return new OkObjectResult(_service.BuscarPorId(id));
+            return Ok(_service.BuscarPorId(id));
         }
 
         [HttpPost]
         public CreatedResult cadastrarEquipamentoEletronico([FromBody] EquipamentoEletronicoDTO equipamentoEletronicoDto)
         {
             _service.Cadastrar(_mapper.Map<EquipamentoEletronico>(equipamentoEletronicoDto));
-            return new CreatedResult();
+            return Created();
         }
 
         [HttpPut("{id}")]
         public NoContentResult atualizarEquipamentoEletronico([FromRoute] string id, [FromBody] EquipamentoEletronicoDTO equipamentoEletronicoDto)
         {
             _service.Atualizar(id, _mapper.Map<EquipamentoEletronico>(equipamentoEletronicoDto));
-            return new NoContentResult();
+            return NoContent();
         }
 
         [HttpDelete("{id}")]
         public NoContentResult excluirEquipamentoEletronico([FromRoute] string id)
         {
             _service.Excluir(id);
-            return new NoContentResult();
+            return NoContent();
         }
 
     }

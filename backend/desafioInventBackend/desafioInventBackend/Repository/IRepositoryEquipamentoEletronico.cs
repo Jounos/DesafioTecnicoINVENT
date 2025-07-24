@@ -2,12 +2,12 @@
 
 namespace DesafioInventBackend.Repository
 {
-    public interface IRepositoryEquipamentoEletronico<T>
+    public interface IRepositoryEquipamentoEletronico
     {
-        IEnumerable<T> ListarTodos();
-        T BuscarPorId(string id);
-        void Cadastrar(T entity);
-        void Atualizar(string id, T entity);
+        IEnumerable<EquipamentoEletronico> ListarTodos();
+        EquipamentoEletronico BuscarPorId(string id);
+        void Cadastrar(EquipamentoEletronico equipamentoEletronico);
+        void Atualizar(string id, EquipamentoEletronico equipamentoEletronicoModificado);
         void Deletar(string id);
     }
 }

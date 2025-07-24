@@ -5,7 +5,7 @@ using Raven.Client.Documents.Session;
 
 namespace DesafioInventBackend.Repository
 {
-    public class RavenDbRepository : IRepositoryEquipamentoEletronico<EquipamentoEletronico>
+    public class RavenDbRepository : IRepositoryEquipamentoEletronico
     {
 
         private readonly IDocumentStore _store = RavenDbContext.Store;
@@ -19,16 +19,15 @@ namespace DesafioInventBackend.Repository
         public EquipamentoEletronico BuscarPorId(string id)
         {
             using IDocumentSession session = _getOpenedSession();
-            return session.Load<EquipamentoEletronico>(id) ?? null;
+            return session.Load<EquipamentoEletronico>(id) ?? throw new FormatException($"Não foi possível encontrar um equipamento eletrônico com id {id}");
         }
 
-        public void Cadastrar(EquipamentoEletronico entity)
+        public void Cadastrar(EquipamentoEletronico equipamentoEletronico)
         {
-
-            entity.DataInclusao = DateTimeOffset.Now;
+            equipamentoEletronico.DataInclusao = DateTimeOffset.Now;
 
             using IDocumentSession session = _getOpenedSession();
-            session.Store(entity);
+            session.Store(equipamentoEletronico);
             session.SaveChanges();
         }
 
@@ -36,7 +35,7 @@ namespace DesafioInventBackend.Repository
         {
             using IDocumentSession session = _getOpenedSession();
 
-            EquipamentoEletronico equipamentoEletronico = session.Load<EquipamentoEletronico>(id);
+            EquipamentoEletronico equipamentoEletronico = BuscarPorId(id);
             equipamentoEletronico.Nome = equipamentoEletronicoModificado.Nome;
             equipamentoEletronico.TipoEquipamento = equipamentoEletronicoModificado.TipoEquipamento;
             equipamentoEletronico.QuantidadeEstoque = equipamentoEletronicoModificado.QuantidadeEstoque;

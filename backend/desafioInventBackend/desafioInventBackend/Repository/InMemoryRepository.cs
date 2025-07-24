@@ -2,7 +2,7 @@
 
 namespace DesafioInventBackend.Repository
 {
-    public class InMemoryRepository: IRepositoryEquipamentoEletronico<EquipamentoEletronico>
+    public class InMemoryRepository: IRepositoryEquipamentoEletronico
     {
         
         private readonly List<EquipamentoEletronico> _itens = new List<EquipamentoEletronico>();

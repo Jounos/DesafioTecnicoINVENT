@@ -19,7 +19,7 @@ builder.Services.AddCors(options =>
 builder.Services.AddSingleton<RavenDbContext>();
 
 builder.Services.AddControllers();
-builder.Services.AddScoped<IRepositoryEquipamentoEletronico<EquipamentoEletronico>, RavenDbRepository>();
+builder.Services.AddScoped<IRepositoryEquipamentoEletronico, RavenDbRepository>();
 builder.Services.AddScoped<EquipamentoEletronicoValidator>();
 builder.Services.AddScoped<EquipamentoEletronicoAlterarValidator>();
 builder.Services.AddScoped<EquipamentoEletronicoDeleteValidator>();
