@@ -4,7 +4,7 @@ namespace DesafioInventBackend.Repository
 {
     public interface IRepositoryEquipamentoEletronico<T>
     {
-        IEnumerable<T> BuscarPorFiltros(string? nome, TipoEquipamento? tipoEquipamento);
+        IEnumerable<T> ListarTodos();
         T BuscarPorId(string id);
         void Cadastrar(T entity);
         void Atualizar(string id, T entity);

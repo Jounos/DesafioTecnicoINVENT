@@ -6,7 +6,7 @@ import Swal from 'sweetalert2';
 import { IEquipamentoEletronico } from '../../../library/models/equipamento-eletronico.model';
 import { EquipamentoEletronicoService } from '../../services/equipamento-eletronico-service';
 import { DetalhesModal } from './detalhes-modal/detalhes-modal';
-import { TipoEquipamentoEnum } from '../../../library/enums/tipo-equipamento.enum';
+import dayjs from 'dayjs';
 
 @Component({
 	selector: 'app-gestao-page',
@@ -27,9 +27,10 @@ export class GestaoPage implements OnInit, OnDestroy {
 		{ id: 2, label: 'Notebook' },
 		{ id: 3, label: 'Mouse' },
 		{ id: 4, label: 'Teclado' },
-	]
+	];
 
 	listaEquipamentosEletronicos: IEquipamentoEletronico[] = [];
+	listaEquipamentosEletronicosFiltrada: IEquipamentoEletronico[] = [];
 	listaEquipamentoEletronicoPaginada: IEquipamentoEletronico[] = [];
 
 	private subscription: Subscription = new Subscription();
@@ -41,29 +42,73 @@ export class GestaoPage implements OnInit, OnDestroy {
 	) { }
 
 	ngOnInit(): void {
-		// this.pesquisar();
+		this.listar();
 	}
 
-	pesquisar() {
+	listar() {
 		this.subscription.add(
-			this.equipamentoEletronicoService.buscarEquipamentosEleronicosPorFiltros(this.nome, this.tipoEquipamento).subscribe({
+			this.equipamentoEletronicoService.listarTodosEquipamentosEleronicos().subscribe({
 				next: (value: HttpResponse<IEquipamentoEletronico[]>) => {
 					if (value.body?.length === 0) {
 						Swal.fire({
 							icon: 'info',
 							title: 'Atenção',
-							text: 'Nenhum equipamentoEletrônico foi encontrado',
+							text: 'Nenhum Equipamento Eletrônico foi encontrado',
 							showConfirmButton: false,
 						});
 						return;
 					}
 
 					this.listaEquipamentosEletronicos = value.body!;
+					this.listaEquipamentosEletronicosFiltrada = value.body!.sort((a, b) => {
+						if (dayjs(b.dataInclusao).isBefore(a.dataInclusao)) {
+							return -1;
+						} else {
+							return 1;
+						}
+					});
 					this.updatePagination();
 					this.cdr.detectChanges();
 				}
 			})
 		);
+	}
+
+	filtrar() {
+		if (!this.listaEquipamentosEletronicos || this.listaEquipamentosEletronicos?.length === 0) {
+			return
+		}
+
+		if ((this.nome === '' || !this.nome) && !this.tipoEquipamento) {
+			this.listaEquipamentosEletronicosFiltrada = this.listaEquipamentosEletronicos;
+			this.updatePagination();
+			return;
+		}
+
+		this.listaEquipamentosEletronicosFiltrada = this.listaEquipamentosEletronicos.filter((equipamentoEletronico) => {
+
+			if ((this.nome !== '' || this.nome) && this.tipoEquipamento) {
+				return (this.nome.length > 0 && equipamentoEletronico.nome.toUpperCase().includes(this.nome.toUpperCase())) && equipamentoEletronico.tipoEquipamento === this.tipoEquipamento;
+			}
+
+			if (!this.tipoEquipamento) {
+				return this.nome.length > 0 && equipamentoEletronico.nome.toUpperCase().includes(this.nome.toUpperCase());
+			}
+
+			return equipamentoEletronico.tipoEquipamento === this.tipoEquipamento;
+		});
+		this.updatePagination();
+		this.cdr.detectChanges();
+	}
+
+	filtrarAoLimparTipoEquipamento() {
+		if (this.nome === '' || !this.nome) {
+			this.listaEquipamentosEletronicosFiltrada = this.listaEquipamentosEletronicos;
+		}
+
+		this.listaEquipamentosEletronicosFiltrada = this.listaEquipamentosEletronicos.filter((equipamentoEletronico) => equipamentoEletronico.nome.toUpperCase().includes(this.nome.toUpperCase()));
+		this.updatePagination();
+		this.cdr.detectChanges();
 	}
 
 	excluir(equipamentoEletronico: IEquipamentoEletronico) {
@@ -90,7 +135,7 @@ export class GestaoPage implements OnInit, OnDestroy {
 							timer: 3000,
 							showConfirmButton: false,
 						}).then(() => {
-							this.pesquisar();
+							this.listar();
 						});
 					},
 				})
@@ -125,7 +170,7 @@ export class GestaoPage implements OnInit, OnDestroy {
 	updatePagination() {
 		const startIndex = (this.page - 1) * this.itemsPerPage;
 		const endIndex = startIndex + this.itemsPerPage;
-		this.listaEquipamentoEletronicoPaginada = this.listaEquipamentosEletronicos.slice(startIndex, endIndex);
+		this.listaEquipamentoEletronicoPaginada = this.listaEquipamentosEletronicosFiltrada.slice(startIndex, endIndex);
 	}
 
 	ngOnDestroy(): void {

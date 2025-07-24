@@ -148,86 +148,33 @@ namespace DesafioInventTest
         }
 
         [Fact]
-        public void Buscar_equipamentos_eletronicos_por_filtros_deve_retornar_um_unico_equipamento_eletronicos_que_deve_ser_valido()
+        public void Listar_equipamentos_eletronicos_deve_retornar_todos_equipamentos_eletronicos_e_todos_devem_ser_validos()
         {
 
-            _service.Cadastrar(new EquipamentoEletronico { Nome = "Alienware", TipoEquipamento = TipoEquipamento.Notebook, QuantidadeEstoque = 10, });
-            _service.Cadastrar(new EquipamentoEletronico { Nome = "Samsung Book3", TipoEquipamento = TipoEquipamento.Notebook, QuantidadeEstoque = 4, });
-            _service.Cadastrar(new EquipamentoEletronico { Nome = "PC Gamer", TipoEquipamento = TipoEquipamento.PC, QuantidadeEstoque = 9, });
-            _service.Cadastrar(new EquipamentoEletronico { Nome = "Teclado mecânico", TipoEquipamento = TipoEquipamento.Teclado, QuantidadeEstoque = 15, });
-            _service.Cadastrar(new EquipamentoEletronico { Nome = "Mouse ", TipoEquipamento = TipoEquipamento.Mouse, QuantidadeEstoque = 4, });
-            _service.Cadastrar(new EquipamentoEletronico { Nome = "PC Buxa", TipoEquipamento = TipoEquipamento.PC, QuantidadeEstoque = 2, });
+            Cadastrar_equipamento_eletronico_deve_retornar_um_equipamento_eletronico_valido();
+            Cadastrar_equipamento_eletronico_deve_retornar_um_equipamento_eletronico_valido();
+            Cadastrar_equipamento_eletronico_deve_retornar_um_equipamento_eletronico_valido();
+            Cadastrar_equipamento_eletronico_deve_retornar_um_equipamento_eletronico_valido();
 
 
-            IEnumerable<EquipamentoEletronico> listaEquipamentosEletronicos = _service.BuscarPorFiltros("Ali", TipoEquipamento.Notebook);
-
-            EquipamentoEletronicoValidator equipamentoEletronicoValidator = new EquipamentoEletronicoValidator();
-            Assert.Collection(listaEquipamentosEletronicos, equipamentoEletronico => Assert.True(equipamentoEletronicoValidator.Validate(equipamentoEletronico).IsValid));
-        }
-
-        [Fact]
-        public void Buscar_equipamentos_eletronicos_por_filtro_tipo_equipamento_deve_retornar_multiplos_equipamentos_validos()
-        {
-            _service.Cadastrar(new EquipamentoEletronico { Nome = "Alienware", TipoEquipamento = TipoEquipamento.Notebook, QuantidadeEstoque = 10 });
-            _service.Cadastrar(new EquipamentoEletronico { Nome = "Samsung Book3", TipoEquipamento = TipoEquipamento.Notebook, QuantidadeEstoque = 4 });
-            _service.Cadastrar(new EquipamentoEletronico { Nome = "PC Gamer", TipoEquipamento = TipoEquipamento.PC, QuantidadeEstoque = 9 });
-            _service.Cadastrar(new EquipamentoEletronico { Nome = "Teclado mecânico", TipoEquipamento = TipoEquipamento.Teclado, QuantidadeEstoque = 15 });
-            _service.Cadastrar(new EquipamentoEletronico { Nome = "Mouse ", TipoEquipamento = TipoEquipamento.Mouse, QuantidadeEstoque = 4 });
-            _service.Cadastrar(new EquipamentoEletronico { Nome = "PC Positivo", TipoEquipamento = TipoEquipamento.PC, QuantidadeEstoque = 2 });
-            _service.Cadastrar(new EquipamentoEletronico { Nome = "PC Apple", TipoEquipamento = TipoEquipamento.PC, QuantidadeEstoque = 2 });
-
-            IEnumerable<EquipamentoEletronico> listaEquipamentosEletronicos = _service.BuscarPorFiltros(null, TipoEquipamento.Notebook);
-
-            EquipamentoEletronicoValidator equipamentoEletronicoValidator = new EquipamentoEletronicoValidator();
-            Assert.Collection(listaEquipamentosEletronicos, 
-                equipamentoEletronico => Assert.True(equipamentoEletronicoValidator.Validate(equipamentoEletronico).IsValid), 
-                equipamentoEletronico => Assert.True(equipamentoEletronicoValidator.Validate(equipamentoEletronico).IsValid));
-        }
-
-        [Fact]
-        public void Buscar_equipamentos_eletronicos_por_filtro_nome_equipamento_deve_retornar_multiplos_equipamentos_validos()
-        {
-            _service.Cadastrar(new EquipamentoEletronico { Nome = "Alienware", TipoEquipamento = TipoEquipamento.Notebook, QuantidadeEstoque = 10 });
-            _service.Cadastrar(new EquipamentoEletronico { Nome = "Samsung Book3", TipoEquipamento = TipoEquipamento.Notebook, QuantidadeEstoque = 4 });
-            _service.Cadastrar(new EquipamentoEletronico { Nome = "PC Gamer", TipoEquipamento = TipoEquipamento.PC, QuantidadeEstoque = 9 });
-            _service.Cadastrar(new EquipamentoEletronico { Nome = "Teclado mecânico", TipoEquipamento = TipoEquipamento.Teclado, QuantidadeEstoque = 15 });
-            _service.Cadastrar(new EquipamentoEletronico { Nome = "Mouse ", TipoEquipamento = TipoEquipamento.Mouse, QuantidadeEstoque = 4 });
-            _service.Cadastrar(new EquipamentoEletronico { Nome = "PC Buxa", TipoEquipamento = TipoEquipamento.PC, QuantidadeEstoque = 2 });
-            _service.Cadastrar(new EquipamentoEletronico { Nome = "Teclado Gamer", TipoEquipamento = TipoEquipamento.Teclado, QuantidadeEstoque = 2 });
-            _service.Cadastrar(new EquipamentoEletronico { Nome = "Mouse Gamer", TipoEquipamento = TipoEquipamento.Teclado, QuantidadeEstoque = 2 });
-            _service.Cadastrar(new EquipamentoEletronico { Nome = "Monitor Gamer", TipoEquipamento = TipoEquipamento.Monitor, QuantidadeEstoque = 2 });
-
-            IEnumerable<EquipamentoEletronico> listaEquipamentosEletronicos = _service.BuscarPorFiltros("Gamer", null);
+            IEnumerable<EquipamentoEletronico> listaEquipamentosEletronicos = _service.ListarTodos();
 
             EquipamentoEletronicoValidator equipamentoEletronicoValidator = new EquipamentoEletronicoValidator();
             Assert.Collection(listaEquipamentosEletronicos,
-                equipamentoEletronico => Assert.True(equipamentoEletronicoValidator.Validate(equipamentoEletronico).IsValid),
-                equipamentoEletronico => Assert.True(equipamentoEletronicoValidator.Validate(equipamentoEletronico).IsValid),
-                equipamentoEletronico => Assert.True(equipamentoEletronicoValidator.Validate(equipamentoEletronico).IsValid),
-                equipamentoEletronico => Assert.True(equipamentoEletronicoValidator.Validate(equipamentoEletronico).IsValid));
+                    equipamentoEletronico => Assert.True(equipamentoEletronicoValidator.Validate(equipamentoEletronico).IsValid),
+                    equipamentoEletronico => Assert.True(equipamentoEletronicoValidator.Validate(equipamentoEletronico).IsValid),
+                    equipamentoEletronico => Assert.True(equipamentoEletronicoValidator.Validate(equipamentoEletronico).IsValid),
+                    equipamentoEletronico => Assert.True(equipamentoEletronicoValidator.Validate(equipamentoEletronico).IsValid)
+                );
         }
 
         [Fact]
-        public void Buscar_equipamentos_eletronicos_sem_filtros_deve_retornar_todos_os_esquipamentos_eletronicos_validos()
+        public void Listar_equipamentos_eletronicos_nenhum_equipamento_deve_ser_encontrado()
         {
-            _service.Cadastrar(new EquipamentoEletronico { Nome = "Alienware", TipoEquipamento = TipoEquipamento.Notebook, QuantidadeEstoque = 10 });
-            _service.Cadastrar(new EquipamentoEletronico { Nome = "Samsung Book3", TipoEquipamento = TipoEquipamento.Notebook, QuantidadeEstoque = 4 });
-            _service.Cadastrar(new EquipamentoEletronico { Nome = "PC Gamer", TipoEquipamento = TipoEquipamento.PC, QuantidadeEstoque = 9 });
-            _service.Cadastrar(new EquipamentoEletronico { Nome = "Teclado mecânico", TipoEquipamento = TipoEquipamento.Teclado, QuantidadeEstoque = 15 });
-            _service.Cadastrar(new EquipamentoEletronico { Nome = "Mouse ", TipoEquipamento = TipoEquipamento.Mouse, QuantidadeEstoque = 4 });
-            _service.Cadastrar(new EquipamentoEletronico { Nome = "PC Buxa", TipoEquipamento = TipoEquipamento.PC, QuantidadeEstoque = 2 });
-
-            IEnumerable<EquipamentoEletronico> listaEquipamentosEletronicos = _service.BuscarPorFiltros(null, 0);
+            IEnumerable<EquipamentoEletronico> listaEquipamentosEletronicos = _service.ListarTodos();
 
             Assert.Empty(listaEquipamentosEletronicos);
         }
 
-        [Fact]
-        public void Buscar_equipamentos_eletronicos_por_filtros_nenhum_equipamento_deve_ser_encontrado()
-        {
-            IEnumerable<EquipamentoEletronico> listaEquipamentosEletronicos = _service.BuscarPorFiltros("Alienware", TipoEquipamento.Notebook);
-
-            Assert.Empty(listaEquipamentosEletronicos);
-        } 
     }
 }

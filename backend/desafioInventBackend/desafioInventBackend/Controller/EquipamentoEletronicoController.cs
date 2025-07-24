@@ -1,5 +1,4 @@
-﻿
-using AutoMapper;
+﻿using AutoMapper;
 using DesafioInventBackend.Model.DTO;
 using DesafioInventBackend.Model.Entity;
 using DesafioInventBackend.Service;
@@ -29,9 +28,9 @@ namespace DesafioInventBackend.Controller
 
 
         [HttpGet]
-        public OkObjectResult BuscarEquipamentosEletronicosPorFiltros([FromQuery] string? nome, [FromQuery] int tipoEquipamento)
+        public OkObjectResult ListarTodosEquipamentosEletronicos()
         {
-            IEnumerable<EquipamentoEletronico> listaEquipamentosEletronicos = _service.BuscarPorFiltros(nome, (TipoEquipamento)tipoEquipamento);
+            IEnumerable<EquipamentoEletronico> listaEquipamentosEletronicos = _service.ListarTodos();
             return new OkObjectResult(_mapper.Map<IEnumerable<EquipamentoEletronicoDTO>>(listaEquipamentosEletronicos));
         }
 

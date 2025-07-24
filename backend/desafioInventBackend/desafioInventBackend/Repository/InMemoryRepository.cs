@@ -7,30 +7,9 @@ namespace DesafioInventBackend.Repository
         
         private readonly List<EquipamentoEletronico> _itens = new List<EquipamentoEletronico>();
            
-        public IEnumerable<EquipamentoEletronico> BuscarPorFiltros(string? nome, TipoEquipamento? tipoEquipamento)
+        public IEnumerable<EquipamentoEletronico> ListarTodos()
         {
-            if (nome == null && tipoEquipamento == null)
-            {
-                return _itens;
-            }
-
-            IEnumerable<EquipamentoEletronico> itensOrdenados = _itens.OrderByDescending(ee => ee.DataInclusao);
-
-            return itensOrdenados.Where(ee => 
-            { 
-                
-                if (nome == null)
-                {
-                    return ee.TipoEquipamento == tipoEquipamento;
-                }
-                
-                if (tipoEquipamento == null)
-                {
-                    return ee.Nome.Contains(nome);
-                }
-
-                return (nome != null && ee.Nome.Contains(nome)) && ee.TipoEquipamento == tipoEquipamento;
-            });
+            return _itens;
         }
         
         public EquipamentoEletronico BuscarPorId(string id)
