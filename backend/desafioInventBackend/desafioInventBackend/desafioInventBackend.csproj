@@ -3,6 +3,10 @@
   <PropertyGroup>
     <TargetFramework>net9.0</TargetFramework>
     <Nullable>enable</Nullable>
+	<IsPackable>false</IsPackable>
+	<SpaRoot>ClientApp\</SpaRoot>
+	<SpaProxyServerUrl>https://localhost:44400</SpaProxyServerUrl>
+	<SpaProxyLaunchCommand>npm start</SpaProxyLaunchCommand>
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
@@ -15,21 +19,23 @@
     <EmbeddedResource Remove="Repository\NovaPasta\**" />
     <None Remove="Repository\Contract\**" />
     <None Remove="Repository\NovaPasta\**" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Remove="Model\DTO\AtualizarEquipamentoEletronicoDto.cs" />
+	
+	<Content Remove="$(SpaRoot)**" />
+	<None Remove="$(SpaRoot)**" />
+	<None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
   </ItemGroup>
 
   <ItemGroup>
     <None Include="..\.editorconfig" Link=".editorconfig" />
   </ItemGroup>
-
+	
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="15.0.1" />
     <PackageReference Include="FluentValidation" Version="12.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Cors" Version="2.3.0" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.7" />
+    <PackageReference Include="Microsoft.AspNetCore.SpaProxy" Version="9.0.7" />
+    <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="9.0.7" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="9.0.7" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.7">
       <PrivateAssets>all</PrivateAssets>
@@ -40,6 +46,92 @@
     <PackageReference Include="RavenDB.Client" Version="7.1.0" />
     <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="9.0.3" />
     <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="9.0.3" />
+	<DistFiles Include="$(SpaRoot)dist\**" />
+	<None Remove="ClientApp%2a%2a" />
+	<Content Include="ClientApp\.editorconfig" />
+	<Content Include="ClientApp\.gitignore" />
+	<Content Include="ClientApp\public\404.jpg" />
+	<Content Include="ClientApp\public\favicon.ico" />
+	<Content Include="ClientApp\README.md" />
+	<Content Include="ClientApp\src\app\app.config.server.ts" />
+	<Content Include="ClientApp\src\app\app.config.ts" />
+	<Content Include="ClientApp\src\app\app.css" />
+	<Content Include="ClientApp\src\app\app.html" />
+	<Content Include="ClientApp\src\app\app.routes.server.ts" />
+	<Content Include="ClientApp\src\app\app.routes.ts" />
+	<Content Include="ClientApp\src\app\app.spec.ts" />
+	<Content Include="ClientApp\src\app\app.ts" />
+	<Content Include="ClientApp\src\app\interceptors\error-interceptor.spec.ts" />
+	<Content Include="ClientApp\src\app\interceptors\error-interceptor.ts" />
+	<Content Include="ClientApp\src\app\pages\error-page\error-page.css" />
+	<Content Include="ClientApp\src\app\pages\error-page\error-page.html" />
+	<Content Include="ClientApp\src\app\pages\error-page\error-page.spec.ts" />
+	<Content Include="ClientApp\src\app\pages\error-page\error-page.ts" />
+	<Content Include="ClientApp\src\app\pages\gestao-page\detalhes-modal\detalhes-modal.css" />
+	<Content Include="ClientApp\src\app\pages\gestao-page\detalhes-modal\detalhes-modal.html" />
+	<Content Include="ClientApp\src\app\pages\gestao-page\detalhes-modal\detalhes-modal.spec.ts" />
+	<Content Include="ClientApp\src\app\pages\gestao-page\detalhes-modal\detalhes-modal.ts" />
+	<Content Include="ClientApp\src\app\pages\gestao-page\gestao-page.css" />
+	<Content Include="ClientApp\src\app\pages\gestao-page\gestao-page.html" />
+	<Content Include="ClientApp\src\app\pages\gestao-page\gestao-page.spec.ts" />
+	<Content Include="ClientApp\src\app\pages\gestao-page\gestao-page.ts" />
+	<Content Include="ClientApp\src\app\pages\pages-module.ts" />
+	<Content Include="ClientApp\src\app\pages\pages-routing-module.ts" />
+	<Content Include="ClientApp\src\app\pages\salvar-page\salvar-page.css" />
+	<Content Include="ClientApp\src\app\pages\salvar-page\salvar-page.html" />
+	<Content Include="ClientApp\src\app\pages\salvar-page\salvar-page.spec.ts" />
+	<Content Include="ClientApp\src\app\pages\salvar-page\salvar-page.ts" />
+	<Content Include="ClientApp\src\app\services\equipamento-eletronico-service.spec.ts" />
+	<Content Include="ClientApp\src\app\services\equipamento-eletronico-service.ts" />
+	<Content Include="ClientApp\src\environments\environment.development.ts" />
+	<Content Include="ClientApp\src\environments\environment.ts" />
+	<Content Include="ClientApp\src\index.html" />
+	<Content Include="ClientApp\src\library\components\error-msg\error-msg.css" />
+	<Content Include="ClientApp\src\library\components\error-msg\error-msg.html" />
+	<Content Include="ClientApp\src\library\components\error-msg\error-msg.spec.ts" />
+	<Content Include="ClientApp\src\library\components\error-msg\error-msg.ts" />
+	<Content Include="ClientApp\src\library\models\equipamento-eletronico.model.ts" />
+	<Content Include="ClientApp\src\library\pipes\tipo-equipamento-pipe.ts" />
+	<Content Include="ClientApp\src\library\validators\form-validator.spec.ts" />
+	<Content Include="ClientApp\src\library\validators\form-validator.ts" />
+	<Content Include="ClientApp\src\main.server.ts" />
+	<Content Include="ClientApp\src\main.ts" />
+	<Content Include="ClientApp\src\server.ts" />
+	<Content Include="ClientApp\src\styles.css" />
+	<ResolvedFileToPublish Include="@(DistFiles->'%(FullPath)')" Exclude="@(ResolvedFileToPublish)">
+		<RelativePath>%(DistFiles.Identity)</RelativePath>
+		<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+		<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+	</ResolvedFileToPublish>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\" />
+  </ItemGroup>
+
+	<Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
+		<!-- Ensure Node.js is installed -->
+		<Exec Command="node --version" ContinueOnError="true">
+			<Output TaskParameter="ExitCode" PropertyName="ErrorCode" />
+		</Exec>
+		<Error Condition="'$(ErrorCode)' != '0'" Text="Node.js is required to build and run this project. To continue, please install Node.js from https://nodejs.org/, and then restart your command prompt or IDE." />
+		<Message Importance="high" Text="Restoring dependencies using 'npm'. This may take several minutes..." />
+		<Exec WorkingDirectory="$(SpaRoot)" Command="npm install" />
+	</Target>
+
+	<Target Name="PublishRunWebpack" AfterTargets="ComputeFilesToPublish">
+		<!-- As part of publishing, ensure the JS resources are freshly built in production mode -->
+		<Exec WorkingDirectory="$(SpaRoot)" Command="npm install" />
+		<Exec WorkingDirectory="$(SpaRoot)" Command="npm run build -- --configuration production" />
+
+		<!-- Include the newly-built files in the publish output -->
+		<ItemGroup>
+			<DistFiles Include="$(SpaRoot)dist\**; $(SpaRoot)dist-server\**" />
+			<ResolvedFileToPublish Include="@(DistFiles->'%(FullPath)')" Exclude="@(ResolvedFileToPublish)">
+				<RelativePath>wwwroot\%(RecursiveDir)%(FileName)%(Extension)</RelativePath>
+				<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+				<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+			</ResolvedFileToPublish>
+		</ItemGroup>
+	</Target>
 </Project>

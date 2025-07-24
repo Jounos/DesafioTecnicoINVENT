@@ -11,14 +11,14 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAngularApp",
-        policy => policy.WithOrigins("http://localhost:4200")
+        policy => policy.WithOrigins("*")
                         .AllowAnyHeader()
                         .AllowAnyMethod());
 });
 
 builder.Services.AddSingleton<RavenDbContext>();
 
-builder.Services.AddControllers();
+builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<IRepositoryEquipamentoEletronico, RavenDbRepository>();
 builder.Services.AddScoped<EquipamentoEletronicoValidator>();
 builder.Services.AddScoped<EquipamentoEletronicoAlterarValidator>();
@@ -35,15 +35,25 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-if (app.Environment.IsDevelopment())
+var env = app.Environment;
+
+if (env.IsDevelopment())
 {   
     app.UseSwagger();
     app.UseSwaggerUI();
+    app.UseHsts();
 }
 
 app.UseCors("AllowAngularApp");
 app.UseAuthorization();
+app.UseStaticFiles();
+app.UseRouting();
 
+app.MapControllerRoute(
+    name: "default",
+    pattern: "api/equipamento-eletronico");
+
+app.MapFallbackToFile("index.html");
 app.MapControllers();
 
 app.Run();

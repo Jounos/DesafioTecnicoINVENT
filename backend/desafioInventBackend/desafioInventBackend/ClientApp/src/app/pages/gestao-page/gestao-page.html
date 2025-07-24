@@ -1,0 +1,78 @@
+<div class="card">
+	<div class="card-header ">Filtros</div>
+	<div class="card-body">
+		<div class="row">
+			<div class="col-xl-7 col-lg-8 col-md-6 col-sm-12 col-12">
+				<label for="nome" class="form-label">Nome</label>
+				<input type="text" class="form-control" [(ngModel)]="nome" (keyup)="filtrar()">
+			</div>
+			<div class="col-xl-5 col-lg-4 col-md-6 col-sm-12 col-12">
+				<label for="tipoEquipamento" class="form-label">Tipo de Equipamento</label>
+				<ng-select [(ngModel)]="tipoEquipamento" (change)="filtrar()" (clear)="filtrarAoLimparTipoEquipamento()" [items]="listaTiposEquipamento" bindLabel="label" bindValue="id"></ng-select>
+			</div>
+		</div>
+		<div class="row mt-4">
+			<div class="d-flex justify-content-end">
+				<a class="btn btn-dark me-4" type="button"  [routerLink]="'/cadastrar'">
+					<i class="bi bi-plus-lg me-2"></i>Cadastrar
+				</a>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="card mt-3">
+	<div class="card-body">
+		<div class="container">
+			<div class="table-responsive">
+				<table class="table table-bordered table-striped  mb-4">
+					<thead>
+						<tr>
+							<th class="text-center">Index</th>
+							<th class="text-center">Nome do produto</th>
+							<th class="text-center">Tipo do equipamento</th>
+							<th class="text-center">Há em estoque</th>
+							<th class="text-center">Quantidade</th>
+							<th class="text-center">Inclusão</th>
+							<th class="text-center">Ações</th>
+						</tr>
+					</thead>
+					<tbody>
+						@for(equipamentoEletronico of listaEquipamentoEletronicoPaginada; track equipamentoEletronico.nome; let i = $index) {
+							<tr role="button">
+								<td class="text-center">{{ i }}</td>
+								<td (click)="visualizarDetalhes(equipamentoEletronico)" class="text-center">{{ equipamentoEletronico.nome }}</td>
+								<td (click)="visualizarDetalhes(equipamentoEletronico)" class="text-center">{{ equipamentoEletronico.tipoEquipamento | tipoEquipamento }}</td>
+								<td (click)="visualizarDetalhes(equipamentoEletronico)" class="text-center">
+									@if (equipamentoEletronico.temEstoque) {
+										<small [ngClass]="{'d-inline-flex px-3 py-1 fw-semibold text-success bg-success-subtle border border-success-subtle rounded-2': equipamentoEletronico.temEstoque}">Sim</small>
+									} @else {
+										<small [ngClass]="{'d-inline-flex px-3 py-1 fw-semibold text-danger bg-danger-subtle border border-danger-subtle rounded-2': !equipamentoEletronico.temEstoque}">Não</small>
+									}
+								</td>
+								<td (click)="visualizarDetalhes(equipamentoEletronico)" class="text-center">{{ equipamentoEletronico.quantidadeEstoque }}</td>
+								<td (click)="visualizarDetalhes(equipamentoEletronico)" class="text-center">{{ equipamentoEletronico.dataInclusao | date: 'medium' }}</td>
+								<td class="text-center">
+									<div class="d-flex justify-content-evenly">
+										@if (!equipamentoEletronico.temEstoque) {
+											<button class="btn btn-outline-danger btn-sm" (click)="excluir(equipamentoEletronico)">
+												<i class="bi bi-trash"></i>
+											</button>
+										}
+										<button class="btn btn-outline-warning btn-sm" [routerLink]="['editar', equipamentoEletronico.id]">
+											<i class="bi bi-pencil-square"></i>
+										</button>
+									</div>
+								</td>
+							</tr>
+						}
+					</tbody>
+				</table>
+				<ngb-pagination class="d-flex justify-content-center"
+					[collectionSize]="listaEquipamentosEletronicos.length"
+					[(page)]="page" [pageSize]="itemsPerPage" [rotate]="true" [ellipses]="false"
+					(pageChange)="updatePagination()" [boundaryLinks]="true">
+				</ngb-pagination>
+			</div>
+		</div>
+	</div>
+</div>

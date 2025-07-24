@@ -1,23 +1,29 @@
 {
   "profiles": {
-    "http": {
+    "WSL": {
+      "commandName": "WSL2",
+      "launchBrowser": true,
+      "launchUrl": "https://localhost:7005",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "ASPNETCORE_URLS": "https://localhost:7005;http://localhost:5031",
+        "ravenDbName": "EquipamentoEletronicoRavenDb",
+        "ravenDbServer": "http://127.0.0.1:8080"
+      },
+      "distributionName": ""
+    },
+    "DesafioInventBackend": {
       "commandName": "Project",
+      "launchBrowser": true,
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
         "ravenDbServer": "http://127.0.0.1:8080",
-        "ravenDbName": "EquipamentoEletronicoRavenDb"
+        "ravenDbName": "EquipamentoEletronicoRavenDb",
+        "ASPNETCORE_HOSTINGSTARTUPASSEMBLIES": "Microsoft.AspNetCore.SpaProxy"
       },
       "dotnetRunMessages": true,
-      "applicationUrl": "http://localhost:5031",
+      "applicationUrl": "https://localhost:7005;http://localhost:5031",
       "nativeDebugging": false
-    },
-    "https": {
-      "commandName": "Project",
-      "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
-      },
-      "dotnetRunMessages": true,
-      "applicationUrl": "https://localhost:7005;http://localhost:5031"
     }
   },
   "$schema": "https://json.schemastore.org/launchsettings.json"
