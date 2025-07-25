@@ -11,7 +11,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAngularApp",
-        policy => policy.WithOrigins("*")
+        policy => policy.WithOrigins("https://localhost:44400")
                         .AllowAnyHeader()
                         .AllowAnyMethod());
 });
@@ -44,7 +44,6 @@ if (env.IsDevelopment())
     app.UseHsts();
 }
 
-app.UseCors("AllowAngularApp");
 app.UseAuthorization();
 app.UseStaticFiles();
 app.UseRouting();
@@ -55,5 +54,7 @@ app.MapControllerRoute(
 
 app.MapFallbackToFile("index.html");
 app.MapControllers();
+
+app.UseCors("AllowAngularApp");
 
 app.Run();
