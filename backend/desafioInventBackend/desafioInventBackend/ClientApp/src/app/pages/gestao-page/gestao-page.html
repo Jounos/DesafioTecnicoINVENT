@@ -27,7 +27,6 @@
 				<table class="table table-bordered table-striped  mb-4">
 					<thead>
 						<tr>
-							<th class="text-center">Index</th>
 							<th class="text-center">Nome do produto</th>
 							<th class="text-center">Tipo do equipamento</th>
 							<th class="text-center">Há em estoque</th>
@@ -37,9 +36,8 @@
 						</tr>
 					</thead>
 					<tbody>
-						@for(equipamentoEletronico of listaEquipamentoEletronicoPaginada; track equipamentoEletronico.nome; let i = $index) {
+						@for(equipamentoEletronico of listaEquipamentoEletronicoPaginada; track equipamentoEletronico.nome) {
 							<tr role="button">
-								<td class="text-center">{{ i }}</td>
 								<td (click)="visualizarDetalhes(equipamentoEletronico)" class="text-center">{{ equipamentoEletronico.nome }}</td>
 								<td (click)="visualizarDetalhes(equipamentoEletronico)" class="text-center">{{ equipamentoEletronico.tipoEquipamento | tipoEquipamento }}</td>
 								<td (click)="visualizarDetalhes(equipamentoEletronico)" class="text-center">
@@ -50,7 +48,7 @@
 									}
 								</td>
 								<td (click)="visualizarDetalhes(equipamentoEletronico)" class="text-center">{{ equipamentoEletronico.quantidadeEstoque }}</td>
-								<td (click)="visualizarDetalhes(equipamentoEletronico)" class="text-center">{{ equipamentoEletronico.dataInclusao | date: 'medium' }}</td>
+								<td (click)="visualizarDetalhes(equipamentoEletronico)" class="text-center">{{ equipamentoEletronico.dataInclusao | date: 'dd/MM/yyyy' }}</td>
 								<td class="text-center">
 									<div class="d-flex justify-content-evenly">
 										@if (!equipamentoEletronico.temEstoque) {

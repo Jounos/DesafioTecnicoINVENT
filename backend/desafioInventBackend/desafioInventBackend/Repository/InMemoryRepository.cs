@@ -1,4 +1,5 @@
 ﻿using DesafioInventBackend.Model.Entity;
+using Raven.Client.Documents.Session;
 
 namespace DesafioInventBackend.Repository
 {
@@ -12,7 +13,7 @@ namespace DesafioInventBackend.Repository
             return _itens;
         }
         
-        public EquipamentoEletronico BuscarPorId(string id)
+        public EquipamentoEletronico BuscarPorId(string id, IDocumentSession session = null)
         {
             if (_itens.Count == 0)
             {
@@ -30,10 +31,9 @@ namespace DesafioInventBackend.Repository
             _itens.Add(entity);
         }
 
-        public void Atualizar(string id, EquipamentoEletronico entityModified)
+        public void Atualizar(string id, EquipamentoEletronico entity, EquipamentoEletronico entityModified)
         {
 
-            EquipamentoEletronico entity = BuscarPorId(id);
             var index = _itens.IndexOf(entity);
 
             entity.Nome = entityModified.Nome;

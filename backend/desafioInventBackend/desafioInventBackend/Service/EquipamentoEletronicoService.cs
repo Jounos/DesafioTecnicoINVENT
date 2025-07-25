@@ -2,6 +2,7 @@
 using DesafioInventBackend.Model.Validator;
 using DesafioInventBackend.Repository;
 using FluentValidation;
+using NuGet.Protocol.Core.Types;
 
 namespace DesafioInventBackend.Service
 {
@@ -42,6 +43,7 @@ namespace DesafioInventBackend.Service
         public void Atualizar(string id, EquipamentoEletronico equipamentoEletronicoModificado)
         {
             _equipamentoEletronicoAlterarValidator.ValidateAndThrow(equipamentoEletronicoModificado);
+            //var x = _repository.BuscarPorId(id);
             _repository.Atualizar(id, equipamentoEletronicoModificado);
         }
 

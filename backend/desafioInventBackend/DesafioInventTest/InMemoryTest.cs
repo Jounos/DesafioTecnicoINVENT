@@ -1,4 +1,5 @@
 using DesafioInventBackend.Model.Entity;
+using DesafioInventBackend.Model.Enum;
 using DesafioInventBackend.Model.Validator;
 using DesafioInventBackend.Repository;
 using DesafioInventBackend.Service;
@@ -26,7 +27,7 @@ namespace DesafioInventTest
             EquipamentoEletronico equipamentoEletronico = new EquipamentoEletronico
             {
                 Nome = "Alienware",
-                TipoEquipamento = TipoEquipamento.PC,
+                TipoEquipamento = TipoEquipamentoEnum.PC,
                 QuantidadeEstoque = 2,
             };
 
@@ -60,7 +61,7 @@ namespace DesafioInventTest
             {   
                 Id = ID_EQUIPAMENTO_ELETRONICO,
                 Nome = "Positivo",
-                TipoEquipamento = TipoEquipamento.PC,
+                TipoEquipamento = TipoEquipamentoEnum.PC,
                 QuantidadeEstoque = 2,
             };
 
@@ -80,7 +81,7 @@ namespace DesafioInventTest
             EquipamentoEletronico equipamentoEletronico = new EquipamentoEletronico
             {
                 Nome = string.Empty,
-                TipoEquipamento = TipoEquipamento.PC,
+                TipoEquipamento = TipoEquipamentoEnum.PC,
                 QuantidadeEstoque = 2,
             };
 
@@ -97,7 +98,7 @@ namespace DesafioInventTest
             {
                 Id = ID_EQUIPAMENTO_ELETRONICO,
                 Nome = "Positivo",
-                TipoEquipamento = TipoEquipamento.PC,
+                TipoEquipamento = TipoEquipamentoEnum.PC,
                 QuantidadeEstoque = 0,
             };
 

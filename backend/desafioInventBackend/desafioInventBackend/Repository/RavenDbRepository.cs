@@ -16,7 +16,7 @@ namespace DesafioInventBackend.Repository
             return session.Query<EquipamentoEletronico>().ToList();
         }
 
-        public EquipamentoEletronico BuscarPorId(string id)
+        public EquipamentoEletronico BuscarPorId(string id, IDocumentSession sessionOpened = null)
         {
             using IDocumentSession session = _getOpenedSession();
             return session.Load<EquipamentoEletronico>(id) ?? throw new FormatException($"Não foi possível encontrar um equipamento eletrônico com id {id}");
@@ -35,11 +35,10 @@ namespace DesafioInventBackend.Repository
         {
             using IDocumentSession session = _getOpenedSession();
 
-            EquipamentoEletronico equipamentoEletronico = BuscarPorId(id);
-            equipamentoEletronico.Nome = equipamentoEletronicoModificado.Nome;
-            equipamentoEletronico.TipoEquipamento = equipamentoEletronicoModificado.TipoEquipamento;
-            equipamentoEletronico.QuantidadeEstoque = equipamentoEletronicoModificado.QuantidadeEstoque;
-
+            //equipamentoEletronico.Nome = equipamentoEletronicoModificado.Nome;
+            //equipamentoEletronico.TipoEquipamento = equipamentoEletronicoModificado.TipoEquipamento;
+            //equipamentoEletronico.QuantidadeEstoque = equipamentoEletronicoModificado.QuantidadeEstoque;
+            e
             session.SaveChanges();
         }
 
