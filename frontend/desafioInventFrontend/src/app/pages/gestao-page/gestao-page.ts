@@ -1,8 +1,12 @@
 import { HttpResponse } from '@angular/common/http';
-import { ChangeDetectorRef, Component, computed, model, OnInit, signal } from '@angular/core';
-import { IRetornoEquipamentoEletronico } from '../../../library/models/retorno-equipamento-eleronico.model';
-import { EquipamentoEletronicoService } from '../../../services/equipamento-eletronico-service';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Subscription } from 'rxjs';
 import Swal from 'sweetalert2';
+import { IEquipamentoEletronico } from '../../../library/models/equipamento-eletronico.model';
+import { EquipamentoEletronicoService } from '../../services/equipamento-eletronico-service';
+import { DetalhesModal } from './detalhes-modal/detalhes-modal';
+import dayjs from 'dayjs';
 
 @Component({
 	selector: 'app-gestao-page',
@@ -10,58 +14,110 @@ import Swal from 'sweetalert2';
 	styleUrl: './gestao-page.css',
 	standalone: false,
 })
-export class GestaoPage implements OnInit {
+export class GestaoPage implements OnInit, OnDestroy {
 
-	page = 4;
+	protected page = 1;
+	protected itemsPerPage: number = 10;
 
-	protected nome = "";
-	protected tipoEquipamento = null;
+	protected nome = '';
+	protected tipoEquipamento = 0;
 
 	listaTiposEquipamento = [
-		{ id: 1, label: 'PC'},
-		{ id: 2, label: 'Notebook'},
-		{ id: 3, label: 'Mouse'},
-		{ id: 4, label: 'Teclado'},
-	]
+		{ id: 1, label: 'PC' },
+		{ id: 2, label: 'Notebook' },
+		{ id: 3, label: 'Mouse' },
+		{ id: 4, label: 'Teclado' },
+	];
 
-	listaEquipamentosEletronicos: IRetornoEquipamentoEletronico[] = [];
-	listaEquipamentosEletronicosFiltrada: IRetornoEquipamentoEletronico[] = [];
+	listaEquipamentosEletronicos: IEquipamentoEletronico[] = [];
+	listaEquipamentosEletronicosFiltrada: IEquipamentoEletronico[] = [];
+	listaEquipamentoEletronicoPaginada: IEquipamentoEletronico[] = [];
+
+	private subscription: Subscription = new Subscription();
 
 	constructor(
 		private equipamentoEletronicoService: EquipamentoEletronicoService,
-		private cdr: ChangeDetectorRef
-	) {	}
+		private cdr: ChangeDetectorRef,
+		private ngbModal: NgbModal
+	) { }
 
 	ngOnInit(): void {
 		this.listar();
-		this.cdr.detectChanges();
-		this.cdr.detach();
 	}
 
 	listar() {
-		this.equipamentoEletronicoService.listarEquipamentosEleronicos().subscribe({
-			next: (value: HttpResponse<IRetornoEquipamentoEletronico[]>) => {
-				if (value.body !== null) {
-					this.listaEquipamentosEletronicos = value.body;
-					this.listaEquipamentosEletronicosFiltrada = value.body;
-					return;
-				}
+		this.subscription.add(
+			this.equipamentoEletronicoService.listarTodosEquipamentosEleronicos().subscribe({
+				next: (value: HttpResponse<IEquipamentoEletronico[]>) => {
+					if (value.body?.length === 0) {
+						Swal.fire({
+							icon: 'info',
+							title: 'Atenção',
+							text: 'Nenhum Equipamento Eletrônico foi encontrado',
+							showConfirmButton: false,
+						});
+						return;
+					}
 
-			}
-		});
+					this.listaEquipamentosEletronicos = value.body!;
+					this.listaEquipamentosEletronicosFiltrada = value.body!.sort((a, b) => {
+						if (dayjs(b.dataInclusao).isBefore(a.dataInclusao)) {
+							return -1;
+						} else {
+							return 1;
+						}
+					});
+					this.updatePagination();
+					this.cdr.detectChanges();
+				}
+			})
+		);
 	}
 
 	filtrar() {
-		this.listaEquipamentosEletronicosFiltrada = this.listaEquipamentosEletronicos.filter((ee) => ee.nome.toUpperCase().includes(this.nome.toUpperCase()) || ee.tipoEquipamento == this.tipoEquipamento);
+		if (!this.listaEquipamentosEletronicos || this.listaEquipamentosEletronicos?.length === 0) {
+			return
+		}
+
+		if ((this.nome === '' || !this.nome) && !this.tipoEquipamento) {
+			this.listaEquipamentosEletronicosFiltrada = this.listaEquipamentosEletronicos;
+			this.updatePagination();
+			return;
+		}
+
+		this.listaEquipamentosEletronicosFiltrada = this.listaEquipamentosEletronicos.filter((equipamentoEletronico) => {
+
+			if ((this.nome !== '' || this.nome) && this.tipoEquipamento) {
+				return (this.nome.length > 0 && equipamentoEletronico.nome.toUpperCase().includes(this.nome.toUpperCase())) && equipamentoEletronico.tipoEquipamento === this.tipoEquipamento;
+			}
+
+			if (!this.tipoEquipamento) {
+				return this.nome.length > 0 && equipamentoEletronico.nome.toUpperCase().includes(this.nome.toUpperCase());
+			}
+
+			return equipamentoEletronico.tipoEquipamento === this.tipoEquipamento;
+		});
+		this.updatePagination();
+		this.cdr.detectChanges();
 	}
 
-	excluir(ee: IRetornoEquipamentoEletronico) {
+	filtrarAoLimparTipoEquipamento() {
+		if (this.nome === '' || !this.nome) {
+			this.listaEquipamentosEletronicosFiltrada = this.listaEquipamentosEletronicos;
+		}
 
-		if (ee.temEstoque) {
+		this.listaEquipamentosEletronicosFiltrada = this.listaEquipamentosEletronicos.filter((equipamentoEletronico) => equipamentoEletronico.nome.toUpperCase().includes(this.nome.toUpperCase()));
+		this.updatePagination();
+		this.cdr.detectChanges();
+	}
+
+	excluir(equipamentoEletronico: IEquipamentoEletronico) {
+
+		if (equipamentoEletronico.temEstoque) {
 			Swal.fire({
 				icon: 'warning',
 				title: 'Atenção',
-				text: 'Este equipamento não pode ser excluído,\n pois ainda há em estoque.',
+				html: 'Este equipamento não pode ser excluído,<br/>Pois ainda há produtos em estoque.',
 				timer: 3000,
 				showConfirmButton: false,
 			});
@@ -70,16 +126,18 @@ export class GestaoPage implements OnInit {
 
 		this.confirmarExclusao().then((result) => {
 			if (result.isConfirmed) {
-				this.equipamentoEletronicoService.deletarEquipamentoEletronico(ee.id).subscribe({
-					next: (result: HttpResponse<void>) => {
+				this.equipamentoEletronicoService.deletarEquipamentoEletronico(equipamentoEletronico.id).subscribe({
+					next: () => {
 						Swal.fire({
 							icon: 'success',
-							title: 'equipamento excluido com sucesso.',
-							timer: 3000
+							title: 'Sucesso',
+							text: 'equipamento excluído com sucesso.',
+							timer: 3000,
+							showConfirmButton: false,
+						}).then(() => {
+							this.listar();
 						});
-
-						this.listar();
-					}
+					},
 				})
 			}
 		})
@@ -99,4 +157,23 @@ export class GestaoPage implements OnInit {
 		});
 	}
 
+	visualizarDetalhes(equipamentoEletronico: IEquipamentoEletronico) {
+		const modalRef = this.ngbModal.open(DetalhesModal, { backdrop: 'static', size: 'lg', centered: true });
+		modalRef.componentInstance.equipamentoEletronico = equipamentoEletronico;
+		modalRef.result.then((flagExcluir: boolean) => {
+			if (flagExcluir) {
+				this.excluir(equipamentoEletronico);
+			}
+		})
+	}
+
+	updatePagination() {
+		const startIndex = (this.page - 1) * this.itemsPerPage;
+		const endIndex = startIndex + this.itemsPerPage;
+		this.listaEquipamentoEletronicoPaginada = this.listaEquipamentosEletronicosFiltrada.slice(startIndex, endIndex);
+	}
+
+	ngOnDestroy(): void {
+		this.subscription.unsubscribe();
+	}
 }

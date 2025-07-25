@@ -1,53 +1,60 @@
-using DesafioInventBackend.Context;
-using DesafioInventBackend.Model.Mapper;
+
+using DesafioInventBackend.Data;
+using DesafioInventBackend.Model.DTO;
+using DesafioInventBackend.Model.Entity;
+using DesafioInventBackend.Model.Validator;
 using DesafioInventBackend.Repository;
-using DesafioInventBackend.Repository.Contract;
 using DesafioInventBackend.Service;
-using DesafioInventBackend.Service.Contract;
-using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAngularApp",
-        policy => policy.WithOrigins("http://localhost:4200")
+        policy => policy.WithOrigins("https://localhost:44400")
                         .AllowAnyHeader()
                         .AllowAnyMethod());
 });
 
+builder.Services.AddSingleton<RavenDbContext>();
 
-builder.Services.AddControllers();
-builder.Services.AddScoped<IEquipamentoEletronicoService, EquipamentoEletronicoService>();
-builder.Services.AddScoped<IEquipamentoEletronicoRepository, EquipamentoEletronicoRepository>();
+builder.Services.AddControllersWithViews();
+builder.Services.AddScoped<IRepositoryEquipamentoEletronico, RavenDbRepository>();
+builder.Services.AddScoped<EquipamentoEletronicoValidator>();
+builder.Services.AddScoped<EquipamentoEletronicoAlterarValidator>();
+builder.Services.AddScoped<EquipamentoEletronicoDeleteValidator>();
+builder.Services.AddScoped<EquipamentoEletronicoService>();
 
-// Add services to the container.
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-builder.Services.AddOpenApi();
-
-builder.Services.AddDbContext<DataContext>(
-    opt =>
+builder.Services.AddAutoMapper(cfg =>
     {
-        opt.UseInMemoryDatabase("EquipamentoEletronicoDB");
-        opt.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
+        cfg.CreateMap<EquipamentoEletronico, EquipamentoEletronicoDTO>().ReverseMap();
     }
 );
 
-
-builder.Services.AddAutoMapper(typeof(DtoMapping));
+builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.MapOpenApi();
+var env = app.Environment;
 
+if (env.IsDevelopment())
+{   
+    app.UseSwagger();
+    app.UseSwaggerUI();
+    app.UseHsts();
 }
 
-app.UseCors("AllowAngularApp");
 app.UseAuthorization();
+app.UseStaticFiles();
+app.UseRouting();
 
+app.MapControllerRoute(
+    name: "default",
+    pattern: "api/equipamento-eletronico");
+
+app.MapFallbackToFile("index.html");
 app.MapControllers();
+
+app.UseCors("AllowAngularApp");
 
 app.Run();

@@ -1,0 +1,57 @@
+﻿using DesafioInventBackend.Data;
+using DesafioInventBackend.Model.Entity;
+using Raven.Client.Documents;
+using Raven.Client.Documents.Session;
+
+namespace DesafioInventBackend.Repository
+{
+    public class RavenDbRepository : IRepositoryEquipamentoEletronico
+    {
+
+        private readonly IDocumentStore _store = RavenDbContext.Store;
+
+        public IEnumerable<EquipamentoEletronico> ListarTodos()
+        {
+            using IDocumentSession session = _getOpenedSession();
+            return session.Query<EquipamentoEletronico>().ToList();
+        }
+
+        public EquipamentoEletronico BuscarPorId(string id, IDocumentSession sessionOpened = null)
+        {
+            using IDocumentSession session = _getOpenedSession();
+            return session.Load<EquipamentoEletronico>(id) ?? throw new FormatException($"Não foi possível encontrar um equipamento eletrônico com id {id}");
+        }
+
+        public void Cadastrar(EquipamentoEletronico equipamentoEletronico)
+        {
+            equipamentoEletronico.DataInclusao = DateTimeOffset.Now;
+
+            using IDocumentSession session = _getOpenedSession();
+            session.Store(equipamentoEletronico);
+            session.SaveChanges();
+        }
+
+        public void Atualizar(string id, EquipamentoEletronico equipamentoEletronicoModificado)
+        {
+            using IDocumentSession session = _getOpenedSession();
+
+            //equipamentoEletronico.Nome = equipamentoEletronicoModificado.Nome;
+            //equipamentoEletronico.TipoEquipamento = equipamentoEletronicoModificado.TipoEquipamento;
+            //equipamentoEletronico.QuantidadeEstoque = equipamentoEletronicoModificado.QuantidadeEstoque;
+            e
+            session.SaveChanges();
+        }
+
+        public void Deletar(string id)
+        {
+            using IDocumentSession session = _getOpenedSession();
+            session.Delete(id);
+            session.SaveChanges();
+        }
+
+        private IDocumentSession _getOpenedSession()
+        {
+            return _store.OpenSession();
+        }
+    }
+}

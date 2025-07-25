@@ -3,10 +3,8 @@ import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import Swal from 'sweetalert2';
-import { AtualizarEquipamentoEletronico } from '../../../library/models/atualizar-equipamento-eletronico.model';
-import { EquipamentoEletronico } from '../../../library/models/equipamento-eletronico.model';
-import { IRetornoEquipamentoEletronico } from '../../../library/models/retorno-equipamento-eleronico.model';
-import { EquipamentoEletronicoService } from '../../../services/equipamento-eletronico-service';
+import { EquipamentoEletronicoService } from '../../services/equipamento-eletronico-service';
+import { IEquipamentoEletronico } from '../../../library/models/equipamento-eletronico.model';
 
 @Component({
 	selector: 'app-salvar-page',
@@ -16,16 +14,15 @@ import { EquipamentoEletronicoService } from '../../../services/equipamento-elet
 })
 export class SalvarPage implements OnInit {
 
-	protected equipamentoEletronicoId: number | undefined;
-	private eeDataInclusao: string = '';
+	protected equipamentoEletronicoId: string | undefined;
 
 	private formBuilder = inject(FormBuilder);
 
 	protected form: FormGroup = this.formBuilder.group({
-		nome: [null, Validators.required],
-		tipoEquipamento: [null, Validators.required],
+		nome: [null, [Validators.required, Validators.minLength(3), Validators.maxLength(100)]],
+		tipoEquipamento: [null, [Validators.required, Validators.min(1), Validators.max(4)]],
 		quantidadeEstoque: [null, [Validators.required, Validators.min(0)]]
-	});;
+	});
 
 	protected tipoEquipamento: number = 0;
 	protected listaTiposEquipamento = [
@@ -43,23 +40,32 @@ export class SalvarPage implements OnInit {
 	) { }
 
 	ngOnInit(): void {
-		this.equipamentoEletronicoId = this.route.snapshot.paramMap.get('id') ? Number(this.route.snapshot.paramMap.get('id')) : undefined;
+		this.equipamentoEletronicoId = this.route.snapshot.paramMap.get('id') ? String(this.route.snapshot.paramMap.get('id')) : undefined;
 		if (this.equipamentoEletronicoId) {
 			this.buscarEquipamentoEletronico(this.equipamentoEletronicoId);
 		}
 		this.cdr.detectChanges();
 	}
 
-	private buscarEquipamentoEletronico(id: number) {
+	private buscarEquipamentoEletronico(id: string) {
 		this.equipamentoEletronicoService.buscarEquipamentoEletronicoPorId(id).subscribe({
-			next: (value: HttpResponse<IRetornoEquipamentoEletronico>) => {
-				this.eeDataInclusao = (value.body as IRetornoEquipamentoEletronico)?.dataInclusao!;
-				this.preencherFormulario((value.body as IRetornoEquipamentoEletronico));
+			next: (value: HttpResponse<IEquipamentoEletronico>) => {
+				if (!value.body) {
+					Swal.fire({
+						icon: 'error',
+						title: 'Error',
+						text: "Atenção: error ao buscar o equipamento eletrônico<br/>Entre em contato com a equipe de desenvolvimento!",
+						showConfirmButton: false,
+					}).then(() => {
+						return;
+					})
+				}
+				this.preencherFormulario(value.body as IEquipamentoEletronico);
 			},
 		});
 	}
 
-	preencherFormulario(ee: IRetornoEquipamentoEletronico) {
+	preencherFormulario(ee: IEquipamentoEletronico) {
 		this.form.patchValue({
 			nome: ee.nome,
 			tipoEquipamento: ee.tipoEquipamento,
@@ -68,6 +74,17 @@ export class SalvarPage implements OnInit {
 	}
 
 	public salvar() {
+
+		if (this.form.invalid) {
+
+			Swal.fire({
+				icon: 'info',
+				title: 'Atenção',
+				text: 'Informe todos os campos.',
+				showConfirmButton: false
+			});
+			return;
+		}
 
 		if (!this.equipamentoEletronicoId) {
 			this.cadastrar();
@@ -78,67 +95,48 @@ export class SalvarPage implements OnInit {
 	}
 
 	private cadastrar() {
-		var equipamentoEletronico: EquipamentoEletronico = {
-			nome: this.form.value.nome,
-			tipoEquipamento: this.form.value.tipoEquipamento,
-			quantidadeEstoque: this.form.value.quantidadeEstoque,
-		};
-
-		this.equipamentoEletronicoService.cadastrarEquipamentoEletronico(equipamentoEletronico).subscribe({
-			next: (value: HttpResponse<IRetornoEquipamentoEletronico>) => {
-				if (value.status !== 201 ){
-					return;
-				}
-
+		this.equipamentoEletronicoService.cadastrarEquipamentoEletronico(this.getEquipamentoEletronico()).subscribe({
+			next: () => {
 				Swal.fire({
 					icon: 'success',
 					title: 'Sucesso',
 					text: 'Equipamento eletrônico cadastrado com sucesso.',
-				});
-			},
-			error: () => {
-
-				Swal.fire({
-					icon: 'error',
-					title: 'Ocorreu um error',
-					text: 'Entre em contato com a equipe de desenvolviemnto.',
-					timer: 3000,
+					showConfirmButton: false,
+					timer: 3000
+				}).then(() => {
+					this.router.navigate(['/']);
 				});
 			},
 		});
 	}
 
 	private atualizar(){
-		var equipamentoEletronico: AtualizarEquipamentoEletronico = {
+
+		const equipamentoEletronico = {
 			id: this.equipamentoEletronicoId!,
-			nome: this.form.value.nome,
-			tipoEquipamento: this.form.value.tipoEquipamento,
-			quantidadeEstoque: this.form.value.quantidadeEstoque,
-			dataInclusao: this.eeDataInclusao,
+			...this.getEquipamentoEletronico(),
+		}
 
-		};
-
-		this.equipamentoEletronicoService.atualiarEquipamentoEletronico(this.equipamentoEletronicoId!, equipamentoEletronico).subscribe({
-			next: (value: HttpResponse<IRetornoEquipamentoEletronico>) => {
-				if (value.status !== 201 ){
-					return;
-				}
-
+		this.equipamentoEletronicoService.atualizarEquipamentoEletronico(this.equipamentoEletronicoId!,  equipamentoEletronico).subscribe({
+			next: () => {
 				Swal.fire({
 					icon: 'success',
 					title: 'Sucesso',
 					text: 'Equipamento eletrônico editado com sucesso.',
-				});
-			},
-			error: () => {
-
-				Swal.fire({
-					icon: 'error',
-					title: 'Ocorreu um error',
-					text: 'Entre em contato com a equipe de desenvolviemnto.',
-					timer: 3000,
+					showConfirmButton: false,
+					timer: 3000
+				}).then(() => {
+					this.router.navigate(['/']);
 				});
 			},
 		})
+	}
+
+	private getEquipamentoEletronico() {
+		return {
+			nome: this.form.value.nome,
+			tipoEquipamento: this.form.value.tipoEquipamento,
+			quantidadeEstoque: this.form.value.quantidadeEstoque,
+		};
 	}
 }

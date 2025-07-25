@@ -1,136 +1,65 @@
-﻿
+﻿using AutoMapper;
 using DesafioInventBackend.Model.DTO;
 using DesafioInventBackend.Model.Entity;
-using DesafioInventBackend.Service.Contract;
+using DesafioInventBackend.Service;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 
 namespace DesafioInventBackend.Controller
 {
-    [Route("api/equipamento-eletronico")]
     [ApiController]
+    [Route("api/equipamento-eletronico")]
     [EnableCors("AllowAngularApp")]
-    public class EquipamentoEletronicoController : ControllerBase
+    public class EquipamentoEletronicoController: ControllerBase
     {
 
-        private readonly IEquipamentoEletronicoService _service;
+        private readonly EquipamentoEletronicoService _service;
+        private readonly IMapper _mapper;
 
-        public EquipamentoEletronicoController(IEquipamentoEletronicoService equipamentoEletronicoService)
+        public EquipamentoEletronicoController(
+            EquipamentoEletronicoService equipamentoEletronicoService,
+            IMapper mapper
+            )
         {
             this._service = equipamentoEletronicoService;
+            this._mapper = mapper;
         }
 
         [HttpGet]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<RetornoEquipamentoEletronicoDto>))]
-        public async Task<ActionResult<ICollection<RetornoEquipamentoEletronicoDto>>> listarTodosEquipamentosEletronicos()
+        public OkObjectResult ListarTodosEquipamentosEletronicos()
         {
-            ICollection<RetornoEquipamentoEletronicoDto> listaEquipamentosEletronicos = await _service.listarEquipamentosEletronicos();
-            if (listaEquipamentosEletronicos.Count == 0)
-            {
-                return NotFound(new HttpStatus<ICollection<RetornoEquipamentoEletronicoDto>>
-                {
-                    Body = null,
-                    Status = 404,
-                    Message = "Not Found"
-                });
-            }
-
-            return Ok(new HttpStatus<ICollection<RetornoEquipamentoEletronicoDto>>
-            {
-                Body = listaEquipamentosEletronicos,
-                Status = 201,
-                Message = "Success"
-            });
+            IEnumerable<EquipamentoEletronico> listaEquipamentosEletronicos = _service.ListarTodos();
+            return Ok(_mapper.Map<IEnumerable<EquipamentoEletronicoDTO>>(listaEquipamentosEletronicos));
         }
 
         [HttpGet("{id}")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<RetornoEquipamentoEletronicoDto>))]
-        public async Task<ActionResult<RetornoEquipamentoEletronicoDto>> buscarEquipamentoEletronicoPorId(int id)
+        public ObjectResult buscarEquipamentoEletronicoPorId([FromRoute] string id)
         {
-            RetornoEquipamentoEletronicoDto equipamentoEletronicoDto = await _service.buscarEquipamentoEletronicoPorId(id);
-            if (equipamentoEletronicoDto == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(new HttpStatus<RetornoEquipamentoEletronicoDto>
-            {
-                Body = equipamentoEletronicoDto,
-                Status = 201,
-                Message = "Success"
-            });
+            return Ok(_service.BuscarPorId(id));
         }
 
         [HttpPost]
-        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(RetornoEquipamentoEletronicoDto))]
-        public async Task<ActionResult<RetornoEquipamentoEletronicoDto>> cadastrarEquipamentoEletronico(EquipamentoEletronicoDto equipamentoEletronicoDto)
+        public CreatedResult cadastrarEquipamentoEletronico([FromBody] EquipamentoEletronicoDTO equipamentoEletronicoDto)
         {
-
-            RetornoEquipamentoEletronicoDto retornoEquipamentoEletronicoDto = await _service.cadastrarEquipamentoEletronico(equipamentoEletronicoDto);
-            if (retornoEquipamentoEletronicoDto == null)
-            {
-                return NotFound(new HttpStatus<RetornoEquipamentoEletronicoDto>
-                {
-                    Body = null,
-                    Status = 400,
-                    Message = "Error"
-                });
-            }
-
-            return Ok(new HttpStatus<RetornoEquipamentoEletronicoDto>
-            {
-                Body = retornoEquipamentoEletronicoDto,
-                Status = 201,
-                Message = "Success"
-            });
+            _service.Cadastrar(_mapper.Map<EquipamentoEletronico>(equipamentoEletronicoDto));
+            return Created();
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<RetornoEquipamentoEletronicoDto>> atualizarEquipamentoEletronico(int id, AtualizarEquipamentoEletronicoDto equipamentoEletronicoDto)
+        public NoContentResult atualizarEquipamentoEletronico([FromRoute] string id, [FromBody] EquipamentoEletronicoDTO equipamentoEletronicoDto)
         {
-            RetornoEquipamentoEletronicoDto retornoEquipamentoEletronicoAtualizadoDto = await _service.atualizarEquipamentoEletronico(id, equipamentoEletronicoDto);
-            if (retornoEquipamentoEletronicoAtualizadoDto == null)
-            {
-                return NotFound(new HttpStatus<RetornoEquipamentoEletronicoDto>
-                {
-                    Body = null,
-                    Status = 400,
-                    Message = "Error"
-                });
-            }
-
-            return Ok(new HttpStatus<RetornoEquipamentoEletronicoDto>
-            {
-                Body = retornoEquipamentoEletronicoAtualizadoDto,
-                Status = 201,
-                Message = "Success"
-            });
+            _service.Atualizar(id, _mapper.Map<EquipamentoEletronico>(equipamentoEletronicoDto));
+            return NoContent();
         }
 
         [HttpDelete("{id}")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult> excluirEquipamentoEletronico(int id)
+        public NoContentResult excluirEquipamentoEletronico([FromRoute] string id)
         {
-
-            RetornoEquipamentoEletronicoDto retornoEquipamentoEletronicoExcluidoDto = await _service.excluirEquipamentoEletronico(id);
-
-            if (retornoEquipamentoEletronicoExcluidoDto != null)
-            {
-                return NotFound(new HttpStatus<RetornoEquipamentoEletronicoDto>
-                {
-                    Body = null,
-                    Status = 400,
-                    Message = "Error"
-                });
-            }
-
-            return Ok(new HttpStatus<RetornoEquipamentoEletronicoDto>
-            {
-                Body = null,
-                Status = 400,
-                Message = "Error"
-            });
+            _service.Excluir(id);
+            return NoContent();
         }
 
     }
 }
+
