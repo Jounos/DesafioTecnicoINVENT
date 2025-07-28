@@ -16,6 +16,8 @@ export class TipoEquipamentoPipe implements PipeTransform {
 				return 'Mouse';
 			case 4:
 				return 'Teclado';
+			case 5:
+				return 'Celular';
 			default:
 				return 'undefined';
 		}

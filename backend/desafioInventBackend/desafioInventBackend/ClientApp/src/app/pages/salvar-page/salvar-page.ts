@@ -20,7 +20,7 @@ export class SalvarPage implements OnInit {
 
 	protected form: FormGroup = this.formBuilder.group({
 		nome: [null, [Validators.required, Validators.minLength(3), Validators.maxLength(100)]],
-		tipoEquipamento: [null, [Validators.required, Validators.min(1), Validators.max(4)]],
+		tipoEquipamento: [null, [Validators.required, Validators.min(1), Validators.max(5)]],
 		quantidadeEstoque: [null, [Validators.required, Validators.min(0)]]
 	});
 
@@ -30,6 +30,7 @@ export class SalvarPage implements OnInit {
 		{ id: 2, label: 'Notebook' },
 		{ id: 3, label: 'Mouse' },
 		{ id: 4, label: 'Teclado' },
+		{ id: 5, label: 'Celular'}
 	];
 
 	constructor(

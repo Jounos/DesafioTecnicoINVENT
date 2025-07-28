@@ -6,6 +6,6 @@
         Notebook = 2,
         Mouse = 3,
         Teclado = 4,
-        Monitor = 5
+        Celular = 5
     }
 }

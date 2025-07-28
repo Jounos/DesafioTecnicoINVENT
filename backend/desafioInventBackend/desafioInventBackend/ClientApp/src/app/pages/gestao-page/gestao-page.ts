@@ -27,6 +27,7 @@ export class GestaoPage implements OnInit, OnDestroy {
 		{ id: 2, label: 'Notebook' },
 		{ id: 3, label: 'Mouse' },
 		{ id: 4, label: 'Teclado' },
+		{ id: 5, label: 'Celular' },
 	];
 
 	listaEquipamentosEletronicos: IEquipamentoEletronico[] = [];

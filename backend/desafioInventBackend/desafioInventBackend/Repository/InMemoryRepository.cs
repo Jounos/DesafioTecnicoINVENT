@@ -31,8 +31,10 @@ namespace DesafioInventBackend.Repository
             _itens.Add(entity);
         }
 
-        public void Atualizar(string id, EquipamentoEletronico entity, EquipamentoEletronico entityModified)
+        public void Atualizar(string id, EquipamentoEletronico entityModified)
         {
+
+            EquipamentoEletronico entity = BuscarPorId(id);
 
             var index = _itens.IndexOf(entity);
 
