@@ -1,22 +1,16 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using DesafioInventBackend.Model.Entity;
+using DesafioInventBackend.Model.Enum;
 
 namespace DesafioInventBackend.Model.DTO
 {
-    public class EquipamentoEletronicoDto
+    public class EquipamentoEletronicoDTO
     {
-        
-        [Required]
-        public string? Nome { get; set; }
-
-        [Required]
-        public int TipoEquipamento { get; set; }
-
-        [Required]
+        public string Id { get; set; } = string.Empty;
+        public string Nome { get; set; } = string.Empty;
+        public TipoEquipamentoEnum TipoEquipamento { get; set; }
         public int QuantidadeEstoque { get; set; }
+        public DateTimeOffset DataInclusao { get; set; }
 
-        public EquipamentoEletronicoDto()
-        {
-
-        }
+        public bool TemEstoque { get { return QuantidadeEstoque > 0; } }
     }
 }

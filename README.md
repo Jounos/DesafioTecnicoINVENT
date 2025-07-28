@@ -24,3 +24,30 @@ O prazo para entrega seria até quarta-feira da próxima semana
 # Implementação
 
 Implementado um processo CRUD utilizando .NET 9 no backend e angular 20 no frontend
+
+# Aprimoração
+
+Aprimorar a qualidade de sua API .NET, adicionando conexão com o banco de 
+dados e introduzindo validações e testes unitários. Em paralelo, iniciar o 
+aprendizado de uma nova tecnologia de front-end SAPUI5 através do tutorial 
+oficial.
+
+## Conexão com o banco de dados
+
+Para efetuar essa conexão dê preferência para uma base noSql  
+Exemplos: **RavenDB**
+
+## Validação com FluentValidation
+
+Leia a documentação oficial do **FluentValidation**: [FluentValidation -- FluentValidation documantation](https://docs.fluentvalidation.net/en/latest/)  
+Crie suas validações baseados nas regras do seu modelo de dados.
+
+## Testes Unitários com xUnit
+
+Crie seu projeto de testes: **xUnit Test Project**  
+
+Entenda os conceitos de testes unitários e a estrutura "Arrange-Act-Assert" AAA. Veja a documentação do **xUnit**: [Home](https://xunit.net/?tabs=cs)
+
+Garanta a cobertura de testes para cada regra de validação do modelo. É 
+fundamental validar tanto os cenários de sucesso (dados válidos) quanto os de 
+falha (dados inválidos para cada regra).
