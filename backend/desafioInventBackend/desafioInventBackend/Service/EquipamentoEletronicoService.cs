@@ -2,7 +2,6 @@
 using DesafioInventBackend.Model.Validator;
 using DesafioInventBackend.Repository;
 using FluentValidation;
-using NuGet.Protocol.Core.Types;
 
 namespace DesafioInventBackend.Service
 {
