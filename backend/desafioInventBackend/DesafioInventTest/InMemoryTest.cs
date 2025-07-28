@@ -16,7 +16,7 @@ namespace DesafioInventTest
         public InMemoryTest()
         {
             _repository = new InMemoryRepository();
-            _service = new EquipamentoEletronicoService(_repository, new EquipamentoEletronicoValidator(), new EquipamentoEletronicoAlterarValidator(), new EquipamentoEletronicoDeleteValidator());
+            _service = new EquipamentoEletronicoService(_repository, new EquipamentoEletronicoCadastrarValidator(), new EquipamentoEletronicoAlterarValidator(), new EquipamentoEletronicoDeleteValidator());
         }
 
 
@@ -45,6 +45,20 @@ namespace DesafioInventTest
             EquipamentoEletronico equipamentoEletronico = new EquipamentoEletronico
             {
                 Nome = "Positivo",
+            };
+
+            Assert.Throws<ValidationException>(() => _service.Cadastrar(equipamentoEletronico));
+        }
+
+        [Fact]
+        public void Cadastrar_equipamento_eletronico_deve_lancar_uma_excecao_ValidationException_Por_tentar_cadastrar_Equipamento_Eletronico_com_Zero_em_estoque()
+        {
+
+            EquipamentoEletronico equipamentoEletronico = new EquipamentoEletronico
+            {
+                Nome = "Alienware",
+                TipoEquipamento = TipoEquipamentoEnum.PC,
+                QuantidadeEstoque = 0,
             };
 
             Assert.Throws<ValidationException>(() => _service.Cadastrar(equipamentoEletronico));

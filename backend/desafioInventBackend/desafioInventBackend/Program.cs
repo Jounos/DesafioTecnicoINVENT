@@ -20,7 +20,7 @@ builder.Services.AddSingleton<RavenDbContext>();
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<IRepositoryEquipamentoEletronico, RavenDbRepository>();
-builder.Services.AddScoped<EquipamentoEletronicoValidator>();
+builder.Services.AddScoped<EquipamentoEletronicoCadastrarValidator>();
 builder.Services.AddScoped<EquipamentoEletronicoAlterarValidator>();
 builder.Services.AddScoped<EquipamentoEletronicoDeleteValidator>();
 builder.Services.AddScoped<EquipamentoEletronicoService>();

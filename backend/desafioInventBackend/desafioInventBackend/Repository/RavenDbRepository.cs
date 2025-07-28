@@ -13,7 +13,7 @@ namespace DesafioInventBackend.Repository
         public IEnumerable<EquipamentoEletronico> ListarTodos()
         {
             using IDocumentSession session = _getOpenedSession();
-            return session.Query<EquipamentoEletronico>().ToList();
+            return session.Query<EquipamentoEletronico>().OrderByDescending(ee => ee.DataInclusao).ToList();
         }
 
         public EquipamentoEletronico BuscarPorId(string id, IDocumentSession sessionOpened = null)

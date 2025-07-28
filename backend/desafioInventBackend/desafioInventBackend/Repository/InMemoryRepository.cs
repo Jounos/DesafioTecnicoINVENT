@@ -10,7 +10,7 @@ namespace DesafioInventBackend.Repository
            
         public IEnumerable<EquipamentoEletronico> ListarTodos()
         {
-            return _itens;
+            return _itens.OrderByDescending(i => i.DataInclusao);
         }
         
         public EquipamentoEletronico BuscarPorId(string id, IDocumentSession session = null)

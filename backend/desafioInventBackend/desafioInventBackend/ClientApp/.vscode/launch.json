@@ -6,7 +6,7 @@
 		"name": "Lauch Chrome",
 		"type": "chrome",
 		"request": "launch",
-		"url": "http://localhost:4200",
+		"url": "https://localhost:44400",
 		"webRoot": "${workspaceFolder}"
 	},
   ]

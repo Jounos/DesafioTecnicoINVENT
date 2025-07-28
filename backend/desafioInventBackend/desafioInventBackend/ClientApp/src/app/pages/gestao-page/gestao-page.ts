@@ -51,23 +51,15 @@ export class GestaoPage implements OnInit, OnDestroy {
 			this.equipamentoEletronicoService.listarTodosEquipamentosEleronicos().subscribe({
 				next: (value: HttpResponse<IEquipamentoEletronico[]>) => {
 					if (value.body?.length === 0) {
-						Swal.fire({
-							icon: 'info',
-							title: 'Atenção',
-							text: 'Nenhum Equipamento Eletrônico foi encontrado',
-							showConfirmButton: false,
-						});
+
+						this.listaEquipamentosEletronicos = [];
+						this.listaEquipamentosEletronicosFiltrada = [];
+
 						return;
 					}
 
 					this.listaEquipamentosEletronicos = value.body!;
-					this.listaEquipamentosEletronicosFiltrada = value.body!.sort((a, b) => {
-						if (dayjs(b.dataInclusao).isBefore(a.dataInclusao)) {
-							return -1;
-						} else {
-							return 1;
-						}
-					});
+					this.listaEquipamentosEletronicosFiltrada = value.body!;
 					this.updatePagination();
 					this.cdr.detectChanges();
 				}
@@ -129,16 +121,18 @@ export class GestaoPage implements OnInit, OnDestroy {
 			if (result.isConfirmed) {
 				this.equipamentoEletronicoService.deletarEquipamentoEletronico(equipamentoEletronico.id).subscribe({
 					next: () => {
+						this.listar();
+						this.cdr.detectChanges();
+					},
+					complete: () => {
 						Swal.fire({
 							icon: 'success',
 							title: 'Sucesso',
 							text: 'equipamento excluído com sucesso.',
 							timer: 3000,
 							showConfirmButton: false,
-						}).then(() => {
-							this.listar();
-						});
-					},
+						})
+					}
 				})
 			}
 		})

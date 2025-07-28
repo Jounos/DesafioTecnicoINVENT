@@ -19,7 +19,7 @@ export class SalvarPage implements OnInit {
 	private formBuilder = inject(FormBuilder);
 
 	protected form: FormGroup = this.formBuilder.group({
-		nome: [null, [Validators.required, Validators.minLength(3), Validators.maxLength(100)]],
+		nome: [null, [Validators.required, Validators.minLength(2), Validators.maxLength(100)]],
 		tipoEquipamento: [null, [Validators.required, Validators.min(1), Validators.max(5)]],
 		quantidadeEstoque: [null, [Validators.required, Validators.min(0)]]
 	});

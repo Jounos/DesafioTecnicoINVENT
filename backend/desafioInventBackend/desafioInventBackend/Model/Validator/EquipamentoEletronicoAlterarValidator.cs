@@ -7,6 +7,7 @@ namespace DesafioInventBackend.Model.Validator
     {
         public EquipamentoEletronicoAlterarValidator(): base()
         {
+            RuleFor(ee => ee.QuantidadeEstoque).NotNull().GreaterThanOrEqualTo(0);
             RuleFor(ee => ee.Id).NotNull().NotEmpty();
         }
     }

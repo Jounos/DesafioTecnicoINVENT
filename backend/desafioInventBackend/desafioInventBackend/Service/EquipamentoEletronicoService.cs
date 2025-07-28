@@ -9,16 +9,16 @@ namespace DesafioInventBackend.Service
     {
 
         private readonly IRepositoryEquipamentoEletronico _repository;
-        private readonly EquipamentoEletronicoValidator _equipamentoEletronicoValidator;
+        private readonly EquipamentoEletronicoCadastrarValidator _equipamentoEletronicoCadastrarValidator;
         private readonly EquipamentoEletronicoAlterarValidator _equipamentoEletronicoAlterarValidator;
         private readonly EquipamentoEletronicoDeleteValidator _equipamentoEletronicoDeletarValidator;
 
 
-        public EquipamentoEletronicoService(IRepositoryEquipamentoEletronico repository, EquipamentoEletronicoValidator equipamentoEletronicoValidator,
+        public EquipamentoEletronicoService(IRepositoryEquipamentoEletronico repository, EquipamentoEletronicoCadastrarValidator equipamentoEletronicoCadastrarValidator,
             EquipamentoEletronicoAlterarValidator equipamentoEletronicoAlterarValidator, EquipamentoEletronicoDeleteValidator equipamentoEletronicoDeletarValidator)
         {
             _repository = repository;
-            _equipamentoEletronicoValidator = equipamentoEletronicoValidator;
+            _equipamentoEletronicoCadastrarValidator = equipamentoEletronicoCadastrarValidator;
             _equipamentoEletronicoAlterarValidator = equipamentoEletronicoAlterarValidator;
             _equipamentoEletronicoDeletarValidator = equipamentoEletronicoDeletarValidator;
         }
@@ -35,7 +35,7 @@ namespace DesafioInventBackend.Service
 
         public void Cadastrar(EquipamentoEletronico equipamentoEletronico)
         {
-            _equipamentoEletronicoValidator.ValidateAndThrow(equipamentoEletronico);
+            _equipamentoEletronicoCadastrarValidator.ValidateAndThrow(equipamentoEletronico);
             _repository.Cadastrar(equipamentoEletronico);
         }
 
