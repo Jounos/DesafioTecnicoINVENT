@@ -29,7 +29,7 @@ export class EquipamentoEletronicoService {
 		return this.http.put(`${this.endpoint}/${id}`, equipamentoEletronico, { observe: 'response', responseType: 'json' });
 	}
 
-	deletarEquipamentoEletronico(id: string) {
-		return this.http.delete(`${this.endpoint}/${id}`, { observe: 'response', responseType: 'json' })
+	deletarEquipamentoEletronico(equipamentoEletronico: IEquipamentoEletronico) {
+		return this.http.delete(`${this.endpoint}/${equipamentoEletronico.id}`, { observe: 'response', responseType: 'json', body: equipamentoEletronico })
 	}
 }

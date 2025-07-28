@@ -112,7 +112,7 @@ export class GestaoPage implements OnInit, OnDestroy {
 
 		this.confirmarExclusao().then((result) => {
 			if (result.isConfirmed) {
-				this.equipamentoEletronicoService.deletarEquipamentoEletronico(equipamentoEletronico.id).subscribe({
+				this.equipamentoEletronicoService.deletarEquipamentoEletronico(equipamentoEletronico).subscribe({
 					next: () => {
 						this.listar();
 					},
