@@ -50,13 +50,6 @@ export class GestaoPage implements OnInit, OnDestroy {
 		this.subscription.add(
 			this.equipamentoEletronicoService.listarTodosEquipamentosEleronicos().subscribe({
 				next: (value: HttpResponse<IEquipamentoEletronico[]>) => {
-					if (value.body?.length === 0) {
-
-						this.listaEquipamentosEletronicos = [];
-						this.listaEquipamentosEletronicosFiltrada = [];
-
-						return;
-					}
 
 					this.listaEquipamentosEletronicos = value.body!;
 					this.listaEquipamentosEletronicosFiltrada = value.body!;
@@ -122,7 +115,6 @@ export class GestaoPage implements OnInit, OnDestroy {
 				this.equipamentoEletronicoService.deletarEquipamentoEletronico(equipamentoEletronico.id).subscribe({
 					next: () => {
 						this.listar();
-						this.cdr.detectChanges();
 					},
 					complete: () => {
 						Swal.fire({
