@@ -14,6 +14,11 @@ builder.Services.AddCors(options =>
         policy => policy.WithOrigins("https://localhost:44400")
                         .AllowAnyHeader()
                         .AllowAnyMethod());
+
+    options.AddPolicy("AllowSapUi5APP", 
+        policy => policy.WithOrigins("")
+                         .AllowAnyHeader()
+                         .AllowAnyMethod());
 });
 
 builder.Services.AddSingleton<RavenDbContext>();
@@ -56,5 +61,6 @@ app.MapFallbackToFile("index.html");
 app.MapControllers();
 
 app.UseCors("AllowAngularApp");
+app.UseCors("AllowSapUi5APP");
 
 app.Run();

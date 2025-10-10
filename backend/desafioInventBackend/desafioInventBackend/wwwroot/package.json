@@ -1,0 +1,11 @@
+{
+    "name": "desafio-tecnico",
+    "version": "1.0.0",
+    "description": "Projeto para estudo de SAPUI5",
+    "script": {
+        "start": "ui5 serve -o index.html"
+    },
+    "devDependencies": {
+        "@ui5/cli": "^4.0.30"
+    }
+}
