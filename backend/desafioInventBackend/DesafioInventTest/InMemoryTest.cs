@@ -118,7 +118,7 @@ namespace DesafioInventTest
 
             _service.Atualizar(ID_EQUIPAMENTO_ELETRONICO, equipamentoEletronico);
 
-            _service.Excluir(ID_EQUIPAMENTO_ELETRONICO);
+            _service.Excluir(equipamentoEletronico);
 
             Assert.Null(_service.BuscarPorId(ID_EQUIPAMENTO_ELETRONICO));
         }
@@ -128,8 +128,9 @@ namespace DesafioInventTest
         {
             Cadastrar_equipamento_eletronico_deve_retornar_um_equipamento_eletronico_valido();
 
-            const string ID_EQUIPAMENTO_ELETRONICO = "1";
-            Assert.Throws<ValidationException>(() => _service.Excluir(ID_EQUIPAMENTO_ELETRONICO));
+            const string ID_ESPERADO = "1";
+            EquipamentoEletronico equipamentoEletronico = _service.BuscarPorId(ID_ESPERADO);
+            Assert.Throws<ValidationException>(() => _service.Excluir(equipamentoEletronico));
         }
 
         [Fact]
