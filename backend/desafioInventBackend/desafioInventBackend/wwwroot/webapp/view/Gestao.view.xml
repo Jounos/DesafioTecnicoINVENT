@@ -1,0 +1,16 @@
+<mvc:View 
+    controllerName="ui5.desafio-tecnico.controller.Gestao"
+    xmlns="sap.m"
+    xmlns:mvc="sap.ui.core.mvc">
+    <Panel
+        headerText="{i18n>gestaoPanelTitle}"
+        class="sapUiResponsiveMargin"
+        width="auto"
+        expandable="{device>/system/phone}"
+		expanded="{= !${device>/system/phone} }"
+        accessibleRole="Region">
+        <content>
+            <Text text="Testeandfo" />
+        </content>
+    </Panel>
+</mvc:View>

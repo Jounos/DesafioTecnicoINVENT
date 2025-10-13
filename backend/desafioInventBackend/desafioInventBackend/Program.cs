@@ -15,8 +15,8 @@ builder.Services.AddCors(options =>
                         .AllowAnyHeader()
                         .AllowAnyMethod());
 
-    options.AddPolicy("AllowSapUi5APP", 
-        policy => policy.WithOrigins("")
+    options.AddPolicy("AllowSapUi5APP",
+        policy => policy.WithOrigins("https://localhost:55500")
                          .AllowAnyHeader()
                          .AllowAnyMethod());
 });
