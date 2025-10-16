@@ -1,0 +1,86 @@
+{
+  "_version": "1.65.0",
+  "sap.app": {
+    "id": "invent.desafio.equipamentoseletronicos",
+    "i18n": "i18n/i18n.properties",
+    "title": "{{appTitle}}",
+    "description": "{{appDescription}}",
+    "type": "application",
+    "applicationVersion": {
+      "version": "1.0.0"
+    }
+  },
+  "sap.ui": {
+    "technology": "UI5",
+    "deviceTypes": {
+      "desktop": true,
+      "tablet": true,
+      "phone": true
+    }
+  },
+  "sap.ui5": {
+    "dependencies": {
+      "minUI5Version": "1.108.0",
+      "libs": {
+        "sap.ui.core": {},
+        "sap.m": {}
+      }
+    },
+    "models": {
+      "i18n": {
+        "type": "sap.ui.model.resource.ResourceModel",
+        "settings": {
+          "bundleName": "invent.desafio.equipamentoseletronicos.i18n.i18n",
+          "supportedLocales": [
+            "en",
+            "pt",
+            "es"
+          ],
+          "fallbackLocale": "pt"
+        }
+      },
+      "equipamentoseletronicos": {
+        "dataSource": "equipamentosEletronicosRemote"
+      }
+    },
+    "rootView": {
+      "viewName": "invent.desafio.equipamentoseletronicos.view.app.App",
+      "type": "XML",
+      "id": "app"
+    },
+    "resources": {
+      "css": [
+        {
+          "uri": "css/style.css"
+        }
+      ]
+    },
+    "routing": {
+      "config": {
+        "routerClass": "sap.m.routing.Router",
+        "type": "View",
+        "viewType": "XML",
+        "path": "invent.desafio.equipamentoseletronicos.view",
+        "controlId": "app",
+        "controlAggregation": "pages"
+      },
+      "routes": [
+        {
+          "pattern": "",
+          "name": "listagem",
+          "target": "listagem"
+        }
+      ],
+      "targets": {
+        "listagem": {
+          "id": "listagem",
+          "name": "listagem.Listagem"
+        }
+      }
+    },
+    "contentDensities": {
+      "compact": true,
+      "cozy": true
+    }
+  }
+}

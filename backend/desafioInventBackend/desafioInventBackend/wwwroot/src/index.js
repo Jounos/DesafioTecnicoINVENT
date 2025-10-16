@@ -4,9 +4,9 @@ sap.ui.define([
     "use strict";
 
     new ComponentContainer({
-        name: "ui5.desafio-tecnico",
+        name: "invent.desafio.equipamentoseletronicos",
 		settings: {
-			id: "desafio-tecnico"
+			id: "equipamentoseletronicos"
 		},
 		async: true
     }).placeAt("content");

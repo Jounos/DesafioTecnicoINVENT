@@ -6,17 +6,17 @@ sap.ui.define([
 ], (UIComponent, JSONModel, ResourceModel, Device) => {
     "use strict";
 
-    return UIComponent.extend("ui.desafio-tecnico.Component", {
+    return UIComponent.extend("invent.desafio.equipamentoseletronicos", {
         metadata: {
             interfaces: ["sap.ui.core.IAsyncContentCreation"],
             manifest: "json"
-        },        
+        },
 
         init() {
             UIComponent.prototype.init.apply(this, arguments);
 
             const i18nModel = new ResourceModel({
-                bundleName: "ui5.desafio-tecnico.i18n.i18n"
+                bundleName: "invent.desafio.equipamentoseletronicos"
             });
             this.setModel(i18nModel, "i18n");
 
@@ -30,5 +30,5 @@ sap.ui.define([
         getContentDensityClass() {
 			return Device.support.touch ? "sapUiSizeCozy" : "sapUiSizeCompact";
 		}
-    }); 
+    });
 });
