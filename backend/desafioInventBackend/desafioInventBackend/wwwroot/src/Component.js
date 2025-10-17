@@ -6,25 +6,18 @@ sap.ui.define([
 ], (UIComponent, JSONModel, ResourceModel, Device) => {
     "use strict";
 
-    return UIComponent.extend("invent.desafio.equipamentoseletronicos", {
+    return UIComponent.extend("invent.desafio", {
         metadata: {
-            interfaces: ["sap.ui.core.IAsyncContentCreation"],
             manifest: "json"
         },
 
         init() {
             UIComponent.prototype.init.apply(this, arguments);
 
-            const i18nModel = new ResourceModel({
-                bundleName: "invent.desafio.equipamentoseletronicos"
+			const i18nModel = new ResourceModel({
+                bundleName: "invent.desafio.i18n.i18n"
             });
             this.setModel(i18nModel, "i18n");
-
-            const oDeviceModel = new JSONModel(Device);
-			oDeviceModel.setDefaultBindingMode("OneWay");
-			this.setModel(oDeviceModel, "device");
-
-            this.getRouter().initialize();
         },
 
         getContentDensityClass() {

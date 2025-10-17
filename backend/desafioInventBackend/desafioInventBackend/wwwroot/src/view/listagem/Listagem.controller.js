@@ -6,9 +6,7 @@ sap.ui.define([
 ], (Controller) => {
     "use strict";
 
-    return Controller.extend("invent.desafio.equipamentoseletronicos.controller.listagem", {
-		onInit() {
-			this.getView().addStyleClass(this.getOwnerComponent().getContentDensityClass());
-		}
+    return Controller.extend("invent.desafio.listagem.Listagem", {
+
     });
 });

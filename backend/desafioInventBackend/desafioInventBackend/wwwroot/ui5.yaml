@@ -1,6 +1,6 @@
 specVersion: "4.0"
 metadata:
-  name: invent.desafio.equipamentoseletronicos
+  name: invent.desafio
 type: application
 resources:
   configuration:
