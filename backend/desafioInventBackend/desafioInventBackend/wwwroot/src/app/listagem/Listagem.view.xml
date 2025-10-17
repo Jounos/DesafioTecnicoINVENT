@@ -1,5 +1,5 @@
 <mvc:View
-    controllerName="invent.desafio.view.listagem.listagem"
+    controllerName="desafio.listagem.Listagem"
     xmlns="sap.m"
     xmlns:core="sap.ui.core"
     xmlns:mvc="sap.ui.core.mvc"

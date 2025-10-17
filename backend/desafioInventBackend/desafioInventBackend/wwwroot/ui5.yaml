@@ -1,6 +1,6 @@
 specVersion: "4.0"
 metadata:
-  name: invent.desafio
+  name: desafio
 type: application
 resources:
   configuration:
@@ -10,8 +10,12 @@ framework:
   name: OpenUI5
   version: "1.141.0"
   libraries:
+    - name: sap.f
     - name: sap.m
+    - name: sap.tnt
     - name: sap.ui.core
+    - name: sap.ui.layout
+    - name: sap.uxap
     - name: themelib_sap_horizon
 server:
   settings:

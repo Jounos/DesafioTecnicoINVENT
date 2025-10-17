@@ -1,0 +1,22 @@
+<mvc:View
+    controllerName="desafio.app.app"
+    xmlns="sap.m"
+    xmlns:mvc="sap.ui.core.mvc"
+    height="100%"
+    displayBlock="true"
+    xmlns:html="http://www.w3.org/1999/xhtml">
+
+    <Shell>
+      <App class="myAppDemoWT">
+        <pages>
+          <Page title="{i18n>homePageTitle}">
+            <content>
+              <Panel accessibleRole="Region">
+                <Text text="test"></Text>
+              </Panel>
+            </content>
+          </Page>
+        </pages>
+      </App>
+	</Shell>
+</mvc:View>
