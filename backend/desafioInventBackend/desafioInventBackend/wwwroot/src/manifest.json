@@ -70,12 +70,21 @@
           "pattern": "",
           "name": "listagem",
           "target": "listagem"
+        },
+        {
+          "pattern": "cadastro",
+          "name": "cadastro",
+          "target": "cadastro"
         }
       ],
       "targets": {
         "listagem": {
           "viewId": "listagem",
           "viewName": "listagem.Listagem"
+        },
+        "cadastro": {
+          "viewId": "cadastro",
+          "viewName": "cadastro.Cadastro"
         }
       }
     },

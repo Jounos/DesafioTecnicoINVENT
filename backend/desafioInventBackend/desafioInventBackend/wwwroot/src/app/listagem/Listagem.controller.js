@@ -8,5 +8,9 @@ sap.ui.define([
 
     return Controller.extend("desafio.app.listagem.Listagem", {
 
+		aoClicarBotaoCadastrar: function (event) {
+			const oRouter = this.getOwnerComponent().getRouter();
+			oRouter.navTo("cadastro");
+		}
     });
 });

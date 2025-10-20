@@ -3,12 +3,74 @@
     xmlns="sap.m"
     xmlns:core="sap.ui.core"
     xmlns:mvc="sap.ui.core.mvc"
+    xmlns:l="sap.ui.layout"
 >
-  <Page title="{i18n>homePageTitle}">
+  <Page title="{i18n>Listagem.Title}">
       <content>
-          <Panel accessibleRole="Region">
-              <Text text="test" />
+        <VBox>
+
+          <Panel
+            headerText="{i18n>Listagem.panelHeaderTitle}"
+            class="sapUiResponsiveMargin"
+            width="auto"
+            expandable="{device>/system/phone}"
+            expanded="{= !${device>/system/phone} }"
+            accessibleRole="Region">
+            <content>
+              <l:VerticalLayout width="60%">
+                <Label text="Nome" displayOnly="true" labelFor="nomeInput"/>
+                <Input id="nomeInput"/>
+              </l:VerticalLayout>
+              <l:VerticalLayout width="40%">
+                <Label text="Tipo Equipamento" labelFor="tipEquipamentoSelect"/>
+                <Select width="100%" id="tipEquipamentoSelect" >
+                  <core:Item key="1" text="PC"/>
+                  <core:Item key="2" text="Notebook"/>
+                  <core:Item key="3" text="Mouse"/>
+                  <core:Item key="4" text="Teclado"/>
+                  <core:Item key="5" text="Celular"/>
+                </Select>
+              </l:VerticalLayout>
+              <l:VerticalLayout width="100%">
+                <Button text="Cadastrar" class="myCustomButton" press="aoClicarBotaoCadastrar"/>
+            </l:VerticalLayout>
+            </content>
           </Panel>
+
+          <Panel>
+            <headerToolbar>
+              <Toolbar>
+                <Title text="{i18n>Listagem.tableHeaderTitle}"/>
+              </Toolbar>
+            </headerToolbar>
+            <Table
+              id="equipamentosEletronicosList"
+              class="sapUiResponsiveMargin"
+              width="auto"
+            >
+              <columns>
+                <Column>
+                  <Text text="Nome do produto"/>
+                </Column>
+                <Column>
+                  <Text text="Tipo do Equipamento"/>
+                </Column>
+                <Column>
+                  <Text text="Há em estoque"/>
+                </Column>
+                <Column>
+                  <Text text="Quantidade"/>
+                </Column>
+                <Column>
+                  <Text text="Inclusão"/>
+                </Column>
+                <Column>
+                  <Text text="Ações"/>
+                </Column>
+              </columns>
+            </Table>
+          </Panel>
+        </VBox>
       </content>
   </Page>
 </mvc:View>
