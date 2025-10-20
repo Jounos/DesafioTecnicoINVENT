@@ -4,6 +4,8 @@ sap.ui.define([
     "use strict";
 
     return Controller.extend("desafio.app.App", {
-
+		onInit() {
+			this.getView().addStyleClass(this.getOwnerComponent().getContentDensityClass());
+		}
     });
 });

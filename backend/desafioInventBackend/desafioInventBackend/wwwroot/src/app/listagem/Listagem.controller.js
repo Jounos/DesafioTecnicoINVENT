@@ -6,7 +6,7 @@ sap.ui.define([
 ], (Controller) => {
     "use strict";
 
-    return Controller.extend("desafio.listagem.Listagem", {
+    return Controller.extend("desafio.app.listagem.Listagem", {
 
     });
 });

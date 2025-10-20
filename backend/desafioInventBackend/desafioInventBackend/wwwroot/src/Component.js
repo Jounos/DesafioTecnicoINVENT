@@ -22,6 +22,8 @@ sap.ui.define([
             this.setModel(i18nModel, "i18n");
 
 			UIComponent.prototype.init.apply(this, arguments);
+
+			this.getRouter().initialize();
 		},
 
 		getContentDensityClass() {
@@ -45,7 +47,6 @@ sap.ui.define([
 			oModel.setDefaultBindingMode("OneWay");
 			return oModel;
 		},
-
 
 		destroy: function () {
 			// call the base component's destroy function

@@ -1,20 +1,14 @@
 <mvc:View
-    controllerName="desafio.listagem.Listagem"
+    controllerName="desafio.app.listagem.Listagem"
     xmlns="sap.m"
     xmlns:core="sap.ui.core"
     xmlns:mvc="sap.ui.core.mvc"
 >
-  <Shell>
-		<App class="myAppDemoWT">
-			<pages>
-				<Page title="{i18n>homePageTitle}">
-					<content>
-						<Panel accessibleRole="Region">
-              <Text text="test"></Text>
-            </Panel>
-					</content>
-				</Page>
-			</pages>
-		</App>
-	</Shell>
+  <Page title="{i18n>homePageTitle}">
+      <content>
+          <Panel accessibleRole="Region">
+              <Text text="test" />
+          </Panel>
+      </content>
+  </Page>
 </mvc:View>

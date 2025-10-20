@@ -56,28 +56,29 @@
       ]
     },
     "routing": {
-    "config": {
+      "config": {
         "routerClass": "sap.m.routing.Router",
         "type": "View",
         "viewType": "XML",
-        "path": "desafio.view",
+        "path": "desafio.app",
         "controlId": "app",
-        "controlAggregation": "pages"
-    },
-    "routes": [
+        "controlAggregation": "pages",
+        "async": true
+      },
+      "routes": [
         {
-            "pattern": "",
-            "name": "listagem",
-            "target": "Listagem"
+          "pattern": "",
+          "name": "listagem",
+          "target": "listagem"
         }
-    ],
-    "targets": {
-        "Listagem": {
-            "id": "listagem",
-            "name": "Listagem"
+      ],
+      "targets": {
+        "listagem": {
+          "viewId": "listagem",
+          "viewName": "listagem.Listagem"
         }
-    }
-},
+      }
+    },
     "contentDensities": {
       "compact": true,
       "cozy": true
