@@ -1,4 +1,6 @@
 ﻿using DesafioInventBackend.Model.Entity;
+using DesafioInventBackend.Model.Enum;
+using DesafioInventBackend.Model.Filters;
 using Raven.Client.Documents.Session;
 
 namespace DesafioInventBackend.Repository
@@ -7,7 +9,50 @@ namespace DesafioInventBackend.Repository
     {
         
         private readonly List<EquipamentoEletronico> _itens = new List<EquipamentoEletronico>();
-           
+
+        public IEnumerable<EquipamentoEletronico> BuscarPorFiltros(BuscaFiltros filtros)
+        {
+            List<EquipamentoEletronico> itensFiltrados = new List<EquipamentoEletronico>();
+
+
+            if (filtros.Nome != string.Empty)
+            { 
+                itensFiltrados = _itens.FindAll(i => i.Nome.Contains(filtros.Nome));
+            }
+
+            if (filtros.TipoEquipamento != 0)
+            {
+                itensFiltrados.AddRange(_itens.FindAll(i => i.TipoEquipamento == filtros.TipoEquipamento));           
+            }
+            
+            if (filtros.DataInicio != DateTimeOffset.MinValue)
+            {
+                itensFiltrados.AddRange(_itens.FindAll(i => i.DataInclusao >= filtros.DataInicio));
+            }
+
+            if (filtros.DataFim != DateTimeOffset.MinValue)
+            {
+                itensFiltrados.AddRange(_itens.FindAll(i => i.DataInclusao <= filtros.DataFim));
+            }
+
+            itensFiltrados.AddRange(_itens.FindAll(i =>
+            {
+                if (filtros.EquipamentoEmEstoqueEnum == EquipamentoEmEstoqueEnum.EM_ESTOQUE)
+                {
+                    return i.QuantidadeEstoque > 0;
+                }
+
+                if (filtros.EquipamentoEmEstoqueEnum == EquipamentoEmEstoqueEnum.NAO_TEM_ESTOQUE)
+                {
+                    return i.QuantidadeEstoque == 0;
+                }
+
+                return true;
+            }));
+
+            return itensFiltrados.Distinct().ToList();
+        }
+
         public IEnumerable<EquipamentoEletronico> ListarTodos()
         {
             return _itens.OrderByDescending(i => i.DataInclusao);

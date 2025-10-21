@@ -1,4 +1,5 @@
 ﻿using DesafioInventBackend.Model.Entity;
+using DesafioInventBackend.Model.Filters;
 using DesafioInventBackend.Model.Validator;
 using DesafioInventBackend.Repository;
 using FluentValidation;
@@ -23,6 +24,11 @@ namespace DesafioInventBackend.Service
             _equipamentoEletronicoDeletarValidator = equipamentoEletronicoDeletarValidator;
         }
         
+        public IEnumerable<EquipamentoEletronico> BuscarPorFiltros(BuscaFiltros filtros)
+        {
+            return _repository.BuscarPorFiltros(filtros);
+        }
+
         public IEnumerable<EquipamentoEletronico> ListarTodos()
         {
             return _repository.ListarTodos();

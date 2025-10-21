@@ -1,9 +1,11 @@
 using DesafioInventBackend.Model.Entity;
 using DesafioInventBackend.Model.Enum;
+using DesafioInventBackend.Model.Filters;
 using DesafioInventBackend.Model.Validator;
 using DesafioInventBackend.Repository;
 using DesafioInventBackend.Service;
 using FluentValidation;
+using System.Data;
 
 namespace DesafioInventTest
 {
@@ -18,7 +20,6 @@ namespace DesafioInventTest
             _repository = new InMemoryRepository();
             _service = new EquipamentoEletronicoService(_repository, new EquipamentoEletronicoCadastrarValidator(), new EquipamentoEletronicoAlterarValidator(), new EquipamentoEletronicoDeleteValidator());
         }
-
 
         [Fact]
         public void Cadastrar_equipamento_eletronico_deve_retornar_um_equipamento_eletronico_valido()
@@ -146,6 +147,102 @@ namespace DesafioInventTest
             EquipamentoEletronico equipamentoEletronico = _service.BuscarPorId(ID_ESPERADO);
 
             Assert.Equal(ID_ESPERADO, equipamentoEletronico.Id);
+        }
+
+        [Fact]
+        public void Buscar_equipamento_eletronico_por_filtro_nome_deve_encontrar_um_equipamento()
+        {
+            Cadastrar_equipamento_eletronico_deve_retornar_um_equipamento_eletronico_valido();
+
+            BuscaFiltros filtro = new BuscaFiltros
+            {
+                Nome = "Alienware"
+            };
+
+            IEnumerable<EquipamentoEletronico> listaEquipamentosEletronicos = _service.BuscarPorFiltros(filtro);
+
+            EquipamentoEletronicoValidator equipamentoEletronicoValidator = new EquipamentoEletronicoValidator();
+            Assert.Collection(listaEquipamentosEletronicos, equipamentoEletronico => Assert.True(equipamentoEletronicoValidator.Validate(equipamentoEletronico).IsValid));
+        }
+
+        [Fact]
+        public void Buscar_equipamento_eletronico_por_filtro_tipo_equipamento_deve_encontrar_um_equipamento()
+        {
+            Cadastrar_equipamento_eletronico_deve_retornar_um_equipamento_eletronico_valido();
+
+            BuscaFiltros filtro = new BuscaFiltros
+            {
+                TipoEquipamento = TipoEquipamentoEnum.PC,
+            };
+
+            IEnumerable<EquipamentoEletronico> listaEquipamentosEletronicos = _service.BuscarPorFiltros(filtro);
+
+            EquipamentoEletronicoValidator equipamentoEletronicoValidator = new EquipamentoEletronicoValidator();
+            Assert.Collection(listaEquipamentosEletronicos, equipamentoEletronico => Assert.True(equipamentoEletronicoValidator.Validate(equipamentoEletronico).IsValid));
+        }
+
+        [Fact]
+        public void Buscar_equipamento_eletronico_por_filtro_data_inclusao_informando_apenas_data_inicio_deve_encontrar_um_equipamento()
+        {
+            Cadastrar_equipamento_eletronico_deve_retornar_um_equipamento_eletronico_valido();
+
+            BuscaFiltros filtro = new BuscaFiltros
+            {
+                DataInicio = DateTimeOffset.Parse("2025-10-20"),
+            };
+
+            IEnumerable<EquipamentoEletronico> listaEquipamentosEletronicos = _service.BuscarPorFiltros(filtro);
+
+            EquipamentoEletronicoValidator equipamentoEletronicoValidator = new EquipamentoEletronicoValidator();
+            Assert.Collection(listaEquipamentosEletronicos, equipamentoEletronico => Assert.True(equipamentoEletronicoValidator.Validate(equipamentoEletronico).IsValid));
+        }
+
+        [Fact]
+        public void Buscar_equipamento_eletronico_por_filtro_data_inclusao_informando_apenas_data_fim_deve_encontrar_um_equipamento()
+        {
+            Cadastrar_equipamento_eletronico_deve_retornar_um_equipamento_eletronico_valido();
+
+            BuscaFiltros filtro = new BuscaFiltros
+            {
+                DataFim = DateTimeOffset.Parse("2025-12-30")
+            };
+
+            IEnumerable<EquipamentoEletronico> listaEquipamentosEletronicos = _service.BuscarPorFiltros(filtro);
+
+            EquipamentoEletronicoValidator equipamentoEletronicoValidator = new EquipamentoEletronicoValidator();
+            Assert.Collection(listaEquipamentosEletronicos, equipamentoEletronico => Assert.True(equipamentoEletronicoValidator.Validate(equipamentoEletronico).IsValid));
+        }
+
+        [Fact]
+        public void Buscar_equipamento_eletronico_por_filtro_por_estoque_deve_encontrar_um_equipamento()
+        {
+            Cadastrar_equipamento_eletronico_deve_retornar_um_equipamento_eletronico_valido();
+
+            BuscaFiltros filtro = new BuscaFiltros
+            {
+                EquipamentoEmEstoqueEnum = EquipamentoEmEstoqueEnum.EM_ESTOQUE
+            };
+
+            IEnumerable<EquipamentoEletronico> listaEquipamentosEletronicos = _service.BuscarPorFiltros(filtro);
+
+            EquipamentoEletronicoValidator equipamentoEletronicoValidator = new EquipamentoEletronicoValidator();
+            Assert.Collection(listaEquipamentosEletronicos, equipamentoEletronico => Assert.True(equipamentoEletronicoValidator.Validate(equipamentoEletronico).IsValid));
+        }
+
+        [Fact]
+        public void Buscar_equipamento_eletronico_por_filtro_por_estoque_vazio_nao_deve_encontrar_u_equipamento()
+        {
+            Cadastrar_equipamento_eletronico_deve_retornar_um_equipamento_eletronico_valido();
+
+            BuscaFiltros filtro = new BuscaFiltros
+            {
+                EquipamentoEmEstoqueEnum = EquipamentoEmEstoqueEnum.NAO_TEM_ESTOQUE
+            };
+
+            IEnumerable<EquipamentoEletronico> listaEquipamentosEletronicos = _service.BuscarPorFiltros(filtro);
+
+            EquipamentoEletronicoValidator equipamentoEletronicoValidator = new EquipamentoEletronicoValidator();
+            Assert.Empty(listaEquipamentosEletronicos);
         }
 
         [Fact]

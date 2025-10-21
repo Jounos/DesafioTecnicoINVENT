@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using DesafioInventBackend.Model.DTO;
 using DesafioInventBackend.Model.Entity;
+using DesafioInventBackend.Model.Filters;
 using DesafioInventBackend.Service;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
@@ -25,11 +26,17 @@ namespace DesafioInventBackend.Controller
             this._mapper = mapper;
         }
 
-        [HttpGet]
+        [HttpGet("todos")]
         public OkObjectResult ListarTodosEquipamentosEletronicos()
         {
             IEnumerable<EquipamentoEletronico> listaEquipamentosEletronicos = _service.ListarTodos();
             return Ok(_mapper.Map<IEnumerable<EquipamentoEletronicoDTO>>(listaEquipamentosEletronicos));
+        }
+
+        [HttpGet]
+        public ObjectResult BuscarEquipamentosEletronicaosPorFiltros([FromBody] BuscaFiltros filtros)
+        {
+            return Ok(_service.BuscarPorFiltros(filtros));
         }
 
         [HttpGet("{id}")]
