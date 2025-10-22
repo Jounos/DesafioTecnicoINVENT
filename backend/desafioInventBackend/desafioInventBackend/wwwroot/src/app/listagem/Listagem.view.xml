@@ -8,7 +8,6 @@
   <Page title="{i18n>Listagem.Title}">
       <content>
         <VBox>
-
           <Panel
             headerText="{i18n>Listagem.panelHeaderTitle}"
             class="sapUiResponsiveMargin"
@@ -17,32 +16,53 @@
             expanded="{= !${device>/system/phone} }"
             accessibleRole="Region">
             <content>
-              <l:VerticalLayout width="60%">
-                <Label text="Nome" displayOnly="true" labelFor="nomeInput"/>
-                <Input id="nomeInput"/>
-              </l:VerticalLayout>
-              <l:VerticalLayout width="40%">
-                <Label text="Tipo Equipamento" labelFor="tipoEquipamentoSelect"/>
-                <Select width="100%" id="tipoEquipamentoSelect" >
-                  <core:Item key="1" text="PC"/>
-                  <core:Item key="2" text="Notebook"/>
-                  <core:Item key="3" text="Mouse"/>
-                  <core:Item key="4" text="Teclado"/>
-                  <core:Item key="5" text="Celular"/>
-                </Select>
-              </l:VerticalLayout>
-              <l:VerticalLayout width="50%">
-                <Label text="Data Inicio" displayOnly="true" labelFor="dataInicioInput"/>
-                <DatePicker id="dataInicioInput" class="sapUiSmallMarginBotton"/>
-              </l:VerticalLayout>
-              <l:VerticalLayout width="50%">
-                <Label text="Data Fim" displayOnly="true" labelFor="dataFimInput"/>
-                <DatePicker id="dataFimInput" class="sapUiSmallMarginBotton"/>
-              </l:VerticalLayout>
-              <l:VerticalLayout width="10%">
-                <Button text="Cadastrar" class="myCustomButton" press="aoClicarBotaoCadastrar"/>
-                <Button text="Pesquisar" class="myCustomButton" press="aoClicarBotaoPesquisar"/>
-              </l:VerticalLayout>
+              <VBox width="97%" backgroundDesign="Solid">
+                <HBox class="sapUiLargeMarginBegin sapUiSmallMarginTopBottom" width="100%">
+                  <VBox class="sapUiLargeMarginEnd sapUiTinyMarginTop" width="50%">
+                    <Label text="Nome" displayOnly="true" labelFor="nome"/>
+                    <Input id="nome" width="100%"/>
+                  </VBox>
+
+                  <VBox class="sapUiLargeMarginEnd sapUiTinyMarginTop" width="35%">
+                    <Label text="Tipo Equipamento" labelFor="tipoEquipamento"/>
+                    <Select id="tipoEquipamento" width="100%">
+                      <core:Item key="1" text="PC"/>
+                      <core:Item key="2" text="Notebook"/>
+                      <core:Item key="3" text="Mouse"/>
+                      <core:Item key="4" text="Teclado"/>
+                      <core:Item key="5" text="Celular"/>
+                    </Select>
+                  </VBox>
+                </HBox>
+              </VBox>
+              <VBox width="97%" backgroundDesign="Solid">
+                <HBox class="sapUiLargeMarginBegin sapUiSmallMarginTopBottom">
+                  <VBox class="sapUiLargeMarginEnd sapUiTinyMarginTop">
+                    <Label text="Data Inicio" displayOnly="true" labelFor="dataInicio"/>
+                    <DatePicker id="dataInicio" class="sapUiSmallMarginBotton"/>
+                  </VBox>
+
+                  <VBox class="sapUiLargeMarginEnd sapUiTinyMarginTop">
+                    <Label text="Data Fim" displayOnly="true" labelFor="dataFim"/>
+                    <DatePicker id="dataFim" valueFormat="dd/MM/yyyy" class="sapUiSmallMarginBottom"/>
+                  </VBox>
+
+                  <VBox class="sapUiLargeMarginEnd sapUiTinyMarginTop" width="20%">
+                    <Label text="Estoque" labelFor="haEstoque"/>
+                    <Select width="100%" id="haEstoque" >
+                      <core:Item key="1" text="TODOS"/>
+                      <core:Item key="2" text="Há Estoque"/>
+                      <core:Item key="3" text="Não Há Estoque"/>
+                    </Select>
+                  </VBox>
+                  <VBox class="sapUiLargeMarginEnd sapUiTinyMarginTop">
+                    <Button text="Cadastrar" class="myCustomButton" press="aoClicarBotaoCadastrar"/>
+                  </VBox>
+                  <VBox class="sapUiLargeMarginEnd sapUiTinyMarginTop">
+                    <Button text="Pesquisar" class="myCustomButton" press="aoClicarBotaoPesquisar" />
+                  </VBox>
+                </HBox>
+              </VBox>
             </content>
           </Panel>
 
@@ -52,10 +72,7 @@
                 <Title text="{i18n>Listagem.tableHeaderTitle}"/>
               </Toolbar>
             </headerToolbar>
-            <Table
-              id="equipamentosEletronicosList"
-              class="sapUiResponsiveMargin"
-              width="auto"
+            <Table class="sapUiResponsiveMargin" width="auto"
             >
               <columns>
                 <Column>
