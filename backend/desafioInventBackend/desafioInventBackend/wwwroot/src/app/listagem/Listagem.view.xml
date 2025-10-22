@@ -22,8 +22,8 @@
                 <Input id="nomeInput"/>
               </l:VerticalLayout>
               <l:VerticalLayout width="40%">
-                <Label text="Tipo Equipamento" labelFor="tipEquipamentoSelect"/>
-                <Select width="100%" id="tipEquipamentoSelect" >
+                <Label text="Tipo Equipamento" labelFor="tipoEquipamentoSelect"/>
+                <Select width="100%" id="tipoEquipamentoSelect" >
                   <core:Item key="1" text="PC"/>
                   <core:Item key="2" text="Notebook"/>
                   <core:Item key="3" text="Mouse"/>
@@ -31,9 +31,18 @@
                   <core:Item key="5" text="Celular"/>
                 </Select>
               </l:VerticalLayout>
-              <l:VerticalLayout width="100%">
+              <l:VerticalLayout width="50%">
+                <Label text="Data Inicio" displayOnly="true" labelFor="dataInicioInput"/>
+                <DatePicker id="dataInicioInput" class="sapUiSmallMarginBotton"/>
+              </l:VerticalLayout>
+              <l:VerticalLayout width="50%">
+                <Label text="Data Fim" displayOnly="true" labelFor="dataFimInput"/>
+                <DatePicker id="dataFimInput" class="sapUiSmallMarginBotton"/>
+              </l:VerticalLayout>
+              <l:VerticalLayout width="10%">
                 <Button text="Cadastrar" class="myCustomButton" press="aoClicarBotaoCadastrar"/>
-            </l:VerticalLayout>
+                <Button text="Pesquisar" class="myCustomButton" press="aoClicarBotaoPesquisar"/>
+              </l:VerticalLayout>
             </content>
           </Panel>
 
