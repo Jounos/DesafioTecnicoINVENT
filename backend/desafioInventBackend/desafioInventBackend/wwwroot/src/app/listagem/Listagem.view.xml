@@ -20,12 +20,12 @@
                 <HBox class="sapUiLargeMarginBegin sapUiSmallMarginTopBottom" width="100%">
                   <VBox class="sapUiLargeMarginEnd sapUiTinyMarginTop" width="50%">
                     <Label text="Nome" displayOnly="true" labelFor="nome"/>
-                    <Input id="nome" width="100%"/>
+                    <Input id="idInputNome" width="100%" value="{/filtros/nome}"/>
                   </VBox>
 
                   <VBox class="sapUiLargeMarginEnd sapUiTinyMarginTop" width="35%">
                     <Label text="Tipo Equipamento" labelFor="tipoEquipamento"/>
-                    <Select id="tipoEquipamento" width="100%">
+                    <Select id="idSelectTipoEquipamento" width="100%">
                       <core:Item key="1" text="PC"/>
                       <core:Item key="2" text="Notebook"/>
                       <core:Item key="3" text="Mouse"/>
@@ -38,18 +38,30 @@
               <VBox width="97%" backgroundDesign="Solid">
                 <HBox class="sapUiLargeMarginBegin sapUiSmallMarginTopBottom">
                   <VBox class="sapUiLargeMarginEnd sapUiTinyMarginTop">
-                    <Label text="Data Inicio" displayOnly="true" labelFor="dataInicio"/>
-                    <DatePicker id="dataInicio" class="sapUiSmallMarginBotton"/>
-                  </VBox>
-
-                  <VBox class="sapUiLargeMarginEnd sapUiTinyMarginTop">
-                    <Label text="Data Fim" displayOnly="true" labelFor="dataFim"/>
-                    <DatePicker id="dataFim" valueFormat="dd/MM/yyyy" class="sapUiSmallMarginBottom"/>
+                    <Label text="DateRangeSelection displayFormat 'yyyy/MM/dd', set via binding:" labelFor="DRS1"/>
+                    <DateRangeSelection id="id" class="DRS1"
+                      value= "{
+                        'type': 'sap.ui.model.type.DateInterval',
+                        'formatOptions': {
+                          'pattern': 'yyyy/MM/dd'
+                        },
+                        'parts': [
+                          {
+                            'type': 'sap.ui.model.type.Date',
+                            'path': '/start'
+                          },
+                          {
+                            'type': 'sap.ui.model.type.Date',
+                            'path': '/end'
+                          }
+                        ]
+                      }"
+                      change="handleChange"/>
                   </VBox>
 
                   <VBox class="sapUiLargeMarginEnd sapUiTinyMarginTop" width="20%">
                     <Label text="Estoque" labelFor="haEstoque"/>
-                    <Select width="100%" id="haEstoque" >
+                    <Select width="100%" id="idSelectHaEstoque" >
                       <core:Item key="1" text="TODOS"/>
                       <core:Item key="2" text="Há Estoque"/>
                       <core:Item key="3" text="Não Há Estoque"/>
@@ -72,8 +84,7 @@
                 <Title text="{i18n>Listagem.tableHeaderTitle}"/>
               </Toolbar>
             </headerToolbar>
-            <Table class="sapUiResponsiveMargin" width="auto"
-            >
+            <Table class="sapUiResponsiveMargin" width="auto">
               <columns>
                 <Column>
                   <Text text="Nome do produto"/>
