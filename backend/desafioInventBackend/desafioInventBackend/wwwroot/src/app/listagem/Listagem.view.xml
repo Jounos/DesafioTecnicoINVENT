@@ -20,17 +20,19 @@
                 <HBox class="sapUiLargeMarginBegin sapUiSmallMarginTopBottom" width="100%">
                   <VBox class="sapUiLargeMarginEnd sapUiTinyMarginTop" width="50%">
                     <Label text="Nome" displayOnly="true" labelFor="nome"/>
-                    <Input id="idInputNome" width="100%" value="{/filtros/nome}"/>
+                    <Input id="idInputNome" width="100%" value="{/nome}"/>
                   </VBox>
 
                   <VBox class="sapUiLargeMarginEnd sapUiTinyMarginTop" width="35%">
                     <Label text="Tipo Equipamento" labelFor="tipoEquipamento"/>
-                    <Select id="idSelectTipoEquipamento" width="100%">
-                      <core:Item key="1" text="PC"/>
-                      <core:Item key="2" text="Notebook"/>
-                      <core:Item key="3" text="Mouse"/>
-                      <core:Item key="4" text="Teclado"/>
-                      <core:Item key="5" text="Celular"/>
+                    <Select id="idSelectTipoEquipamento"
+                            selectedKey="{/tipoEquipamentoSelected}"
+                            items="{
+                              path:'/tipoEquipamentoCollection',
+                              sorter: { path: 'id'}
+                            }"
+                            width="100%">
+                      <core:Item key="{id}" text="{label}"/>
                     </Select>
                   </VBox>
                 </HBox>
@@ -38,12 +40,12 @@
               <VBox width="97%" backgroundDesign="Solid">
                 <HBox class="sapUiLargeMarginBegin sapUiSmallMarginTopBottom">
                   <VBox class="sapUiLargeMarginEnd sapUiTinyMarginTop">
-                    <Label text="DateRangeSelection displayFormat 'yyyy/MM/dd', set via binding:" labelFor="DRS1"/>
+                    <Label text="Data" labelFor="DRS1"/>
                     <DateRangeSelection id="id" class="DRS1"
                       value= "{
                         'type': 'sap.ui.model.type.DateInterval',
                         'formatOptions': {
-                          'pattern': 'yyyy/MM/dd'
+                          'pattern': 'dd/MM/yyyy'
                         },
                         'parts': [
                           {
@@ -61,10 +63,14 @@
 
                   <VBox class="sapUiLargeMarginEnd sapUiTinyMarginTop" width="20%">
                     <Label text="Estoque" labelFor="haEstoque"/>
-                    <Select width="100%" id="idSelectHaEstoque" >
-                      <core:Item key="1" text="TODOS"/>
-                      <core:Item key="2" text="Há Estoque"/>
-                      <core:Item key="3" text="Não Há Estoque"/>
+                    <Select id="idSelectHaEstoque"
+                            selectedKey="{/estoqueSelected}"
+                            items="{
+                              path: '/estoqueCollection',
+                              sorter: { path: 'id' }
+                            }"
+                            width="100%">
+                      <core:Item key="{id}" text="{label}"/>
                     </Select>
                   </VBox>
                   <VBox class="sapUiLargeMarginEnd sapUiTinyMarginTop">
@@ -99,7 +105,7 @@
                   <Text text="Quantidade"/>
                 </Column>
                 <Column>
-                  <Text text="Inclusão"/>
+                  <Text text="Data"/>
                 </Column>
                 <Column>
                   <Text text="Ações"/>

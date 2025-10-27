@@ -11,20 +11,6 @@ sap.ui.define([
     return Controller.extend("desafio.app.listagem.Listagem", {
 
 		onInit() {
-			// const oViewmodel = new JSONModel({
-			// 	"filtros": {
-			// 		"nome": 'teste',
-			// 		"tipoEquipamento": 3,
-			// 		"dataInicio": '',
-			// 		"dataFim": '',
-			// 		"estoqueCollection": {
-
-			// 		}
-			// 	}
-			// });
-
-			// this.getView().setModel(oViewmodel);
-
 			var oDRS2 = this.byId("DRS1"),
 				dateFrom = UI5Date.getInstance(),
 				dateTo = UI5Date.getInstance(),
@@ -40,9 +26,22 @@ sap.ui.define([
 
 			oModel.setData({
 				nome: '',
+				tipoEquipamentoSelected: 1,
+				tipoEquipamentoCollection: [
+					{ label: 'PC', id: 1 },
+					{ label: 'Notebook', id: 2 },
+					{ label: 'Mouse', id: 3 },
+					{ label: 'Teclado', id: 4 },
+					{ label: 'Celular', id: 5 }
+				],
 				start: dateFrom,
 				end: dateTo,
-
+				estoqueSelected: 1,
+				estoqueCollection: [
+					{ label: 'TODOS', id: 1 },
+					{ label: 'Há Estoque', id: 2 },
+					{ label: 'Não Há Estoque', id: 3 },
+				]
 			});
 			this.getView().setModel(oModel);
 
