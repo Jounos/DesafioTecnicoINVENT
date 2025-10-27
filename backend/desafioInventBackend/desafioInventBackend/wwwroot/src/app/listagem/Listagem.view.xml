@@ -57,8 +57,7 @@
                             'path': '/end'
                           }
                         ]
-                      }"
-                      change="handleChange"/>
+                      }"/>
                   </VBox>
 
                   <VBox class="sapUiLargeMarginEnd sapUiTinyMarginTop" width="20%">

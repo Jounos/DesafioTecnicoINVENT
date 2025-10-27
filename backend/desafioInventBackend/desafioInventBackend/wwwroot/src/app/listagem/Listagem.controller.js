@@ -2,8 +2,13 @@ sap.ui.define([
     "sap/ui/core/mvc/Controller",
     "sap/ui/model/json/JSONModel",
 	"sap/ui/core/library",
-	"sap/ui/core/date/UI5Date"
-], (Controller, JSONModel, CoreLibrary, UI5Date) => {
+	"sap/ui/core/date/UI5Date",
+	"desafio/app/servicos/ServiceEquipamentoEletronico"
+], (Controller,
+	JSONModel,
+	CoreLibrary,
+	UI5Date,
+	ServiceEquipamentoEletronico) => {
     "use strict";
 
 	var ValueState = CoreLibrary.ValueState;
@@ -48,33 +53,15 @@ sap.ui.define([
 			this._iEvent = 0;
 		},
 
-		handleChange: function (oEvent) {
-			var sFrom = oEvent.getParameter("from"),
-				sTo = oEvent.getParameter("to"),
-				bValid = oEvent.getParameter("valid"),
-				oEventSource = oEvent.getSource(),
-				oText = this.byId("TextEvent");
-
-			this._iEvent++;
-
-			oText.setText("Id: " + oEventSource.getId() + "\nFrom: " + sFrom + "\nTo: " + sTo);
-
-			if (bValid) {
-				oEventSource.setValueState(ValueState.None);
-			} else {
-				oEventSource.setValueState(ValueState.Error);
-			}
-			console.log(sFrom);
-			console.log(sTo);
-		},
-
 		aoClicarBotaoCadastrar: function (event) {
 			const oRouter = this.getOwnerComponent().getRouter();
 			oRouter.navTo("cadastro");
 		},
 
 		aoClicarBotaoPesquisar: function (event) {
-			console.log("Clicou Pesquisar");
+			ServiceEquipamentoEletronico.buscarTodos({
+				tipoEquipamento: 1
+			}).then(result => console.log(result));
 		},
 
     });
