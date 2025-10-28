@@ -1,7 +1,7 @@
 sap.ui.define([], function () {
 	"use strict";
 
-	const URL = "/api";
+	const URL = "http://localhost:5031/api";
 
 	return {
 
@@ -12,11 +12,11 @@ sap.ui.define([], function () {
 			return this._ajaxRequest(GET, apiUrl, null, null, callback);
 		},
 
-		_ajaxRequest(type, apiUrl, data, aditionalParams, callback = null) {
+		async _ajaxRequest(type, apiUrl, data, aditionalParams, callback = null) {
 
 			const params = this._obterParametrosHttp(type, data, aditionalParams);
 
-			return fetch(apiUrl, params).then(response => {
+			return await fetch(apiUrl, params).then(response => response.json()).then(response => {
 				if (callback && typeof callback == "function") {
 					callback(response);
 				}
@@ -31,7 +31,8 @@ sap.ui.define([], function () {
 				method: type,
 				headers: {
 					Accept: CONTENT_TYPE_JSON,
-					"Content-Type": CONTENT_TYPE_JSON
+					"Content-Type": CONTENT_TYPE_JSON,
+					'Access-Control-Allow-Origin': '*'
 				},
 				body: body
 			};

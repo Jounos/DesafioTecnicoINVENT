@@ -33,6 +33,6 @@ sap.ui.define(["desafio/app/common/HttpClient"], function(HttpClient) {
 	function _obterTodos(filtros, callback = null) {
 		const params = _obterParams(filtros);
 		const url = URI_CONTROLLER + params;
-		HttpClient.get(url, callback);
+		return HttpClient.get(url, callback);
 	}
 });

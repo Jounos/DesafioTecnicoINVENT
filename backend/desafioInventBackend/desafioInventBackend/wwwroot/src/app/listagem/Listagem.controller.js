@@ -61,7 +61,7 @@ sap.ui.define([
 		aoClicarBotaoPesquisar: function (event) {
 			ServiceEquipamentoEletronico.buscarTodos({
 				tipoEquipamento: 1
-			}).then(result => console.log(result));
+			}).then(result => console.log(result.json()));
 		},
 
     });
