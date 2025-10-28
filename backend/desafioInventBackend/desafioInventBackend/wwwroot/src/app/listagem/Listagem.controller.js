@@ -19,19 +19,26 @@ sap.ui.define([
 			var oDRS2 = this.byId("DRS1"),
 				dateFrom = UI5Date.getInstance(),
 				dateTo = UI5Date.getInstance(),
-				oModel = new JSONModel();
+				oModelFiltros = new JSONModel(),
+				oModelCollections = new JSONModel();
 
-			dateFrom.setUTCDate(2);
-			dateFrom.setUTCMonth(1);
-			dateFrom.setUTCFullYear(2014);
+			dateFrom.setUTCDate(1);
+			dateFrom.setUTCMonth(9);
+			dateFrom.setUTCFullYear(2025);
 
-			dateTo.setUTCDate(17);
-			dateTo.setUTCMonth(1);
-			dateTo.setUTCFullYear(2014);
+			dateTo.setUTCDate(31);
+			dateTo.setUTCMonth(9);
+			dateTo.setUTCFullYear(2025);
 
-			oModel.setData({
-				nome: '',
-				tipoEquipamentoSelected: 1,
+			oModelFiltros.setData({
+				nome: null,
+				tipoEquipamento: 1,
+				dataInicio: dateFrom,
+				dataFim: dateTo,
+				equipamentoEmEstoqueEnum: 1,
+			});
+
+			oModelCollections.setData({
 				tipoEquipamentoCollection: [
 					{ label: 'PC', id: 1 },
 					{ label: 'Notebook', id: 2 },
@@ -39,16 +46,15 @@ sap.ui.define([
 					{ label: 'Teclado', id: 4 },
 					{ label: 'Celular', id: 5 }
 				],
-				start: dateFrom,
-				end: dateTo,
-				estoqueSelected: 1,
 				estoqueCollection: [
 					{ label: 'TODOS', id: 1 },
 					{ label: 'Há Estoque', id: 2 },
 					{ label: 'Não Há Estoque', id: 3 },
 				]
 			});
-			this.getView().setModel(oModel);
+
+			this.getView().setModel(oModelFiltros, "filtros");
+			this.getView().setModel(oModelCollections, "collections");
 
 			this._iEvent = 0;
 		},
@@ -59,10 +65,24 @@ sap.ui.define([
 		},
 
 		aoClicarBotaoPesquisar: function (event) {
-			ServiceEquipamentoEletronico.buscarTodos({
-				tipoEquipamento: 1
-			}).then(result => console.log(result.json()));
+
+			const filtrosModel = this.getView().getModel("filtros").getData();
+			let filtros = Object.assign({}, filtrosModel);
+
+			filtros.dataInicio = this._formatarData(filtros.dataInicio);
+			filtros.dataFim = this._formatarData(filtros.dataFim);
+
+			ServiceEquipamentoEletronico.buscarTodos(filtros).then(result => console.log(result.json()));
 		},
 
+		_formatarData: function (data) {
+			const hora = 23, minuto = 59, segundo = 59;
+			return new Date(Date.UTC(
+				data.getFullYear(),
+				data.getMonth(),
+				data.getDate(),
+				hora, minuto, segundo
+			)).toISOString();
+		}
     });
 });

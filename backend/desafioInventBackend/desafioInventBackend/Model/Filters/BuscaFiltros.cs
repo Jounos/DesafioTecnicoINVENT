@@ -1,5 +1,4 @@
-﻿using DesafioInventBackend.Model.Enum;
-using System.ComponentModel.DataAnnotations;
+﻿using DesafioInventBackend.Model.Enum
 
 namespace DesafioInventBackend.Model.Filters
 {

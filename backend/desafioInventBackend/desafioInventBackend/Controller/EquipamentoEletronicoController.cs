@@ -10,7 +10,7 @@ namespace DesafioInventBackend.Controller
 {
     [ApiController]
     [Route("api/equipamento-eletronico")]
-    [EnableCors("AllowAngularApp")]
+    [EnableCors("AllowFrontApp")]
     public class EquipamentoEletronicoController: ControllerBase
     {
 
@@ -34,7 +34,7 @@ namespace DesafioInventBackend.Controller
         }
 
         [HttpGet]
-        public ObjectResult BuscarEquipamentosEletronicaosPorFiltros([FromBody] BuscaFiltros filtros)
+        public ObjectResult BuscarEquipamentosEletronicaosPorFiltros([FromQuery] BuscaFiltros filtros)
         {
             return Ok(_service.BuscarPorFiltros(filtros));
         }

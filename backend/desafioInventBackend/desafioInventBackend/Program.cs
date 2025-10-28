@@ -10,13 +10,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowAngularApp",
-        policy => policy.WithOrigins("https://localhost:44400")
-                        .AllowAnyHeader()
-                        .AllowAnyMethod());
-
-    options.AddPolicy("AllowSapUi5APP",
-        policy => policy.WithOrigins("https://localhost:55500")
+    options.AddPolicy("AllowFrontApp",
+        policy => policy.WithOrigins("*")
                          .AllowAnyHeader()
                          .AllowAnyMethod());
 });
@@ -60,7 +55,6 @@ app.MapControllerRoute(
 app.MapFallbackToFile("index.html");
 app.MapControllers();
 
-app.UseCors("AllowAngularApp");
-app.UseCors("AllowSapUi5APP");
+app.UseCors("AllowFrontApp");
 
 app.Run();
