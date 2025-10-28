@@ -1,11 +1,11 @@
 sap.ui.define([
     "desafio/common/BaseController",
-    "sap/ui/model/json/JSONModel",
-	"sap/ui/core/library",
 	"desafio/app/servicos/ServiceEquipamentoEletronico"
 ], function (BaseController,
 	ServiceEquipamentoEletronico) {
     "use strict";
+
+	const NAME_MODEL_FILTROS = "filtros";
 
     return BaseController.extend("desafio.app.listagem.Listagem", {
 
@@ -35,8 +35,9 @@ sap.ui.define([
 				]
 			};
 
-			this.createModel("filtros", modelFiltros);
-			this.createModel("collections", modelCollections);
+			const name_model_collections = "collections";
+			this.createModel(name_model_collections, modelCollections);
+			this.createModel(NAME_MODEL_FILTROS, modelFiltros);
 		},
 
 		aoClicarBotaoCadastrar: function () {
@@ -44,18 +45,13 @@ sap.ui.define([
 			oRouter.navTo("cadastro");
 		},
 
-		aoClicarBotaoPesquisar: async function () {
+		aoClicarBotaoPesquisar: function () {
 
-			let filtros = this._getValueModeloFiltros();
+			let filtros = this.getValueModel(NAME_MODEL_FILTROS);
 			filtros.dataInicio = this._formatarData(filtros.dataInicio);
 			filtros.dataFim = this._formatarData(filtros.dataFim);
 
-			await ServiceEquipamentoEletronico.buscarTodos(filtros).then(result => console.log(result.json()));
-		},
-
-		_getValueModeloFiltros() {
-			const nome_modelo_filtros = "filtros";
-			return this.getValueModel(nome_modelo_filtros);
+			ServiceEquipamentoEletronico.buscarTodos(filtros).then(result => console.log(result.json()));
 		},
 
 		_formatarData: function (data) {

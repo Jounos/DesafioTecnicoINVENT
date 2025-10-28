@@ -36,7 +36,7 @@
               </VBox>
               <VBox width="97%" backgroundDesign="Solid">
                 <HBox class="sapUiLargeMarginBegin sapUiSmallMarginTopBottom">
-                  <VBox class="sapUiLargeMarginEnd sapU iTinyMarginTop">
+                  <VBox class="sapUiLargeMarginEnd sapUiTinyMarginTop">
                     <Label text="Data" labelFor="DRS1"/>
                     <DateRangeSelection id="id" class="DRS1"
                       value= "{

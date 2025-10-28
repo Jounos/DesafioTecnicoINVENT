@@ -31,8 +31,7 @@ sap.ui.define([], function () {
 				method: type,
 				headers: {
 					Accept: CONTENT_TYPE_JSON,
-					"Content-Type": CONTENT_TYPE_JSON,
-					'Access-Control-Allow-Origin': '*'
+					"Content-Type": CONTENT_TYPE_JSON
 				},
 				body: body
 			};
