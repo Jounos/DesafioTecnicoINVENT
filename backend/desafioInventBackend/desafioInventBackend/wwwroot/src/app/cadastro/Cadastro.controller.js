@@ -1,9 +1,9 @@
 sap.ui.define([
-	"sap/ui/core/mvc/Controller",
-], (Controller) => {
+	"desafio/common/BaseController",
+], (BaseController) => {
 	"use strict";
 
-	return Controller.extend("desafio.app.cadastro.Cadastro", {
+	return BaseController.extend("desafio.app.cadastro.Cadastro", {
 		onInit() {
 
 		}

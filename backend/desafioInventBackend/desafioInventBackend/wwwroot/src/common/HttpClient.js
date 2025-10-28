@@ -5,11 +5,11 @@ sap.ui.define([], function () {
 
 	return {
 
-		get(endpoint, callback = null) {
+		async get(endpoint, callback = null) {
 
 			const GET = "GET";
 			const apiUrl = URL + endpoint;
-			return this._ajaxRequest(GET, apiUrl, null, null, callback);
+			return await this._ajaxRequest(GET, apiUrl, null, null, callback);
 		},
 
 		async _ajaxRequest(type, apiUrl, data, aditionalParams, callback = null) {

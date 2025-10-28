@@ -1,9 +1,9 @@
 sap.ui.define([
-    "sap/ui/core/mvc/Controller",
-], (Controller) => {
+    "desafio/common/BaseController",
+], function (BaseController) {
     "use strict";
 
-    return Controller.extend("desafio.app.App", {
+    return BaseController.extend("desafio.app.App", {
 		onInit() {
 			this.getView().addStyleClass(this.getOwnerComponent().getContentDensityClass());
 		}

@@ -5,8 +5,8 @@ sap.ui.define(["desafio/app/repositorios/RepositorioEquipamentoEletronico"], fun
 		buscarTodos: _buscarTodos
 	};
 
-	function _buscarTodos (filtros, callback = null) {
-		return RepositorioEquipamentoEletronico.obterTodos(filtros, callback);
+	async function _buscarTodos (filtros, callback = null) {
+		return await RepositorioEquipamentoEletronico.obterTodos(filtros, callback);
 	}
 })
 

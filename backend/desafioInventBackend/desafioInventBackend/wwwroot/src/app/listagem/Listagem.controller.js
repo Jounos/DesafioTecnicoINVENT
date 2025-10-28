@@ -1,44 +1,26 @@
 sap.ui.define([
-    "sap/ui/core/mvc/Controller",
+    "desafio/common/BaseController",
     "sap/ui/model/json/JSONModel",
 	"sap/ui/core/library",
-	"sap/ui/core/date/UI5Date",
 	"desafio/app/servicos/ServiceEquipamentoEletronico"
-], (Controller,
-	JSONModel,
-	CoreLibrary,
-	UI5Date,
-	ServiceEquipamentoEletronico) => {
+], function (BaseController,
+	ServiceEquipamentoEletronico) {
     "use strict";
 
-	var ValueState = CoreLibrary.ValueState;
-
-    return Controller.extend("desafio.app.listagem.Listagem", {
+    return BaseController.extend("desafio.app.listagem.Listagem", {
 
 		onInit() {
-			var oDRS2 = this.byId("DRS1"),
-				dateFrom = UI5Date.getInstance(),
-				dateTo = UI5Date.getInstance(),
-				oModelFiltros = new JSONModel(),
-				oModelCollections = new JSONModel();
+			const dateFrom = this._criaDataUI5(1, 10, 2025);
+			const dateTo = this._criaDataUI5(31, 10, 2025);
 
-			dateFrom.setUTCDate(1);
-			dateFrom.setUTCMonth(9);
-			dateFrom.setUTCFullYear(2025);
-
-			dateTo.setUTCDate(31);
-			dateTo.setUTCMonth(9);
-			dateTo.setUTCFullYear(2025);
-
-			oModelFiltros.setData({
+			const modelFiltros = {
 				nome: null,
 				tipoEquipamento: 1,
 				dataInicio: dateFrom,
 				dataFim: dateTo,
 				equipamentoEmEstoqueEnum: 1,
-			});
-
-			oModelCollections.setData({
+			};
+			const modelCollections = {
 				tipoEquipamentoCollection: [
 					{ label: 'PC', id: 1 },
 					{ label: 'Notebook', id: 2 },
@@ -51,28 +33,29 @@ sap.ui.define([
 					{ label: 'Há Estoque', id: 2 },
 					{ label: 'Não Há Estoque', id: 3 },
 				]
-			});
+			};
 
-			this.getView().setModel(oModelFiltros, "filtros");
-			this.getView().setModel(oModelCollections, "collections");
-
-			this._iEvent = 0;
+			this.createModel("filtros", modelFiltros);
+			this.createModel("collections", modelCollections);
 		},
 
-		aoClicarBotaoCadastrar: function (event) {
+		aoClicarBotaoCadastrar: function () {
 			const oRouter = this.getOwnerComponent().getRouter();
 			oRouter.navTo("cadastro");
 		},
 
-		aoClicarBotaoPesquisar: function (event) {
+		aoClicarBotaoPesquisar: async function () {
 
-			const filtrosModel = this.getView().getModel("filtros").getData();
-			let filtros = Object.assign({}, filtrosModel);
-
+			let filtros = this._getValueModeloFiltros();
 			filtros.dataInicio = this._formatarData(filtros.dataInicio);
 			filtros.dataFim = this._formatarData(filtros.dataFim);
 
-			ServiceEquipamentoEletronico.buscarTodos(filtros).then(result => console.log(result.json()));
+			await ServiceEquipamentoEletronico.buscarTodos(filtros).then(result => console.log(result.json()));
+		},
+
+		_getValueModeloFiltros() {
+			const nome_modelo_filtros = "filtros";
+			return this.getValueModel(nome_modelo_filtros);
 		},
 
 		_formatarData: function (data) {
