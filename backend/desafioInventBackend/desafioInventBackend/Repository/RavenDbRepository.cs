@@ -39,14 +39,14 @@ namespace DesafioInventBackend.Repository
                 equipamentoEletronicoQuery = equipamentoEletronicoQuery.Where(ee => ee.DataInclusao <= filtros.DataFim);
             }
 
-            if (filtros.EquipamentoEmEstoqueEnum != EquipamentoEmEstoqueEnum.TODOS)
+            if (filtros.EquipamentoEmEstoque != EquipamentoEmEstoqueEnum.TODOS)
             {
-                if (filtros.EquipamentoEmEstoqueEnum == EquipamentoEmEstoqueEnum.EM_ESTOQUE)
+                if (filtros.EquipamentoEmEstoque == EquipamentoEmEstoqueEnum.EM_ESTOQUE)
                 {
                     equipamentoEletronicoQuery = equipamentoEletronicoQuery.Where(ee => ee.QuantidadeEstoque > 0);
                 }
 
-                if (filtros.EquipamentoEmEstoqueEnum == EquipamentoEmEstoqueEnum.NAO_TEM_ESTOQUE)
+                if (filtros.EquipamentoEmEstoque == EquipamentoEmEstoqueEnum.NAO_TEM_ESTOQUE)
                 {
                     equipamentoEletronicoQuery = equipamentoEletronicoQuery.Where(ee => ee.QuantidadeEstoque == 0);
                 }

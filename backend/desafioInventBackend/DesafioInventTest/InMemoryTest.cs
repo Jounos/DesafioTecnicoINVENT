@@ -220,7 +220,7 @@ namespace DesafioInventTest
 
             BuscaFiltros filtro = new BuscaFiltros
             {
-                EquipamentoEmEstoqueEnum = EquipamentoEmEstoqueEnum.EM_ESTOQUE
+                EquipamentoEmEstoque = EquipamentoEmEstoqueEnum.EM_ESTOQUE
             };
 
             IEnumerable<EquipamentoEletronico> listaEquipamentosEletronicos = _service.BuscarPorFiltros(filtro);
@@ -236,7 +236,7 @@ namespace DesafioInventTest
 
             BuscaFiltros filtro = new BuscaFiltros
             {
-                EquipamentoEmEstoqueEnum = EquipamentoEmEstoqueEnum.NAO_TEM_ESTOQUE
+                EquipamentoEmEstoque = EquipamentoEmEstoqueEnum.NAO_TEM_ESTOQUE
             };
 
             IEnumerable<EquipamentoEletronico> listaEquipamentosEletronicos = _service.BuscarPorFiltros(filtro);

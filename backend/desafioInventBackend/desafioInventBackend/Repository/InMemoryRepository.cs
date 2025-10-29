@@ -37,12 +37,12 @@ namespace DesafioInventBackend.Repository
 
             itensFiltrados.AddRange(_itens.FindAll(i =>
             {
-                if (filtros.EquipamentoEmEstoqueEnum == EquipamentoEmEstoqueEnum.EM_ESTOQUE)
+                if (filtros.EquipamentoEmEstoque == EquipamentoEmEstoqueEnum.EM_ESTOQUE)
                 {
                     return i.QuantidadeEstoque > 0;
                 }
 
-                if (filtros.EquipamentoEmEstoqueEnum == EquipamentoEmEstoqueEnum.NAO_TEM_ESTOQUE)
+                if (filtros.EquipamentoEmEstoque == EquipamentoEmEstoqueEnum.NAO_TEM_ESTOQUE)
                 {
                     return i.QuantidadeEstoque == 0;
                 }

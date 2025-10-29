@@ -1,4 +1,4 @@
-﻿using DesafioInventBackend.Model.Enum
+﻿using DesafioInventBackend.Model.Enum;
 
 namespace DesafioInventBackend.Model.Filters
 {
@@ -8,7 +8,7 @@ namespace DesafioInventBackend.Model.Filters
 
         public TipoEquipamentoEnum TipoEquipamento { get; set; }
 
-        public EquipamentoEmEstoqueEnum EquipamentoEmEstoqueEnum { get; set; }
+        public EquipamentoEmEstoqueEnum EquipamentoEmEstoque { get; set; }
 
         public DateTimeOffset DataInicio { get; set; }
 
