@@ -116,10 +116,10 @@
               </Column>
             </columns>
             <items>
-              <ColumnListItem type="Navigation">
+              <ColumnListItem type="Navigation" press="aoClicarBotaoCadastrar">
                 <cells>
                   <Text text="{ path: 'listaEquipamentosEletronicos>nome' }"></Text>
-                  <Text text="{ path: 'listaEquipamentosEletronicos>tipoEquipamento' }"></Text>
+                  <Text text="{ path: 'listaEquipamentosEletronicos>tipoEquipamento', formatter: '.formatter.formatarTipoEquipamento' }"></Text>
                   <Text text="{ path: 'listaEquipamentosEletronicos>quantidadeEstoque' }"></Text>
                   <Text text="{ path: 'listaEquipamentosEletronicos>dataInclusao', formatter: '.formatter.formatarData'}"></Text>
                   <HBox>

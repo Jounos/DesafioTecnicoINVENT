@@ -24,6 +24,7 @@ sap.ui.define([
 		_criarModelCollections: function () {
 			return {
 				tipoEquipamentoCollection: [
+					{ label: 'TODOS', id: 0 },
 					{ label: 'PC', id: 1 },
 					{ label: 'Notebook', id: 2 },
 					{ label: 'Mouse', id: 3 },
@@ -41,7 +42,7 @@ sap.ui.define([
 		_criarModeloFiltros: function () {
 			return {
 				nome: null,
-				tipoEquipamento: 1,
+				tipoEquipamento: 0,
 				dataInicio: null,
 				dataFim: null,
 				equipamentoEmEstoque: 1,
