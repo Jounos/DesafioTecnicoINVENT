@@ -17,7 +17,7 @@ sap.ui.define(["desafio/common/HttpClient"], function(HttpClient) {
 		const tipoEquipamento = 'tipoEquipamento';
 		const dataInicio = 'dataInicio';
 		const dataFim = 'dataFim';
-		const haEstoque = 'haEstoque';
+		const equipamentoEmEstoque = 'equipamentoEmEstoque';
 
 		let params = new URLSearchParams();
 
@@ -25,7 +25,7 @@ sap.ui.define(["desafio/common/HttpClient"], function(HttpClient) {
 		if (filtros?.tipoEquipamento) params.append(tipoEquipamento, filtros.tipoEquipamento);
 		if (filtros?.dataInicio) params.append(dataInicio, filtros.dataInicio);
 		if (filtros?.dataFim) params.append(dataFim, filtros.dataFim);
-		if (filtros?.haEstoque) params.append(haEstoque, filtros.haEstoque);
+		if (filtros?.equipamentoEmEstoque) params.append(equipamentoEmEstoque, filtros.equipamentoEmEstoque);
 
 		return `?${params.toString()}`;
 	}

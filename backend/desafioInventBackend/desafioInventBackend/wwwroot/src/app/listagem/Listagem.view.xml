@@ -60,7 +60,7 @@
                   <VBox class="sapUiLargeMarginEnd sapUiTinyMarginTop" width="20%">
                     <Label text="Estoque" labelFor="haEstoque"/>
                     <Select id="idSelectHaEstoque"
-                            selectedKey="{filtros>/equipamentoEmEstoqueEnum}"
+                            selectedKey="{filtros>/equipamentoEmEstoque}"
                             items="{collections>/estoqueCollection}"
                             width="100%">
                       <core:Item key="{collections>id}" text="{collections>label}"/>
@@ -83,16 +83,22 @@
                 <Title text="{i18n>Listagem.tableHeaderTitle}"/>
               </Toolbar>
             </headerToolbar>
-            <Table class="sapUiResponsiveMargin" width="auto">
+            <Table
+              items="{
+                path: 'listaEquipamentosEletronicos>/',
+                sorter: {
+                  path: 'id',
+                  descending: false
+                }
+              }"
+              class="sapUiResponsiveMargin"
+              width="auto">
               <columns>
                 <Column>
                   <Text text="Nome do produto"/>
                 </Column>
                 <Column>
                   <Text text="Tipo do Equipamento"/>
-                </Column>
-                <Column>
-                  <Text text="Há em estoque"/>
                 </Column>
                 <Column>
                   <Text text="Quantidade"/>
@@ -104,6 +110,17 @@
                   <Text text="Ações"/>
                 </Column>
               </columns>
+              <items>
+                <ColumnListItem>
+                  <cells>
+                    <Text text="{ path: 'listaEquipamentosEletronicos>nome' }"></Text>
+                    <Text text="{ path: 'listaEquipamentosEletronicos>tipoEquipamento' }"></Text>
+                    <Text text="{ path: 'listaEquipamentosEletronicos>quantidadeEstoque' }"></Text>
+                    <Text text="{ path: 'listaEquipamentosEletronicos>dataInclusao', formatter: '.formatter.formatarData'}">
+                    </Text>
+                  </cells>
+                </ColumnListItem>
+              </items>
             </Table>
           </Panel>
         </VBox>

@@ -17,11 +17,14 @@ sap.ui.define([], function () {
 			const params = this._obterParametrosHttp(type, data, aditionalParams);
 
 			return await fetch(apiUrl, params).then(response => response.json()).then(response => {
+				console.log("houve resposta");
 				if (callback && typeof callback == "function") {
 					callback(response);
 				}
 
-				return this._errorOuResponse(response);
+				return response;
+			}).catch(error => {
+				console.log(error);
 			});
 		},
 
@@ -39,18 +42,6 @@ sap.ui.define([], function () {
 			Object.assign(params, (aditionalParams || {}));
 
 			return params;
-		},
-
-		_errorOuResponse(response) {
-			return this._ehStatusError(response.status, response.ok)
-					? Promise.reject(response)
-					: response;
-		},
-
-		_ehStatusError(status, estaOk) {
-			const errorMinimo = 400;
-			const errorMaximo = 500;
-			return (status >= errorMinimo && status <= errorMaximo) || !estaOk;
 		}
 	}
-})
+});

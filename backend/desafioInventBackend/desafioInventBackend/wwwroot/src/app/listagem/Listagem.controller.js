@@ -1,26 +1,28 @@
 sap.ui.define([
     "desafio/common/BaseController",
-	"desafio/app/servicos/ServiceEquipamentoEletronico"
+	"desafio/app/servicos/ServiceEquipamentoEletronico",
+	"desafio/app/formatters/Formatter"
 ], function (BaseController,
-	ServiceEquipamentoEletronico) {
+	ServiceEquipamentoEletronico,
+	Formatter) {
     "use strict";
 
 	const NAME_MODEL_FILTROS = "filtros";
+	const NOME_MODELO_COLLECTIONS = "collections";
 
     return BaseController.extend("desafio.app.listagem.Listagem", {
 
-		onInit() {
-			const dateFrom = this._criaDataUI5(1, 10, 2025);
-			const dateTo = this._criaDataUI5(31, 10, 2025);
+		formatter: Formatter,
 
-			const modelFiltros = {
-				nome: null,
-				tipoEquipamento: 1,
-				dataInicio: dateFrom,
-				dataFim: dateTo,
-				equipamentoEmEstoqueEnum: 1,
-			};
-			const modelCollections = {
+		onInit() {
+			const modelCollections = this._criarModelCollections();
+			const modelFiltros = this._criarModeloFiltros();
+			this.createModel(NOME_MODELO_COLLECTIONS, modelCollections);
+			this.createModel(NAME_MODEL_FILTROS, modelFiltros);
+		},
+
+		_criarModelCollections: function () {
+			return {
 				tipoEquipamentoCollection: [
 					{ label: 'PC', id: 1 },
 					{ label: 'Notebook', id: 2 },
@@ -34,34 +36,37 @@ sap.ui.define([
 					{ label: 'Não Há Estoque', id: 3 },
 				]
 			};
+		},
 
-			const name_model_collections = "collections";
-			this.createModel(name_model_collections, modelCollections);
-			this.createModel(NAME_MODEL_FILTROS, modelFiltros);
+		_criarModeloFiltros: function () {
+			return {
+				nome: null,
+				tipoEquipamento: 1,
+				dataInicio: null,
+				dataFim: null,
+				equipamentoEmEstoque: 1,
+			};
 		},
 
 		aoClicarBotaoCadastrar: function () {
 			const oRouter = this.getOwnerComponent().getRouter();
-			oRouter.navTo("cadastro");
+			const rotaCadastro = "cadastro";
+			oRouter.navTo(rotaCadastro);
 		},
 
 		aoClicarBotaoPesquisar: function () {
 
 			let filtros = this.getValueModel(NAME_MODEL_FILTROS);
-			filtros.dataInicio = this._formatarData(filtros.dataInicio);
-			filtros.dataFim = this._formatarData(filtros.dataFim);
 
-			ServiceEquipamentoEletronico.buscarTodos(filtros).then(result => console.log(result.json()));
+			if (filtros.dataInicio != null) {
+				filtros.dataInicio = this.formatter.formatarDataParaAPI(filtros.dataInicio);
+			}
+			if (filtros.dataInicio != null) {
+				filtros.dataFim = this.formatter.formatarDataParaAPI(filtros.dataFim);
+			}
+
+			const lista_equipamentos_eletronicos = "listaEquipamentosEletronicos";
+			ServiceEquipamentoEletronico.buscarTodos(filtros).then(result => this.createModel(lista_equipamentos_eletronicos, result));
 		},
-
-		_formatarData: function (data) {
-			const hora = 23, minuto = 59, segundo = 59;
-			return new Date(Date.UTC(
-				data.getFullYear(),
-				data.getMonth(),
-				data.getDate(),
-				hora, minuto, segundo
-			)).toISOString();
-		}
     });
 });
