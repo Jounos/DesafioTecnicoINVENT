@@ -5,7 +5,6 @@ using DesafioInventBackend.Model.Validator;
 using DesafioInventBackend.Repository;
 using DesafioInventBackend.Service;
 using FluentValidation;
-using System.Data;
 
 namespace DesafioInventTest
 {
@@ -119,7 +118,7 @@ namespace DesafioInventTest
 
             _service.Atualizar(ID_EQUIPAMENTO_ELETRONICO, equipamentoEletronico);
 
-            _service.Excluir(equipamentoEletronico);
+            _service.Excluir(equipamentoEletronico.Id);
 
             Assert.Null(_service.BuscarPorId(ID_EQUIPAMENTO_ELETRONICO));
         }
@@ -131,7 +130,7 @@ namespace DesafioInventTest
 
             const string ID_ESPERADO = "1";
             EquipamentoEletronico equipamentoEletronico = _service.BuscarPorId(ID_ESPERADO);
-            Assert.Throws<ValidationException>(() => _service.Excluir(equipamentoEletronico));
+            Assert.Throws<ValidationException>(() => _service.Excluir(equipamentoEletronico.Id));
         }
 
         [Fact]

@@ -1,8 +1,9 @@
-import { HttpClient, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment.development';
 import { IEquipamentoEletronico } from '../../library/models/equipamento-eletronico.model';
+import { IEquipamentoEletronicoFilter } from '../../library/filters/equipamento-eletronico.filter';
 
 @Injectable({
 	providedIn: 'root'
@@ -13,8 +14,16 @@ export class EquipamentoEletronicoService {
 
 	constructor(private http: HttpClient) { }
 
-	listarTodosEquipamentosEleronicos(): Observable<HttpResponse<IEquipamentoEletronico[]>> {
-		return this.http.get<IEquipamentoEletronico[]>(this.endpoint, { observe: 'response', responseType: 'json' });
+	pesquisarEquipamentoEletronico(filter: IEquipamentoEletronicoFilter): Observable<HttpResponse<IEquipamentoEletronico[]>> {
+		const params = new HttpParams();
+
+		if (filter.nome) params.append("nome", filter.nome);
+		if (filter.tipoEquipamento) params.append("tipoEquipamento", filter.tipoEquipamento);
+		if (filter.dataInicio) params.append("dataInicio", filter.dataInicio);
+		if (filter.dataFim) params.append("dataFim", filter.dataFim);
+		if (filter.equipamentoEmEstoque) params.append("equipamentoEmEstoque", filter.equipamentoEmEstoque);
+
+		return this.http.get<IEquipamentoEletronico[]>(this.endpoint, { params: params, observe: 'response', responseType: 'json' }).pipe();
 	}
 
 	buscarEquipamentoEletronicoPorId(id: string): Observable<HttpResponse<IEquipamentoEletronico>> {
@@ -29,7 +38,7 @@ export class EquipamentoEletronicoService {
 		return this.http.put(`${this.endpoint}/${id}`, equipamentoEletronico, { observe: 'response', responseType: 'json' });
 	}
 
-	deletarEquipamentoEletronico(equipamentoEletronico: IEquipamentoEletronico) {
-		return this.http.delete(`${this.endpoint}/${equipamentoEletronico.id}`, { observe: 'response', responseType: 'json', body: equipamentoEletronico })
+	deletarEquipamentoEletronico(id: string) {
+		return this.http.delete(`${this.endpoint}/${id}`, { observe: 'response', responseType: 'json' })
 	}
 }

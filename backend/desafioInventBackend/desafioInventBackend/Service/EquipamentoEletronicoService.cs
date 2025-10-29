@@ -51,10 +51,11 @@ namespace DesafioInventBackend.Service
             _repository.Atualizar(id, equipamentoEletronicoModificado);
         }
 
-        public void Excluir(EquipamentoEletronico equipamentoEletronico)
+        public void Excluir(string id)
         {
+            EquipamentoEletronico equipamentoEletronico = BuscarPorId(id);
             _equipamentoEletronicoDeletarValidator.ValidateAndThrow(equipamentoEletronico);
-            _repository.Deletar(equipamentoEletronico.Id);            
+            _repository.Deletar(id);            
         }
     }
 }
