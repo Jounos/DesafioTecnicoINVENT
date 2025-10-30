@@ -66,7 +66,6 @@ sap.ui.define([
 
 		_criarFiltros: function (querys = null) {
 			if (querys) {
-				debugger;
 				let dataInicioConvertidaParaFiltro = querys.dataInicio ?  new Date(querys.dataInicio) : null;
 				let dataFimConvertidaParaFiltro = querys.dataFim ? new Date(querys.dataFim) : null;
 

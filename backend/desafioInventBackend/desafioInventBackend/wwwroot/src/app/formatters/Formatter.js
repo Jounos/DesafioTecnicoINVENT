@@ -21,7 +21,6 @@ sap.ui.define([], function ()  {
 		},
 
 		formatarDataParaAPI: function (data) {
-			debugger;
 			const hora = 23, minuto = 59, segundo = 59;
 			return new Date(Date.UTC(
 				data.getFullYear(),
