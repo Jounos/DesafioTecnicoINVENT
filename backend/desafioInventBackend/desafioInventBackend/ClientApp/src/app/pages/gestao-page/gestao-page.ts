@@ -7,6 +7,7 @@ import { IEquipamentoEletronico } from '../../../library/models/equipamento-elet
 import { EquipamentoEletronicoService } from '../../services/equipamento-eletronico-service';
 import { DetalhesModal } from './detalhes-modal/detalhes-modal';
 import { EquipamentoEletronicoFilter } from '../../../library/filters/equipamento-eletronico.filter';
+import { GestaoFacade } from './gestao-facade';
 
 @Component({
 	selector: 'app-gestao-page',
@@ -23,7 +24,7 @@ export class GestaoPage implements OnDestroy {
 	protected tipoEquipamento = 0;
 	protected dataInicio = '';
 	protected dataFim = '';
-	protected haEstoque = 1;
+	protected haEstoque = 0;
 
 	listaTiposEquipamento = [
 		{ id: 0, label: 'TODOS' },
@@ -35,9 +36,9 @@ export class GestaoPage implements OnDestroy {
 	];
 
 	estoque = [
-		{ id: 1, label: 'TODOS' },
-		{ id: 2, label: 'Há Estoque' },
-		{ id: 3, label: 'Não Há Estoque' },
+		{ id: 0, label: 'TODOS' },
+		{ id: 1, label: 'Há Estoque' },
+		{ id: 2, label: 'Não Há Estoque' },
 	];
 
 	listaEquipamentosEletronicos: IEquipamentoEletronico[] = [];
@@ -48,6 +49,7 @@ export class GestaoPage implements OnDestroy {
 
 	constructor(
 		private equipamentoEletronicoService: EquipamentoEletronicoService,
+		private gestaoFacade: GestaoFacade,
 		private cdr: ChangeDetectorRef,
 		private ngbModal: NgbModal
 	) { }
@@ -63,7 +65,7 @@ export class GestaoPage implements OnDestroy {
 		};
 
 		this.subscription.add(
-			this.equipamentoEletronicoService.pesquisarEquipamentoEletronico(filter).subscribe({
+			this.gestaoFacade.pesquisar(filter).subscribe({
 				next: (value: HttpResponse<IEquipamentoEletronico[]>) => {
 					this.listaEquipamentosEletronicos = value.body!;
 					this.listaEquipamentosEletronicosFiltrada = value.body!;

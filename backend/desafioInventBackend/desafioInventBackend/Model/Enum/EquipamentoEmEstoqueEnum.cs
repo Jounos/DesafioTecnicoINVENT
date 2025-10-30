@@ -2,8 +2,8 @@
 {
     public enum EquipamentoEmEstoqueEnum
     {
-        TODOS = 1,
-        EM_ESTOQUE = 2,
-        NAO_TEM_ESTOQUE = 3
+        TODOS = 0,
+        EM_ESTOQUE = 1,
+        NAO_TEM_ESTOQUE = 2
     }
 }

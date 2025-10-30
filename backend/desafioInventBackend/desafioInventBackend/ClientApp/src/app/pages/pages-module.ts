@@ -4,7 +4,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbPagination } from '@ng-bootstrap/ng-bootstrap';
 import { NgSelectModule } from '@ng-select/ng-select';
 
-import { ErrorMsg } from '../../library/components/error-msg/error-msg';
 import { TipoEquipamentoPipe } from '../../library/pipes/tipo-equipamento-pipe';
 import { DetalhesModal } from './gestao-page/detalhes-modal/detalhes-modal';
 import { GestaoPage } from './gestao-page/gestao-page';
@@ -25,7 +24,6 @@ import { SalvarPage } from './salvar-page/salvar-page';
 		ReactiveFormsModule,
 		TipoEquipamentoPipe,
 		NgbPagination,
-		ErrorMsg,
 		PagesRoutingModule,
 	],
 })

@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { FormValidator } from './form-validator';
+import { GestaoFacade } from './gestao-facade';
 
-describe('FormValidator', () => {
-  let service: FormValidator;
+describe('GestaoFacade', () => {
+  let service: GestaoFacade;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(FormValidator);
+    service = TestBed.inject(GestaoFacade);
   });
 
   it('should be created', () => {

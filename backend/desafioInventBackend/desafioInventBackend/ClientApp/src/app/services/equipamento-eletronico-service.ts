@@ -3,7 +3,6 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment.development';
 import { IEquipamentoEletronico } from '../../library/models/equipamento-eletronico.model';
-import { IEquipamentoEletronicoFilter } from '../../library/filters/equipamento-eletronico.filter';
 
 @Injectable({
 	providedIn: 'root'
@@ -14,16 +13,8 @@ export class EquipamentoEletronicoService {
 
 	constructor(private http: HttpClient) { }
 
-	pesquisarEquipamentoEletronico(filter: IEquipamentoEletronicoFilter): Observable<HttpResponse<IEquipamentoEletronico[]>> {
-		const params = new HttpParams();
-
-		if (filter.nome) params.append("nome", filter.nome);
-		if (filter.tipoEquipamento) params.append("tipoEquipamento", filter.tipoEquipamento);
-		if (filter.dataInicio) params.append("dataInicio", filter.dataInicio);
-		if (filter.dataFim) params.append("dataFim", filter.dataFim);
-		if (filter.equipamentoEmEstoque) params.append("equipamentoEmEstoque", filter.equipamentoEmEstoque);
-
-		return this.http.get<IEquipamentoEletronico[]>(this.endpoint, { params: params, observe: 'response', responseType: 'json' }).pipe();
+	pesquisarEquipamentoEletronico(params: HttpParams): Observable<HttpResponse<IEquipamentoEletronico[]>> {
+		return this.http.get<IEquipamentoEletronico[]>(this.endpoint, { params: params, observe: 'response', responseType: 'json' });
 	}
 
 	buscarEquipamentoEletronicoPorId(id: string): Observable<HttpResponse<IEquipamentoEletronico>> {
