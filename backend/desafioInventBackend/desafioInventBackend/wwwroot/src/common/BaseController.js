@@ -2,7 +2,8 @@ sap.ui.define([
 	"sap/ui/core/mvc/Controller",
 	"sap/ui/model/json/JSONModel",
 	"sap/ui/core/date/UI5Date",
-], function(Controller, JSONModel, UI5Date) {
+	'sap/ui/core/BusyIndicator'
+], function(Controller, JSONModel, UI5Date, BusyIndicator) {
 
 	const NAMESPACE_CONTROLLER = "desafio.common.BaseController";
 
@@ -29,5 +30,12 @@ sap.ui.define([
 			return date;
 		},
 
+		showBusyIndicator: function () {
+			BusyIndicator.show(0);
+		},
+
+		hideBusyIndicator() {
+			BusyIndicator.hide();
+		}
 	});
 });

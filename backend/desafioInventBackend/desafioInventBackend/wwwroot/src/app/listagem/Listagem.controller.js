@@ -1,10 +1,11 @@
 sap.ui.define([
     "desafio/common/BaseController",
 	"desafio/app/servicos/ServiceEquipamentoEletronico",
-	"desafio/app/formatters/Formatter"
+	"desafio/app/formatters/Formatter",
+	'sap/ui/core/BusyIndicator'
 ], function (BaseController,
 	ServiceEquipamentoEletronico,
-	Formatter) {
+	Formatter, BusyIndicator) {
     "use strict";
 
 	const NAME_MODEL_FILTROS = "filtros";
@@ -32,9 +33,9 @@ sap.ui.define([
 					{ label: 'Celular', id: 5 }
 				],
 				estoqueCollection: [
-					{ label: 'TODOS', id: 1 },
-					{ label: 'Há Estoque', id: 2 },
-					{ label: 'Não Há Estoque', id: 3 },
+					{ label: 'TODOS', id: 0 },
+					{ label: 'Há Estoque', id: 1 },
+					{ label: 'Não Há Estoque', id: 2 },
 				]
 			};
 		},
@@ -45,7 +46,7 @@ sap.ui.define([
 				tipoEquipamento: 0,
 				dataInicio: null,
 				dataFim: null,
-				equipamentoEmEstoque: 1,
+				equipamentoEmEstoque: 0,
 			};
 		},
 
@@ -57,6 +58,8 @@ sap.ui.define([
 
 		aoClicarBotaoPesquisar: function () {
 
+			this.showBusyIndicator();
+
 			let filtros = this.getValueModel(NAME_MODEL_FILTROS);
 
 			if (filtros.dataInicio != null) {
@@ -66,8 +69,14 @@ sap.ui.define([
 				filtros.dataFim = this.formatter.formatarDataParaAPI(filtros.dataFim);
 			}
 
-			const lista_equipamentos_eletronicos = "listaEquipamentosEletronicos";
-			ServiceEquipamentoEletronico.buscarTodos(filtros).then(result => this.createModel(lista_equipamentos_eletronicos, result));
+			setTimeout(() => {
+				const lista_equipamentos_eletronicos = "listaEquipamentosEletronicos";
+				ServiceEquipamentoEletronico.buscarTodos(filtros)
+				.then(result => {
+					this.createModel(lista_equipamentos_eletronicos, result)
+
+				}).finally(() => this.hideBusyIndicator());
+			}, 1000);
 		},
     });
 });
