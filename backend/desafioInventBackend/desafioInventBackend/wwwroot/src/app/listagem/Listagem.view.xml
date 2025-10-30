@@ -27,9 +27,9 @@
                   <Label text="Tipo Equipamento" labelFor="tipoEquipamento"/>
                   <Select id="idSelectTipoEquipamento"
                           selectedKey="{filtros>/tipoEquipamento}"
-                          items="{collections>/tipoEquipamentoCollection}"
+                          items="{selects>/tipoEquipamentoCollection}"
                           width="100%">
-                    <core:Item key="{collections>id}" text="{collections>label}"/>
+                    <core:Item key="{selects>id}" text="{selects>label}"/>
                   </Select>
                 </VBox>
               </HBox>
@@ -61,9 +61,9 @@
                   <Label text="Estoque" labelFor="haEstoque"/>
                   <Select id="idSelectHaEstoque"
                           selectedKey="{filtros>/equipamentoEmEstoque}"
-                          items="{collections>/estoqueCollection}"
+                          items="{selects>/estoqueCollection}"
                           width="100%">
-                    <core:Item key="{collections>id}" text="{collections>label}"/>
+                    <core:Item key="{selects>id}" text="{selects>label}"/>
                   </Select>
                 </VBox>
                 <VBox class="sapUiSmallMarginEnd sapUiMediumMarginTop">

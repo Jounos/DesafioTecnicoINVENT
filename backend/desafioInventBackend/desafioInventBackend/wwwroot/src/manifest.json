@@ -68,12 +68,12 @@
       },
       "routes": [
         {
-          "pattern": "",
+          "pattern": ":?query:",
           "name": "listagem",
           "target": "listagem"
         },
         {
-          "pattern": "cadastro",
+          "pattern": "cadastro:?query:",
           "name": "cadastro",
           "target": "cadastro"
         }

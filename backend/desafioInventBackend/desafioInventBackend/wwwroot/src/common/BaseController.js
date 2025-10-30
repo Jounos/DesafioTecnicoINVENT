@@ -1,24 +1,25 @@
 sap.ui.define([
 	"sap/ui/core/mvc/Controller",
 	"sap/ui/model/json/JSONModel",
-	"sap/ui/core/date/UI5Date",
 	'sap/ui/core/BusyIndicator'
-], function(Controller, JSONModel, UI5Date, BusyIndicator) {
+], function(Controller, JSONModel, BusyIndicator) {
 
 	const NAMESPACE_CONTROLLER = "desafio.common.BaseController";
-
+	const QUERY = "?query";
 	return Controller.extend(NAMESPACE_CONTROLLER, {
 
-		createModel: function(nameModel, objectModel) {
+		query: QUERY,
+
+		criarModelo: function(nameModel, objectModel) {
 			this.getView().setModel(new JSONModel(objectModel), nameModel);
 		},
 
-		_getModel: function(nameModel) {
+		_obterModelo: function(nameModel) {
 			return this.getView().getModel(nameModel)
 		},
 
-		getValueModel: function(nameModel) {
-			const data =  this._getModel(nameModel).getData();
+		obterValorModelo: function(nameModel) {
+			const data =  this._obterModelo(nameModel).getData();
 			return Object.assign({}, data);
 		},
 
@@ -36,6 +37,37 @@ sap.ui.define([
 
 		hideBusyIndicator() {
 			BusyIndicator.hide();
+		},
+
+		vincularRota: function (routeName, func) {
+			const router = this._getRouter();
+
+			if (routeName) {
+				router.getRoute(routeName).attachPatternMatched(func, this);
+			} else {
+				router.attachPatternMatched(func, this);
+			}
+		},
+
+		navegarPara(rota, param = null) {
+			const oRouter = this._getRouter();
+
+			if (param) {
+
+				for (let key in param) {
+					if (!param[key]) {
+						delete param[key];
+					}
+				}
+
+				oRouter.navTo(rota, { query: param });
+			} else {
+				oRouter.navTo(rota);
+			}
+		},
+
+		_getRouter: function () {
+			return this.getOwnerComponent().getRouter();
 		}
 	});
 });

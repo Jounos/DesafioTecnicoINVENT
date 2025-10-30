@@ -5,24 +5,48 @@ sap.ui.define([
 	'sap/ui/core/BusyIndicator'
 ], function (BaseController,
 	ServiceEquipamentoEletronico,
-	Formatter, BusyIndicator) {
+	Formatter) {
     "use strict";
 
 	const NAME_MODEL_FILTROS = "filtros";
-	const NOME_MODELO_COLLECTIONS = "collections";
+	const NOME_MODELO_SELECTS = "selects";
 
     return BaseController.extend("desafio.app.listagem.Listagem", {
 
 		formatter: Formatter,
 
 		onInit() {
-			const modelCollections = this._criarModelCollections();
-			const modelFiltros = this._criarModeloFiltros();
-			this.createModel(NOME_MODELO_COLLECTIONS, modelCollections);
-			this.createModel(NAME_MODEL_FILTROS, modelFiltros);
+			const rotaListagem = "listagem";
+			this.vincularRota(rotaListagem, this._obterParametros);
 		},
 
-		_criarModelCollections: function () {
+		_obterParametros(event) {
+			const parametro = "arguments";
+
+			let querys = event.getParameter(parametro)[this.query];
+
+			this._criarModelos(querys);
+			if (querys) {
+				this._pesquisar();
+			}
+		},
+
+		_criarModelos: function (querys) {
+			this._criarModeloSelects();
+			this._criarModeloFiltros(querys);
+		},
+
+		_criarModeloSelects: function() {
+			const modelSelects = this._criarSeletcs();
+			this.criarModelo(NOME_MODELO_SELECTS, modelSelects);
+		},
+
+		_criarModeloFiltros: function(querys = null) {
+			const modelFiltros = this._criarFiltros(querys);
+			this.criarModelo(NAME_MODEL_FILTROS, modelFiltros);
+		},
+
+		_criarSeletcs: function () {
 			return {
 				tipoEquipamentoCollection: [
 					{ label: 'TODOS', id: 0 },
@@ -40,27 +64,54 @@ sap.ui.define([
 			};
 		},
 
-		_criarModeloFiltros: function () {
-			return {
-				nome: null,
-				tipoEquipamento: 0,
-				dataInicio: null,
-				dataFim: null,
-				equipamentoEmEstoque: 0,
-			};
+		_criarFiltros: function (querys = null) {
+			if (querys) {
+				debugger;
+				let dataInicioConvertidaParaFiltro = querys.dataInicio ?  new Date(querys.dataInicio) : null;
+				let dataFimConvertidaParaFiltro = querys.dataFim ? new Date(querys.dataFim) : null;
+
+				return {
+					nome: querys.nome,
+					tipoEquipamento: querys.tipoEquipamento,
+					dataInicio: dataInicioConvertidaParaFiltro,
+					dataFim: dataFimConvertidaParaFiltro,
+					equipamentoEmEstoque: querys.equipamentoEmEstoque,
+				};
+			} else {
+				return {
+					nome: null,
+					tipoEquipamento: 0,
+					dataInicio: null,
+					dataFim: null,
+					equipamentoEmEstoque: 0,
+				};
+			}
 		},
 
 		aoClicarBotaoCadastrar: function () {
-			const oRouter = this.getOwnerComponent().getRouter();
 			const rotaCadastro = "cadastro";
-			oRouter.navTo(rotaCadastro);
+			const filtros = this._obterFiltrosFormatados();
+
+			this.navegarPara(rotaCadastro, filtros);
 		},
 
 		aoClicarBotaoPesquisar: function () {
+			this._pesquisar();
+		},
 
+		_pesquisar() {
 			this.showBusyIndicator();
+			setTimeout(() => {
+				const filtros = this._obterFiltrosFormatados();
+				const lista_equipamentos_eletronicos = "listaEquipamentosEletronicos";
+				ServiceEquipamentoEletronico.buscarTodos(filtros).then(result => {
+					this.criarModelo(lista_equipamentos_eletronicos, result)
+				}).finally(() => this.hideBusyIndicator());
+			}, 1000);
+		},
 
-			let filtros = this.getValueModel(NAME_MODEL_FILTROS);
+		_obterFiltrosFormatados() {
+			let filtros = this.obterValorModelo(NAME_MODEL_FILTROS);
 
 			if (filtros.dataInicio != null) {
 				filtros.dataInicio = this.formatter.formatarDataParaAPI(filtros.dataInicio);
@@ -69,14 +120,7 @@ sap.ui.define([
 				filtros.dataFim = this.formatter.formatarDataParaAPI(filtros.dataFim);
 			}
 
-			setTimeout(() => {
-				const lista_equipamentos_eletronicos = "listaEquipamentosEletronicos";
-				ServiceEquipamentoEletronico.buscarTodos(filtros)
-				.then(result => {
-					this.createModel(lista_equipamentos_eletronicos, result)
-
-				}).finally(() => this.hideBusyIndicator());
-			}, 1000);
-		},
+			return filtros;
+		}
     });
 });
