@@ -60,7 +60,7 @@ sap.ui.define([
 
 			return {
 				tipoEquipamentoCollection: [
-					{ label: labelTodos, id: 0 },
+					{ label: labelTodos },
 					{ label: labelPC, id: 1 },
 					{ label: labelNotebook, id: 2 },
 					{ label: labelMouse, id: 3 },
@@ -68,7 +68,7 @@ sap.ui.define([
 					{ label: labelCelular, id: 5 }
 				],
 				estoqueCollection: [
-					{ label: labelTODOS, id: 0 },
+					{ label: labelTODOS },
 					{ label: labelHaEstoque, id: 1 },
 					{ label: labelNaoHaEstoque, id: 2 },
 				]
