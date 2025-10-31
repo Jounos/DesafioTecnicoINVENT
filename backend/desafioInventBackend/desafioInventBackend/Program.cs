@@ -11,7 +11,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontApp",
-        policy => policy.WithOrigins("*")
+        policy => policy.WithOrigins(["https://localhost:44400", "http://localhost:55500"])
                          .AllowAnyHeader()
                          .AllowAnyMethod());
 });
