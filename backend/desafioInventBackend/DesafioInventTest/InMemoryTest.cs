@@ -145,7 +145,7 @@ namespace DesafioInventTest
             _cadastrarEquipamentoEletronico(nomeEquipamento, TipoEquipamentoEnum.PC, 2);
 
             BuscaFiltros filtro = new BuscaFiltros { Nome = "Alienware" };
-            IEnumerable<EquipamentoEletronico> listaEquipamentosEletronicos = _service.BuscarPorFiltros(filtro);
+            IEnumerable<EquipamentoEletronico> listaEquipamentosEletronicos = _service.Buscar(filtro);
 
             EquipamentoEletronicoValidator equipamentoEletronicoValidator = new EquipamentoEletronicoValidator();
             Assert.Collection(listaEquipamentosEletronicos, equipamentoEletronico => Assert.True(equipamentoEletronicoValidator.Validate(equipamentoEletronico).IsValid));
@@ -159,7 +159,7 @@ namespace DesafioInventTest
 
             BuscaFiltros filtro = new BuscaFiltros { TipoEquipamento = TipoEquipamentoEnum.PC };
 
-            IEnumerable<EquipamentoEletronico> listaEquipamentosEletronicos = _service.BuscarPorFiltros(filtro);
+            IEnumerable<EquipamentoEletronico> listaEquipamentosEletronicos = _service.Buscar(filtro);
 
             EquipamentoEletronicoValidator equipamentoEletronicoValidator = new EquipamentoEletronicoValidator();
             Assert.Collection(listaEquipamentosEletronicos, equipamentoEletronico => Assert.True(equipamentoEletronicoValidator.Validate(equipamentoEletronico).IsValid));
@@ -173,7 +173,7 @@ namespace DesafioInventTest
 
             BuscaFiltros filtro = new BuscaFiltros { DataInicio = DateTimeOffset.Parse("2025-10-20") };
 
-            IEnumerable<EquipamentoEletronico> listaEquipamentosEletronicos = _service.BuscarPorFiltros(filtro);
+            IEnumerable<EquipamentoEletronico> listaEquipamentosEletronicos = _service.Buscar(filtro);
 
             EquipamentoEletronicoValidator equipamentoEletronicoValidator = new EquipamentoEletronicoValidator();
             Assert.Collection(listaEquipamentosEletronicos, equipamentoEletronico => Assert.True(equipamentoEletronicoValidator.Validate(equipamentoEletronico).IsValid));
@@ -187,7 +187,7 @@ namespace DesafioInventTest
 
             BuscaFiltros filtro = new BuscaFiltros { DataFim = DateTimeOffset.Parse("2025-12-30") };
 
-            IEnumerable<EquipamentoEletronico> listaEquipamentosEletronicos = _service.BuscarPorFiltros(filtro);
+            IEnumerable<EquipamentoEletronico> listaEquipamentosEletronicos = _service.Buscar(filtro);
 
             EquipamentoEletronicoValidator equipamentoEletronicoValidator = new EquipamentoEletronicoValidator();
             Assert.Collection(listaEquipamentosEletronicos, equipamentoEletronico => Assert.True(equipamentoEletronicoValidator.Validate(equipamentoEletronico).IsValid));
@@ -201,21 +201,21 @@ namespace DesafioInventTest
 
             BuscaFiltros filtro = new BuscaFiltros { EquipamentoEmEstoque = EquipamentoEmEstoqueEnum.EM_ESTOQUE };
 
-            IEnumerable<EquipamentoEletronico> listaEquipamentosEletronicos = _service.BuscarPorFiltros(filtro);
+            IEnumerable<EquipamentoEletronico> listaEquipamentosEletronicos = _service.Buscar(filtro);
 
             EquipamentoEletronicoValidator equipamentoEletronicoValidator = new EquipamentoEletronicoValidator();
             Assert.Collection(listaEquipamentosEletronicos, equipamentoEletronico => Assert.True(equipamentoEletronicoValidator.Validate(equipamentoEletronico).IsValid));
         }
 
         [Fact]
-        public void Buscar_equipamento_eletronico_por_filtro_por_estoque_vazio_nao_deve_encontrar_u_equipamento()
+        public void Buscar_equipamento_eletronico_por_filtro_por_estoque_vazio_nao_deve_encontrar_um_equipamento()
         {
             const string nomeEquipamento = "Alienware";
             _cadastrarEquipamentoEletronico(nomeEquipamento, TipoEquipamentoEnum.PC, 2);
 
             BuscaFiltros filtro = new BuscaFiltros { EquipamentoEmEstoque = EquipamentoEmEstoqueEnum.NAO_TEM_ESTOQUE };
 
-            IEnumerable<EquipamentoEletronico> listaEquipamentosEletronicos = _service.BuscarPorFiltros(filtro);
+            IEnumerable<EquipamentoEletronico> listaEquipamentosEletronicos = _service.Buscar(filtro);
 
             EquipamentoEletronicoValidator equipamentoEletronicoValidator = new EquipamentoEletronicoValidator();
             Assert.Empty(listaEquipamentosEletronicos);
@@ -247,7 +247,7 @@ namespace DesafioInventTest
             _cadastrarEquipamentoEletronico(nomeEquipamento, TipoEquipamentoEnum.PC, 2);
             _cadastrarEquipamentoEletronico(nomeEquipamento, TipoEquipamentoEnum.PC, 2);
 
-            IEnumerable<EquipamentoEletronico> listaEquipamentosEletronicos = _service.ListarTodos();
+            IEnumerable<EquipamentoEletronico> listaEquipamentosEletronicos = _service.Buscar();
 
             EquipamentoEletronicoValidator equipamentoEletronicoValidator = new EquipamentoEletronicoValidator();
             Assert.Collection(listaEquipamentosEletronicos,
@@ -261,7 +261,7 @@ namespace DesafioInventTest
         [Fact]
         public void Listar_equipamentos_eletronicos_nenhum_equipamento_deve_ser_encontrado()
         {
-            IEnumerable<EquipamentoEletronico> listaEquipamentosEletronicos = _service.ListarTodos();
+            IEnumerable<EquipamentoEletronico> listaEquipamentosEletronicos = _service.Buscar();
 
             Assert.Empty(listaEquipamentosEletronicos);
         }

@@ -3,7 +3,6 @@ using DesafioInventBackend.Model.DTO;
 using DesafioInventBackend.Model.Entity;
 using DesafioInventBackend.Model.Filters;
 using DesafioInventBackend.Service;
-using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DesafioInventBackend.Controller
@@ -26,9 +25,9 @@ namespace DesafioInventBackend.Controller
         }
 
         [HttpGet]
-        public ObjectResult BuscarEquipamentosEletronicaosPorFiltros([FromQuery] BuscaFiltros filtros)
+        public ObjectResult BuscarEquipamentosEletronicaos([FromQuery] BuscaFiltros filtros = null)
         {
-            return Ok(_service.BuscarPorFiltros(filtros));
+            return Ok(_service.Buscar(filtros));
         }
 
         [HttpGet("{id}")]

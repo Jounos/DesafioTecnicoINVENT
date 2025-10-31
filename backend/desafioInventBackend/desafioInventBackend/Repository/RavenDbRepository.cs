@@ -13,49 +13,45 @@ namespace DesafioInventBackend.Repository
 
         private readonly IDocumentStore _store = RavenDbContext.Store;
 
-        public IEnumerable<EquipamentoEletronico> BuscarPorFiltros(BuscaFiltros filtros)
+        public IEnumerable<EquipamentoEletronico> Buscar(BuscaFiltros filtros = null)
         {
             using IDocumentSession session = _obterSessaoAberta();
-
             IRavenQueryable<EquipamentoEletronico> equipamentoEletronicoQuery = session.Query<EquipamentoEletronico>();
-            
-            if (filtros.Nome != string.Empty)
-            {
-                equipamentoEletronicoQuery = equipamentoEletronicoQuery.Search(ee => ee.Nome, filtros.Nome);
-            }
-            
-            if (filtros.TipoEquipamento != 0)
-            {
-                equipamentoEletronicoQuery = equipamentoEletronicoQuery.Where(ee => ee.TipoEquipamento == filtros.TipoEquipamento);
-            }
-            
-            if (filtros.DataInicio != DateTimeOffset.MinValue)
-            {
-                equipamentoEletronicoQuery = equipamentoEletronicoQuery.Where(ee => ee.DataInclusao >= filtros.DataInicio);
-            }
-            
-            if (filtros.DataFim != DateTimeOffset.MinValue)
-            {
-                equipamentoEletronicoQuery = equipamentoEletronicoQuery.Where(ee => ee.DataInclusao <= filtros.DataFim);
-            }
 
-            if (filtros.EquipamentoEmEstoque == EquipamentoEmEstoqueEnum.EM_ESTOQUE)
+            if (filtros != null)
             {
-                equipamentoEletronicoQuery = equipamentoEletronicoQuery.Where(ee => ee.QuantidadeEstoque > 0);
-            }
+                if (filtros.Nome != string.Empty)
+                {
+                    equipamentoEletronicoQuery = equipamentoEletronicoQuery.Search(ee => ee.Nome, filtros.Nome);
+                }
 
-            if (filtros.EquipamentoEmEstoque == EquipamentoEmEstoqueEnum.NAO_TEM_ESTOQUE)
-            {
-                equipamentoEletronicoQuery = equipamentoEletronicoQuery.Where(ee => ee.QuantidadeEstoque == 0);
+                if (filtros.TipoEquipamento != 0)
+                {
+                    equipamentoEletronicoQuery = equipamentoEletronicoQuery.Where(ee => ee.TipoEquipamento == filtros.TipoEquipamento);
+                }
+
+                if (filtros.DataInicio != DateTimeOffset.MinValue)
+                {
+                    equipamentoEletronicoQuery = equipamentoEletronicoQuery.Where(ee => ee.DataInclusao >= filtros.DataInicio);
+                }
+
+                if (filtros.DataFim != DateTimeOffset.MinValue)
+                {
+                    equipamentoEletronicoQuery = equipamentoEletronicoQuery.Where(ee => ee.DataInclusao <= filtros.DataFim);
+                }
+
+                if (filtros.EquipamentoEmEstoque == EquipamentoEmEstoqueEnum.EM_ESTOQUE)
+                {
+                    equipamentoEletronicoQuery = equipamentoEletronicoQuery.Where(ee => ee.QuantidadeEstoque > 0);
+                }
+
+                if (filtros.EquipamentoEmEstoque == EquipamentoEmEstoqueEnum.NAO_TEM_ESTOQUE)
+                {
+                    equipamentoEletronicoQuery = equipamentoEletronicoQuery.Where(ee => ee.QuantidadeEstoque == 0);
+                }
             }
 
             return equipamentoEletronicoQuery.OrderByDescending(ee => ee.DataInclusao).ToList();
-        }
-
-        public IEnumerable<EquipamentoEletronico> ListarTodos()
-        {
-            using IDocumentSession session = _obterSessaoAberta();
-            return session.Query<EquipamentoEletronico>().OrderByDescending(ee => ee.DataInclusao).ToList();
         }
 
         public EquipamentoEletronico BuscarPorId(string id, IDocumentSession sessionOpened = null)

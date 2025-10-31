@@ -6,8 +6,7 @@ namespace DesafioInventBackend.Repository
 {
     public interface IRepositoryEquipamentoEletronico
     {
-        IEnumerable<EquipamentoEletronico> BuscarPorFiltros(BuscaFiltros filtros);
-        IEnumerable<EquipamentoEletronico> ListarTodos();
+        IEnumerable<EquipamentoEletronico> Buscar(BuscaFiltros filtros = null);
         EquipamentoEletronico BuscarPorId(string id, IDocumentSession session = null);
         void Cadastrar(EquipamentoEletronico equipamentoEletronico);
         void Atualizar(string id, EquipamentoEletronico equipamentoEletronicoModificado);

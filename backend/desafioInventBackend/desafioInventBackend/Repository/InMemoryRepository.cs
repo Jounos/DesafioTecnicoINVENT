@@ -10,21 +10,27 @@ namespace DesafioInventBackend.Repository
         
         private readonly List<EquipamentoEletronico> _itens = new List<EquipamentoEletronico>();
 
-        public IEnumerable<EquipamentoEletronico> BuscarPorFiltros(BuscaFiltros filtros)
+        public IEnumerable<EquipamentoEletronico> Buscar(BuscaFiltros filtros = null)
         {
+
+            if (filtros == null)
+            {
+                return _itens.OrderByDescending(i => i.DataInclusao);
+            }
+
             List<EquipamentoEletronico> itensFiltrados = new List<EquipamentoEletronico>();
 
 
             if (filtros.Nome != string.Empty)
-            { 
+            {
                 itensFiltrados = _itens.FindAll(i => i.Nome.Contains(filtros.Nome));
             }
 
             if (filtros.TipoEquipamento != 0)
             {
-                itensFiltrados.AddRange(_itens.FindAll(i => i.TipoEquipamento == filtros.TipoEquipamento));           
+                itensFiltrados.AddRange(_itens.FindAll(i => i.TipoEquipamento == filtros.TipoEquipamento));
             }
-            
+
             if (filtros.DataInicio != DateTimeOffset.MinValue)
             {
                 itensFiltrados.AddRange(_itens.FindAll(i => i.DataInclusao >= filtros.DataInicio));
@@ -51,11 +57,6 @@ namespace DesafioInventBackend.Repository
             }));
 
             return itensFiltrados.Distinct().ToList();
-        }
-
-        public IEnumerable<EquipamentoEletronico> ListarTodos()
-        {
-            return _itens.OrderByDescending(i => i.DataInclusao);
         }
         
         public EquipamentoEletronico BuscarPorId(string id, IDocumentSession session = null)
