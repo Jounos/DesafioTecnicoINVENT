@@ -5,7 +5,7 @@ sap.ui.define([
 	"use strict";
 
 	const NOME_CONTROLLER = "desafio.app.cadastro.Cadastro"
-	const NOME_MODEL_PARAMS = "params";
+	const NOME_MODELO_PARAMETROS = "params";
 
 	return BaseController.extend(NOME_CONTROLLER, {
 		onInit() {
@@ -17,11 +17,11 @@ sap.ui.define([
 			const parametro = "arguments";
 			let querys = event.getParameter(parametro)[this.query];
 
-			this.criarModelo(NOME_MODEL_PARAMS, querys);
+			this.criarModelo(NOME_MODELO_PARAMETROS, querys);
 		},
 
 		aoNavegarUltimaPagina: function () {
-			const params = this.obterValorModelo(NOME_MODEL_PARAMS);
+			const params = this.obterValorModelo(NOME_MODELO_PARAMETROS);
 			const rotaListagem = "listagem";
 			this.navegarPara(rotaListagem, params);
 		}

@@ -31,11 +31,11 @@ sap.ui.define([
 			return date;
 		},
 
-		showBusyIndicator: function () {
+		mostrarBusyIndicator: function () {
 			BusyIndicator.show(0);
 		},
 
-		hideBusyIndicator() {
+		esconderBusyIndicator() {
 			BusyIndicator.hide();
 		},
 

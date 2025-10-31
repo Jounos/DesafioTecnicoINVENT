@@ -9,7 +9,7 @@ sap.ui.define([
     "use strict";
 
 	const NOME_CONTROLLER = "desafio.app.listagem.Listagem";
-	const NAME_MODEL_FILTROS = "filtros";
+	const NAME_MODELO_FILTROS = "filtros";
 	const NOME_MODELO_SELECTS = "selects";
 
     return BaseController.extend(NOME_CONTROLLER, {
@@ -43,7 +43,7 @@ sap.ui.define([
 
 		_criarModeloFiltros: function(querys = null) {
 			const modelFiltros = this._criarFiltros(querys);
-			this.criarModelo(NAME_MODEL_FILTROS, modelFiltros);
+			this.criarModelo(NAME_MODELO_FILTROS, modelFiltros);
 		},
 
 		_criarSeletcs: function () {
@@ -110,18 +110,18 @@ sap.ui.define([
 		},
 
 		_pesquisar() {
-			this.showBusyIndicator();
+			this.mostrarBusyIndicator();
 			setTimeout(() => {
 				const filtrosFormatados = this._obterFiltrosFormatados();
 				const nomeModeloListaEquipamentosEletronicos = "listaEquipamentosEletronicos";
 				ServiceEquipamentoEletronico.buscarTodos(filtrosFormatados).then(result => {
 					this.criarModelo(nomeModeloListaEquipamentosEletronicos, result)
-				}).finally(() => this.hideBusyIndicator());
+				}).finally(() => this.esconderBusyIndicator());
 			}, 1000);
 		},
 
 		_obterFiltrosFormatados() {
-			let filtros = this.obterValorModelo(NAME_MODEL_FILTROS);
+			let filtros = this.obterValorModelo(NAME_MODELO_FILTROS);
 
 			if (filtros.dataInicio != null) {
 				filtros.dataInicio = this.formatter.formatarDataParaAPI(filtros.dataInicio);
