@@ -15,7 +15,7 @@ namespace DesafioInventBackend.Repository
 
         public IEnumerable<EquipamentoEletronico> BuscarPorFiltros(BuscaFiltros filtros)
         {
-            using IDocumentSession session = _getOpenedSession();
+            using IDocumentSession session = _obterSessaoAberta();
 
             IRavenQueryable<EquipamentoEletronico> equipamentoEletronicoQuery = session.Query<EquipamentoEletronico>();
             
@@ -57,13 +57,13 @@ namespace DesafioInventBackend.Repository
 
         public IEnumerable<EquipamentoEletronico> ListarTodos()
         {
-            using IDocumentSession session = _getOpenedSession();
+            using IDocumentSession session = _obterSessaoAberta();
             return session.Query<EquipamentoEletronico>().OrderByDescending(ee => ee.DataInclusao).ToList();
         }
 
         public EquipamentoEletronico BuscarPorId(string id, IDocumentSession sessionOpened = null)
         { 
-            sessionOpened ??= _getOpenedSession();
+            sessionOpened ??= _obterSessaoAberta();
             return sessionOpened.Load<EquipamentoEletronico>(id) ?? throw new FormatException($"Não foi possível encontrar um equipamento eletrônico com id {id}");
         }
 
@@ -71,14 +71,14 @@ namespace DesafioInventBackend.Repository
         {
             equipamentoEletronico.DataInclusao = DateTimeOffset.Now;
 
-            using IDocumentSession session = _getOpenedSession();
+            using IDocumentSession session = _obterSessaoAberta();
             session.Store(equipamentoEletronico);
             session.SaveChanges();
         }
 
         public void Atualizar(string id, EquipamentoEletronico equipamentoEletronicoModificado)
         {
-            using IDocumentSession session = _getOpenedSession();
+            using IDocumentSession session = _obterSessaoAberta();
             
             EquipamentoEletronico equipamentoEletronico = BuscarPorId(id, session);
 
@@ -91,12 +91,12 @@ namespace DesafioInventBackend.Repository
 
         public void Deletar(string id)
         {
-            using IDocumentSession session = _getOpenedSession();
+            using IDocumentSession session = _obterSessaoAberta();
             session.Delete(id);
             session.SaveChanges();
         }
 
-        private IDocumentSession _getOpenedSession()
+        private IDocumentSession _obterSessaoAberta()
         {
             return _store.OpenSession();
         }
