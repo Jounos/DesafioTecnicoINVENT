@@ -4,9 +4,10 @@ sap.ui.define([
 ], (BaseController) => {
 	"use strict";
 
+	const NOME_CONTROLLER = "desafio.app.cadastro.Cadastro"
 	const NOME_MODEL_PARAMS = "params";
 
-	return BaseController.extend("desafio.app.cadastro.Cadastro", {
+	return BaseController.extend(NOME_CONTROLLER, {
 		onInit() {
 			const rotaCadastro = "cadastro";
 			this.vincularRota(rotaCadastro, this._obterParametros);
@@ -21,8 +22,8 @@ sap.ui.define([
 
 		aoNavegarUltimaPagina: function () {
 			const params = this.obterValorModelo(NOME_MODEL_PARAMS);
-
-			this.navegarPara("listagem", params);
+			const rotaListagem = "listagem";
+			this.navegarPara(rotaListagem, params);
 		}
 	});
 });

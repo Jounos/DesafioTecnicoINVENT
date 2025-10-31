@@ -8,10 +8,11 @@ sap.ui.define([
 	Formatter) {
     "use strict";
 
+	const NOME_CONTROLLER = "desafio.app.listagem.Listagem";
 	const NAME_MODEL_FILTROS = "filtros";
 	const NOME_MODELO_SELECTS = "selects";
 
-    return BaseController.extend("desafio.app.listagem.Listagem", {
+    return BaseController.extend(NOME_CONTROLLER, {
 
 		formatter: Formatter,
 
@@ -21,9 +22,8 @@ sap.ui.define([
 		},
 
 		_obterParametros(event) {
-			const parametro = "arguments";
-
-			let querys = event.getParameter(parametro)[this.query];
+			const nomeParametro = "arguments";
+			let querys = event.getParameter(nomeParametro)[this.query];
 
 			this._criarModelos(querys);
 			if (querys) {
@@ -47,19 +47,30 @@ sap.ui.define([
 		},
 
 		_criarSeletcs: function () {
+			const labelTodos = 'TODOS';
+			const labelPC = 'PC';
+			const labelNotebook = 'Notebook';
+			const labelMouse = 'Mouse';
+			const labelTeclado  = 'Teclado';
+			const labelCelular = 'Celular';
+
+			const labelTODOS = 'TODOS';
+			const labelHaEstoque = 'Há Estoque';
+			const labelNaoHaEstoque = 'Não Há Estoque';
+
 			return {
 				tipoEquipamentoCollection: [
-					{ label: 'TODOS', id: 0 },
-					{ label: 'PC', id: 1 },
-					{ label: 'Notebook', id: 2 },
-					{ label: 'Mouse', id: 3 },
-					{ label: 'Teclado', id: 4 },
-					{ label: 'Celular', id: 5 }
+					{ label: labelTodos, id: 0 },
+					{ label: labelPC, id: 1 },
+					{ label: labelNotebook, id: 2 },
+					{ label: labelMouse, id: 3 },
+					{ label: labelTeclado, id: 4 },
+					{ label: labelCelular, id: 5 }
 				],
 				estoqueCollection: [
-					{ label: 'TODOS', id: 0 },
-					{ label: 'Há Estoque', id: 1 },
-					{ label: 'Não Há Estoque', id: 2 },
+					{ label: labelTODOS, id: 0 },
+					{ label: labelHaEstoque, id: 1 },
+					{ label: labelNaoHaEstoque, id: 2 },
 				]
 			};
 		},
@@ -101,10 +112,10 @@ sap.ui.define([
 		_pesquisar() {
 			this.showBusyIndicator();
 			setTimeout(() => {
-				const filtros = this._obterFiltrosFormatados();
-				const lista_equipamentos_eletronicos = "listaEquipamentosEletronicos";
-				ServiceEquipamentoEletronico.buscarTodos(filtros).then(result => {
-					this.criarModelo(lista_equipamentos_eletronicos, result)
+				const filtrosFormatados = this._obterFiltrosFormatados();
+				const nomeModeloListaEquipamentosEletronicos = "listaEquipamentosEletronicos";
+				ServiceEquipamentoEletronico.buscarTodos(filtrosFormatados).then(result => {
+					this.criarModelo(nomeModeloListaEquipamentosEletronicos, result)
 				}).finally(() => this.hideBusyIndicator());
 			}, 1000);
 		},

@@ -1,22 +1,30 @@
 sap.ui.define([], function ()  {
 	"use strict";
 
+	const STRING_VAZIA = "";
+
 	return {
 
 		formatarTipoEquipamento: function (idTipoEquipamento) {
+			const tipoEquipamentoPC = "PC";
+			const tipoEquipamentoNotebook = "Notebook";
+			const tipoEquipamentoMouse = "Mouse";
+			const tipoEquipamentoTeclado = "Teclado";
+			const tipoEquipamentoCelular = "Celular";
+
 			switch (idTipoEquipamento) {
 				case 1:
-					return "PC";
+					return tipoEquipamentoPC;
 				case 2:
-					return "Notebook";
+					return tipoEquipamentoNotebook;
 				case 3:
-					return "Mouse";
+					return tipoEquipamentoMouse;
 				case 4:
-					return "Teclado";
+					return tipoEquipamentoTeclado;
 				case 5:
-					return "Celular";
+					return tipoEquipamentoCelular;
 				default:
-					return "";
+					return STRING_VAZIA;
 			}
 		},
 
@@ -33,9 +41,11 @@ sap.ui.define([], function ()  {
 		formatarData: function(date) {
 			const data = new Date(date);
 			if (isNaN(data)) {
-				return "";
+				return STRING_VAZIA;
 			}
-			return data.toLocaleDateString("pt-BR")
+
+			const localQueRefereData = "pt-BR";
+			return data.toLocaleDateString(localQueRefereData);
 		}
 	};
 });

@@ -3,7 +3,8 @@ sap.ui.define([
 ], function (BaseController) {
     "use strict";
 
-    return BaseController.extend("desafio.app.App", {
+	const NOME_CONTROLLER = "desafio.app.App";
+    return BaseController.extend(NOME_CONTROLLER, {
 		onInit() {
 			this.getView().addStyleClass(this.getOwnerComponent().getContentDensityClass());
 		}

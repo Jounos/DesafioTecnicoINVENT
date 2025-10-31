@@ -17,8 +17,8 @@ sap.ui.define([], function () {
 			const params = this._obterParametrosHttp(type, data, aditionalParams);
 
 			return await fetch(apiUrl, params).then(response => response.json()).then(response => {
-				console.log("houve resposta");
-				if (callback && typeof callback == "function") {
+				const tipoCallback = "function"
+				if (callback && typeof callback == tipoCallback) {
 					callback(response);
 				}
 

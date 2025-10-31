@@ -13,19 +13,19 @@ sap.ui.define(["desafio/common/HttpClient"], function(HttpClient) {
 			return undefined;
 		}
 
-		const nome = 'nome';
-		const tipoEquipamento = 'tipoEquipamento';
-		const dataInicio = 'dataInicio';
-		const dataFim = 'dataFim';
-		const equipamentoEmEstoque = 'equipamentoEmEstoque';
+		const parametroNome = 'nome';
+		const parametroTipoEquipamento = 'tipoEquipamento';
+		const parametroDataInicio = 'dataInicio';
+		const parametroDataFim = 'dataFim';
+		const parametroEquipamentoEmEstoque = 'equipamentoEmEstoque';
 
 		let params = new URLSearchParams();
 
-		if (filtros?.nome) params.append(nome, filtros.nome);
-		if (filtros?.tipoEquipamento) params.append(tipoEquipamento, filtros.tipoEquipamento);
-		if (filtros?.dataInicio) params.append(dataInicio, filtros.dataInicio);
-		if (filtros?.dataFim) params.append(dataFim, filtros.dataFim);
-		if (filtros?.equipamentoEmEstoque) params.append(equipamentoEmEstoque, filtros.equipamentoEmEstoque);
+		if (filtros?.nome) params.append(parametroNome, filtros.nome);
+		if (filtros?.tipoEquipamento) params.append(parametroTipoEquipamento, filtros.tipoEquipamento);
+		if (filtros?.dataInicio) params.append(parametroDataInicio, filtros.dataInicio);
+		if (filtros?.dataFim) params.append(parametroDataFim, filtros.dataFim);
+		if (filtros?.equipamentoEmEstoque) params.append(parametroEquipamentoEmEstoque, filtros.equipamentoEmEstoque);
 
 		return `?${params.toString()}`;
 	}
