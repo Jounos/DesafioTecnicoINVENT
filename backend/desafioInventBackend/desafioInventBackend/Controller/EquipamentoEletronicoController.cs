@@ -10,7 +10,6 @@ namespace DesafioInventBackend.Controller
 {
     [ApiController]
     [Route("api/equipamento-eletronico")]
-    [EnableCors("AllowFrontApp")]
     public class EquipamentoEletronicoController: ControllerBase
     {
 
