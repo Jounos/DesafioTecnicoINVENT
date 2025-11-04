@@ -1,43 +1,39 @@
 ﻿using Raven.Client.Documents;
 using Raven.Client.Documents.Session;
-using Swashbuckle.AspNetCore.SwaggerGen;
-using System;
 
-namespace DesafioInventTest
+namespace DesafioInventTest.Configuracao
 {
     public class FixtureTestesUnitarios : IDisposable
     {
-
-        public RavenDBTest RavenDBTest;
-
+        public RavenTestesUnitarios RavenTestesUnitarios;
         public FixtureTestesUnitarios()
         {
-            RavenDBTest = new RavenDBTest();
+            RavenTestesUnitarios = new RavenTestesUnitarios();
         }
 
         public void AdicionarListaComId<T>(IDocumentSession session, List<KeyValuePair<string, T>> lista) where T : new()
         {
-            RavenDBTest.AdicionarListaComId(session, lista);
+            RavenTestesUnitarios.AdicionarListaComId(session, lista);
         }
 
         public void SalvarAlteracoes(IDocumentSession session)
         {
-            RavenDBTest.SalvarAlteracoes(session);
+            RavenTestesUnitarios.SalvarAlteracoes(session);
         }
 
         public void CancelarAlteracoes(IDocumentSession session)
         {
-            RavenDBTest.CancelarAlteracoes(session);
+            RavenTestesUnitarios.CancelarAlteracoes(session);
         }
 
-        public IDocumentStore ObterNovoStore(IDocumentSession session)
+        public IDocumentStore ObterNovoStore(string db)
         {
-            return RavenDBTest.ObterNovoStore(session);
+            return RavenTestesUnitarios.ObterNovoStore(db);
         }
 
         public void Dispose()
         {
-            RavenDBTest.Dispose();
+            RavenTestesUnitarios.Dispose();
         }
     }
 }

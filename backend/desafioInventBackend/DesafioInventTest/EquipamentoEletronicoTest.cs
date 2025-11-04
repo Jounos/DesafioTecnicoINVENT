@@ -2,22 +2,24 @@ using DesafioInventBackend.Model.Entity;
 using DesafioInventBackend.Model.Enum;
 using DesafioInventBackend.Model.Filters;
 using DesafioInventBackend.Model.Validator;
-using DesafioInventBackend.Repository;
 using DesafioInventBackend.Service;
+using DesafioInventTest.Configuracao;
 using FluentValidation;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace DesafioInventTest
 {
-    public class InMemoryTest
+    public class EquipamentoEletronicoTest : BaseParaTesteUnitario
     {
         const string ID_EQUIPAMENTO_ELETRONICO = "1";
         public EquipamentoEletronicoService _service;
-        public IRepositoryEquipamentoEletronico _repository;
 
-        public InMemoryTest()
+        public EquipamentoEletronicoTest(ITestContextAccessor contextAccessor) : base(contextAccessor)
         {
-            _repository = new InMemoryRepository();
-            _service = new EquipamentoEletronicoService(_repository, new EquipamentoEletronicoCadastrarValidator(), new EquipamentoEletronicoAlterarValidator(), new EquipamentoEletronicoDeleteValidator());
+            using (var serviceProvider = _services.BuildServiceProvider())
+            {
+                _service = serviceProvider.GetService<EquipamentoEletronicoService>() ?? throw new Exception("Esse serviço não foi encontrado!");
+            }
         }
         
         private EquipamentoEletronico _criarEquipamentoEletronico(string nome, TipoEquipamentoEnum tipoEquipamentoEnum, int quantidadeEstoque, string id = null)
@@ -40,14 +42,15 @@ namespace DesafioInventTest
 
         [Fact]
         public void Cadastrar_equipamento_eletronico_deve_retornar_um_equipamento_eletronico_valido()
-        {
+        {   
+            //Arrange
             const string nomeEquipamento = "Alienware";
             EquipamentoEletronico equipamentoEletronico = _criarEquipamentoEletronico(nomeEquipamento, TipoEquipamentoEnum.PC, 2);
-
+            //Act
             _service.Cadastrar(equipamentoEletronico);
-            
             EquipamentoEletronicoValidator equipamentoEletronicoeValidator = new EquipamentoEletronicoValidator();
             EquipamentoEletronico equipamentoEletronicoCadastrado = _service.BuscarPorId(ID_EQUIPAMENTO_ELETRONICO);
+            //Assert
             Assert.True(equipamentoEletronicoeValidator.Validate(equipamentoEletronicoCadastrado).IsValid);
         }
 

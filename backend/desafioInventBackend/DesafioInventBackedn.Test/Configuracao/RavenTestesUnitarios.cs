@@ -2,34 +2,25 @@
 using Raven.Client.Documents.Session;
 using Raven.TestDriver;
 
-namespace DesafioInventTest
+namespace DesafioInventTest.Configuracao
 {
-    public class RavenDBTest : RavenTestDriver
+    public class RavenTestesUnitarios : RavenTestDriver
     {
+        public Dictionary<string, IDocumentStore> storesDosBancos { get; private set; }
+        public string UrlDoServidorDeBanco { get; private set; }
 
-        public Dictionary<string, IDocumentStore> storesDosBancos { get; private set; }  
-        
-        public RavenDBTest()
+        public RavenTestesUnitarios()
         {
             storesDosBancos = new Dictionary<string, IDocumentStore>();
-        }
-
-        protected override void PreInitialize(IDocumentStore documentStore)
-        {
-            base.PreInitialize(documentStore);
-            documentStore.Conventions.MaxNumberOfRequestsPerSession = 10;
-            documentStore.Conventions.UseOptimisticConcurrency = false;
-            documentStore.Conventions.IdentityPartsSeparator = '-';
-            documentStore.Conventions.SaveEnumsAsIntegers = true;
         }
 
         public override void Dispose()
         {
             base.Dispose();
-            _destruirBancoDeDadosTest();
+            DestruirBancoDeDadosTeste();
         }
 
-        private void _destruirBancoDeDadosTest()
+        private void DestruirBancoDeDadosTeste()
         {
             foreach (var storeNomeado in this.storesDosBancos)
             {
@@ -49,18 +40,26 @@ namespace DesafioInventTest
             session.Advanced.Clear();
         }
 
-        public IDocumentSession ObterNovoStore(string nomeDoBanco)
+        public IDocumentStore ObterNovoStore(string nomeDoBanco)
         {
             var store = GetDocumentStore(database: nomeDoBanco);
             storesDosBancos.Add(nomeDoBanco, store);
 
-            return (IDocumentSession)store; 
+            return store;
         }
 
         public void AdicionarListaComId<T>(IDocumentSession session, List<KeyValuePair<string, T>> lista) where T : new()
         {
             lista.ForEach(x => session.Store(x.Value, x.Key));
             SalvarAlteracoes(session);
+        }
+
+        protected override void PreInitialize(IDocumentStore documentStore)
+        {
+            documentStore.Conventions.MaxNumberOfRequestsPerSession = 100;
+            documentStore.Conventions.UseOptimisticConcurrency = false;
+            documentStore.Conventions.IdentityPartsSeparator = '-';
+            documentStore.Conventions.SaveEnumsAsIntegers = true;
         }
     }
 }

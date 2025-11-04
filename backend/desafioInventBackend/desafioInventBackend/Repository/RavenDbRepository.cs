@@ -11,7 +11,12 @@ namespace DesafioInventBackend.Repository
     public class RavenDbRepository : IRepositoryEquipamentoEletronico
     {
 
-        private readonly IDocumentStore _store = RavenDbContext.Store;
+        private readonly IDocumentStore _store;
+
+        public RavenDbRepository(IDocumentStore store)
+        {
+            _store = store;
+        }
 
         public IEnumerable<EquipamentoEletronico> Buscar(BuscaFiltros filtros = null)
         {

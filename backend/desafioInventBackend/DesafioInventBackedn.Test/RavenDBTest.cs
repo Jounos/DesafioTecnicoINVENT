@@ -16,11 +16,11 @@ namespace DesafioInventTest
 
         protected override void PreInitialize(IDocumentStore documentStore)
         {
-            base.PreInitialize(documentStore);
             documentStore.Conventions.MaxNumberOfRequestsPerSession = 10;
             documentStore.Conventions.UseOptimisticConcurrency = false;
             documentStore.Conventions.IdentityPartsSeparator = '-';
             documentStore.Conventions.SaveEnumsAsIntegers = true;
+            base.PreInitialize(documentStore);
         }
 
         public override void Dispose()

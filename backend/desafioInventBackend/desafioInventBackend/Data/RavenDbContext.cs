@@ -13,11 +13,11 @@ namespace DesafioInventBackend.Data
         private static IDocumentStore CreateStore()
         {
             IDocumentStore store = new DocumentStore()
-            {
-                Urls = new[] { Environment.GetEnvironmentVariable("ravenDbServer") },
+                {
+                    Urls = new[] { Environment.GetEnvironmentVariable("ravenDbServer") },
 
-                Database = Environment.GetEnvironmentVariable("ravenDbName"),
-            }.Initialize();
+                    Database = Environment.GetEnvironmentVariable("ravenDbName"),
+                }.Initialize();
 
             return store;
         }
