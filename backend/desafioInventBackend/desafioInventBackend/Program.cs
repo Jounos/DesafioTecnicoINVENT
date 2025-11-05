@@ -16,7 +16,7 @@ builder.Services.AddCors(options =>
                          .AllowAnyMethod());
 });
 
-builder.Services.AddSingleton<RavenDbContext>();
+builder.Services.AddSingleton<IServicoSessaoRaven, RavenDbContext>();
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<IRepositoryEquipamentoEletronico, RavenDbRepository>();

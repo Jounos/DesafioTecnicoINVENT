@@ -1,14 +1,25 @@
 ﻿using Raven.Client.Documents;
+using Raven.Client.Documents.Session;
 
 namespace DesafioInventBackend.Data
 {
 
-    public class RavenDbContext
+    public class RavenDbContext : IServicoSessaoRaven
     {
+        
+        private static Lazy<IDocumentStore> _store = new Lazy<IDocumentStore>(CreateStore);
+        
+        public IDocumentSession Session { get; set; }
+        public IDocumentStore Store { get; set; }
 
-        private static Lazy<IDocumentStore> store = new Lazy<IDocumentStore>(CreateStore);
-
-        public static IDocumentStore Store => store.Value;
+        public RavenDbContext() 
+        {
+            Store = _store.Value;
+            if (Session is null)
+            {
+                Session = Store.OpenSession();
+            }
+        }
 
         private static IDocumentStore CreateStore()
         {

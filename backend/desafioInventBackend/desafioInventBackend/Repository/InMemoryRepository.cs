@@ -59,7 +59,7 @@ namespace DesafioInventBackend.Repository
             return itensFiltrados.Distinct().ToList();
         }
         
-        public EquipamentoEletronico BuscarPorId(string id, IDocumentSession session = null)
+        public EquipamentoEletronico BuscarPorId(string id)
         {
             if (_itens.Count == 0)
             {

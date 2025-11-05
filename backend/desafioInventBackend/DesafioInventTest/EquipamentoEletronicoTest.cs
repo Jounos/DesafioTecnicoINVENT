@@ -41,16 +41,18 @@ namespace DesafioInventTest
         }
 
         [Fact]
-        public void Cadastrar_equipamento_eletronico_deve_retornar_um_equipamento_eletronico_valido()
-        {   
-            //Arrange
+        public void asdf()
+        {
+
+            //Arrange - ao cadastrar dee salvar item no banco [cria um objeto especifico, e salva no banco] - [act - cadastra o item no banco] - [assert - verifica se o item foi realmente salvo no banco, e item que existe no banco e igual ao que você salvou]
             const string nomeEquipamento = "Alienware";
             EquipamentoEletronico equipamentoEletronico = _criarEquipamentoEletronico(nomeEquipamento, TipoEquipamentoEnum.PC, 2);
             //Act
             _service.Cadastrar(equipamentoEletronico);
             EquipamentoEletronicoValidator equipamentoEletronicoeValidator = new EquipamentoEletronicoValidator();
-            EquipamentoEletronico equipamentoEletronicoCadastrado = _service.BuscarPorId(ID_EQUIPAMENTO_ELETRONICO);
+            EquipamentoEletronico equipamentoEletronicoCadastrado = _service.BuscarPorId(equipamentoEletronico.Id);
             //Assert
+            Assert.Equivalent(equipamentoEletronico, equipamentoEletronicoCadastrado);
             Assert.True(equipamentoEletronicoeValidator.Validate(equipamentoEletronicoCadastrado).IsValid);
         }
 
