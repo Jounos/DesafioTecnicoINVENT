@@ -86,8 +86,8 @@ namespace DesafioInventTest.Configuracao
         public void Dispose()
         {
             _session.Dispose();
-            _store.Dispose();
-            _fixture.Dispose();
+            //_store.Dispose();
+            //_fixture.Dispose();
         }
     }
 }

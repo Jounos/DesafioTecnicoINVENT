@@ -9,18 +9,24 @@ namespace DesafioInventTest.Configuracao
     {
         public Dictionary<string, IDocumentStore> storesDosBancos { get; private set; }
         public string UrlDoServidorDeBanco { get; private set; }
+        private static bool _initialized = false;
+
 
         public RavenTestesUnitarios()
         {
-            ConfigureServer(new TestServerOptions
+            if (!_initialized)
             {
-                DataDirectory = "c:\\STUDYSPACE/RavenDir",
-                Licensing = new ServerOptions.LicensingOptions
+                ConfigureServer(new TestServerOptions
                 {
-                    License = "",
+                    DataDirectory = "c:\\STUDYSPACE/RavenDir",
+                    Licensing = new ServerOptions.LicensingOptions
+                    {
+                        License = "",
                     
-                }
-            });
+                    }
+                });
+            }
+            _initialized = true;
             storesDosBancos = new Dictionary<string, IDocumentStore>();
         }
 
