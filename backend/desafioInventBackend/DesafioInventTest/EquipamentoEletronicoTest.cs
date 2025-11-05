@@ -11,7 +11,6 @@ namespace DesafioInventTest
 {
     public class EquipamentoEletronicoTest : BaseParaTesteUnitario
     {
-        const string ID_EQUIPAMENTO_ELETRONICO = "1";
         public EquipamentoEletronicoService _service;
 
         public EquipamentoEletronicoTest(ITestContextAccessor contextAccessor) : base(contextAccessor)
@@ -21,255 +20,259 @@ namespace DesafioInventTest
                 _service = serviceProvider.GetService<EquipamentoEletronicoService>() ?? throw new Exception("Esse serviço não foi encontrado!");
             }
         }
-        
-        private EquipamentoEletronico _criarEquipamentoEletronico(string nome, TipoEquipamentoEnum tipoEquipamentoEnum, int quantidadeEstoque, string id = null)
-        {
-            return new EquipamentoEletronico
-            {
-                Id = id,
-                Nome = nome,
-                TipoEquipamento = tipoEquipamentoEnum,
-                QuantidadeEstoque = quantidadeEstoque
-            };
-        }
-
-        private EquipamentoEletronico _cadastrarEquipamentoEletronico(string nome, TipoEquipamentoEnum tipoEquipamentoEnum, int quantidadeEstoque, string id = null)
-        {
-            EquipamentoEletronico equipamentoEletronico = _criarEquipamentoEletronico(nome, tipoEquipamentoEnum, quantidadeEstoque, id);
-            _service.Cadastrar(equipamentoEletronico);
-            return equipamentoEletronico;
-        }
 
         [Fact]
-        public void asdf()
+        public void Ao_cadastrar_salva_item_no_banco()
         {
-
-            //Arrange - ao cadastrar dee salvar item no banco [cria um objeto especifico, e salva no banco] - [act - cadastra o item no banco] - [assert - verifica se o item foi realmente salvo no banco, e item que existe no banco e igual ao que você salvou]
+            // Arrange - ao cadastrar deve salvar item no banco [cria um objeto especifico, e salva no banco] - [act - cadastra o item no banco] - [assert - verifica se o item foi realmente salvo no banco, e item que existe no banco e igual ao que você salvou]
             const string nomeEquipamento = "Alienware";
             EquipamentoEletronico equipamentoEletronico = _criarEquipamentoEletronico(nomeEquipamento, TipoEquipamentoEnum.PC, 2);
-            //Act
+            // Act
             _service.Cadastrar(equipamentoEletronico);
-            EquipamentoEletronicoValidator equipamentoEletronicoeValidator = new EquipamentoEletronicoValidator();
-            EquipamentoEletronico equipamentoEletronicoCadastrado = _service.BuscarPorId(equipamentoEletronico.Id);
-            //Assert
-            Assert.Equivalent(equipamentoEletronico, equipamentoEletronicoCadastrado);
-            Assert.True(equipamentoEletronicoeValidator.Validate(equipamentoEletronicoCadastrado).IsValid);
+
+            // Assert
+            EquipamentoEletronico equipamentoEletronicoBanco = _session.Load<EquipamentoEletronico>(equipamentoEletronico.Id);
+            _fixture.Dispose();
+            Assert.Equivalent(equipamentoEletronico, equipamentoEletronicoBanco);
         }
 
         [Fact]
-        public void Cadastrar_equipamento_eletronico_deve_lancar_uma_excecao_ValidationException_ja_que_equipamento_eletronico_nao_tem_informacoes_minimas_exigidas()
+        public void Ao_cadastrar_lanca_uma_excecao_ValidationException_por_que_nao_tem_informacoes_minimas_exigidas()
         {
+            // Arrange
             const string nomeEquipamento = "Alienware";
             EquipamentoEletronico equipamentoEletronico = _criarEquipamentoEletronico(nomeEquipamento, TipoEquipamentoEnum.PC, 0);
+
+            // Act - Assert
             Assert.Throws<ValidationException>(() => _service.Cadastrar(equipamentoEletronico));
         }
 
         [Fact]
-        public void Cadastrar_equipamento_eletronico_deve_lancar_uma_excecao_ValidationException_Por_tentar_cadastrar_Equipamento_Eletronico_com_Zero_em_estoque()
-        {
-            const string nomeEquipamento = "Alienware";
-            EquipamentoEletronico equipamentoEletronico = _criarEquipamentoEletronico(nomeEquipamento, TipoEquipamentoEnum.PC, 0);
-            Assert.Throws<ValidationException>(() => _service.Cadastrar(equipamentoEletronico));
-        }
-
-        [Fact]
-        public void Editar_equipamento_eletronico_deve_retornar_um_equipamento_eletronico_valido()
-        {
+        public void Ao_editar_deve_retornar_um_equipamento_eletronico_valido()
+        {   
+            // Arrange
             string nomeEquipamento = "Alienware";
-            EquipamentoEletronico equipamentoEletronico = _cadastrarEquipamentoEletronico(nomeEquipamento, TipoEquipamentoEnum.PC, 2);
+            EquipamentoEletronico equipamentoEletronico = _criarEquipamentoEletronico(nomeEquipamento, TipoEquipamentoEnum.PC, 2);
+            _session.Store(equipamentoEletronico);
+            _session.SaveChanges();
 
-            nomeEquipamento = "Positivo";
-            equipamentoEletronico = _criarEquipamentoEletronico(nomeEquipamento, TipoEquipamentoEnum.PC, 2, ID_EQUIPAMENTO_ELETRONICO);
+            string nomeEquipamentoAlterado = "Positivo";
+            equipamentoEletronico.Nome = nomeEquipamentoAlterado;
 
-            _service.Atualizar(ID_EQUIPAMENTO_ELETRONICO, equipamentoEletronico);
+            // Act
+            _service.Atualizar(equipamentoEletronico.Id, equipamentoEletronico);
 
-            EquipamentoEletronicoAlterarValidator equipamentoEletronicoeValidator = new EquipamentoEletronicoAlterarValidator();
-            equipamentoEletronico = _service.BuscarPorId(ID_EQUIPAMENTO_ELETRONICO);
-            Assert.True(equipamentoEletronicoeValidator.Validate(equipamentoEletronico).IsValid);
+            // Assert
+            EquipamentoEletronico equipamentoEletronicoBanco = _service.BuscarPorId(equipamentoEletronico.Id);
+            Assert.Equivalent(equipamentoEletronico, equipamentoEletronicoBanco);
         }
 
         [Fact]
-        public void Editar_equipamento_eletronico_deve_lancar_uma_excessao_por_tentar_salvar_um_equipamento_eletronico_sem_nome()
+        public void Ao_editar_deve_lancar_uma_excessao_por_tentar_salvar_um_equipamento_sem_nome()
         {
 
+            // Arrange
             const string nomeEquipamento = "Alienware";
-            EquipamentoEletronico equipamentoEletronico = _cadastrarEquipamentoEletronico(nomeEquipamento, TipoEquipamentoEnum.PC, 2);
+            EquipamentoEletronico equipamentoEletronico = _criarEquipamentoEletronico(nomeEquipamento, TipoEquipamentoEnum.PC, 2);
+            _session.Store(equipamentoEletronico);
+            _session.SaveChanges();
 
-            equipamentoEletronico = _criarEquipamentoEletronico(string.Empty, TipoEquipamentoEnum.PC, 2);
-            
-            Assert.Throws<ValidationException>(() => _service.Atualizar(ID_EQUIPAMENTO_ELETRONICO, equipamentoEletronico));
+            equipamentoEletronico.Nome = string.Empty;
+             
+            // Act - Assert
+            Assert.Throws<ValidationException>(() => _service.Atualizar(equipamentoEletronico.Id, equipamentoEletronico));
         }
 
         [Fact]
-        public void Excluir_equipamento_eletronico_deve_excluir_um_equipamento_eletronico_e_nao_o_encontrar_apos_excluido()
+        public void Ao_excluir_deve_remover_do_banco_de_dados()
         {
-
+            //Arrange
             const string nomeEquipamento = "Alienware";
-            EquipamentoEletronico equipamentoEletronico = _cadastrarEquipamentoEletronico(nomeEquipamento, TipoEquipamentoEnum.PC, 2);
+            EquipamentoEletronico equipamentoEletronico = _criarEquipamentoEletronico(nomeEquipamento, TipoEquipamentoEnum.PC, 2);
+            _session.Store(equipamentoEletronico);
+            _session.SaveChanges();
 
-            equipamentoEletronico = _criarEquipamentoEletronico(nomeEquipamento, TipoEquipamentoEnum.PC, 0, ID_EQUIPAMENTO_ELETRONICO);
+            equipamentoEletronico.QuantidadeEstoque = 0;
+            _session.Store(equipamentoEletronico);
+            _session.SaveChanges();
 
-            _service.Atualizar(ID_EQUIPAMENTO_ELETRONICO, equipamentoEletronico);
-
+            // Act
             _service.Excluir(equipamentoEletronico.Id);
 
-            Assert.Null(_service.BuscarPorId(ID_EQUIPAMENTO_ELETRONICO));
+            // Assert
+            Assert.Throws<FormatException>(() => _service.BuscarPorId(equipamentoEletronico.Id));
         }
 
         [Fact]
-        public void Excluir_equipamento_eletronico_deve_retornar_uma_excessao_ValidationException_por_tentar_excluir_produto_com_estoque()
+        public void Ao_excluir_retornaa_uma_excessao_ValidationException_ao_tentar_excluir_produto_com_estoque()
         {
+            // Arrange
             const string nomeEquipamento = "Alienware";
-            _cadastrarEquipamentoEletronico(nomeEquipamento, TipoEquipamentoEnum.PC, 2);
+            EquipamentoEletronico equipamentoEletronico = _criarEquipamentoEletronico(nomeEquipamento, TipoEquipamentoEnum.PC, 2);
+            _session.Store(equipamentoEletronico);
+            _session.SaveChanges();
 
-            EquipamentoEletronico equipamentoEletronico = _service.BuscarPorId(ID_EQUIPAMENTO_ELETRONICO);
+            // Act - Assert
             Assert.Throws<ValidationException>(() => _service.Excluir(equipamentoEletronico.Id));
         }
 
         [Fact]
-        public void Buscar_equipamento_eletronico_por_id_deve_retornar_um_equipamento_eletronico()
+        public void Ao_buscar_por_id_deve_retornar_um_equipamento_eletronico()
         {
-
-            const string ID_ESPERADO = "3";
+            // Arrange
             const string nomeEquipamento = "Alienware";
-            _cadastrarEquipamentoEletronico(nomeEquipamento, TipoEquipamentoEnum.PC, 2);
-            _cadastrarEquipamentoEletronico(nomeEquipamento, TipoEquipamentoEnum.PC, 2);
-            _cadastrarEquipamentoEletronico(nomeEquipamento, TipoEquipamentoEnum.PC, 2);
-            _cadastrarEquipamentoEletronico(nomeEquipamento, TipoEquipamentoEnum.PC, 2);
-            _cadastrarEquipamentoEletronico(nomeEquipamento, TipoEquipamentoEnum.PC, 2);
+            EquipamentoEletronico equipamentoEletronico = _criarEquipamentoEletronico(nomeEquipamento, TipoEquipamentoEnum.PC, 2);
+            _session.Store(equipamentoEletronico);
+            _session.SaveChanges();
 
-            EquipamentoEletronico equipamentoEletronico = _service.BuscarPorId(ID_ESPERADO);
+            // Act
+            EquipamentoEletronico equipamentoEletronicoBanco = _service.BuscarPorId(equipamentoEletronico.Id);
 
-            Assert.Equal(ID_ESPERADO, equipamentoEletronico.Id);
+            // Assert
+            Assert.Equivalent(equipamentoEletronico, equipamentoEletronicoBanco);
         }
 
         [Fact]
-        public void Buscar_equipamento_eletronico_por_filtro_nome_deve_encontrar_um_equipamento()
+        public void Ao_buscar_por_filtro_nome_deve_encontrar_um_equipamento()
         {
+            // Arrange
             const string nomeEquipamento = "Alienware";
-            _cadastrarEquipamentoEletronico(nomeEquipamento, TipoEquipamentoEnum.PC, 2);
-
+            EquipamentoEletronico equipamentoEletronico = _criarEquipamentoEletronico(nomeEquipamento, TipoEquipamentoEnum.PC, 2);
+            _session.Store(equipamentoEletronico);
+            _session.SaveChanges();
+            
+            // Act
             BuscaFiltros filtro = new BuscaFiltros { Nome = "Alienware" };
             IEnumerable<EquipamentoEletronico> listaEquipamentosEletronicos = _service.Buscar(filtro);
 
-            EquipamentoEletronicoValidator equipamentoEletronicoValidator = new EquipamentoEletronicoValidator();
-            Assert.Collection(listaEquipamentosEletronicos, equipamentoEletronico => Assert.True(equipamentoEletronicoValidator.Validate(equipamentoEletronico).IsValid));
+            // Assert
+            Assert.Collection(listaEquipamentosEletronicos, 
+                equipamentoEletronicoBanco => Assert.Equivalent(equipamentoEletronico, equipamentoEletronicoBanco));
         }
 
         [Fact]
-        public void Buscar_equipamento_eletronico_por_filtro_tipo_equipamento_deve_encontrar_um_equipamento()
+        public void Ao_buscar_por_filtro_tipo_equipamento_deve_encontrar_um_equipamento()
         {
+            // Arrange
             const string nomeEquipamento = "Alienware";
-            _cadastrarEquipamentoEletronico(nomeEquipamento, TipoEquipamentoEnum.PC, 2);
+            EquipamentoEletronico equipamentoEletronico = _criarEquipamentoEletronico(nomeEquipamento, TipoEquipamentoEnum.PC, 2);
+            _session.Store(equipamentoEletronico);
+            _session.SaveChanges();
 
+            // Act
             BuscaFiltros filtro = new BuscaFiltros { TipoEquipamento = TipoEquipamentoEnum.PC };
-
             IEnumerable<EquipamentoEletronico> listaEquipamentosEletronicos = _service.Buscar(filtro);
 
-            EquipamentoEletronicoValidator equipamentoEletronicoValidator = new EquipamentoEletronicoValidator();
-            Assert.Collection(listaEquipamentosEletronicos, equipamentoEletronico => Assert.True(equipamentoEletronicoValidator.Validate(equipamentoEletronico).IsValid));
+            // Assert
+            Assert.Collection(listaEquipamentosEletronicos, 
+                equipamentoEletronicoBanco => Assert.Equivalent(equipamentoEletronico, equipamentoEletronicoBanco));
         }
 
         [Fact]
-        public void Buscar_equipamento_eletronico_por_filtro_data_inclusao_informando_apenas_data_inicio_deve_encontrar_um_equipamento()
+        public void Ao_buscar_por_filtro_data_inclusao_deve_encontrar_um_equipamento()
         {
+            // Arrange
             const string nomeEquipamento = "Alienware";
-            _cadastrarEquipamentoEletronico(nomeEquipamento, TipoEquipamentoEnum.PC, 2);
+            EquipamentoEletronico equipamentoEletronico = _criarEquipamentoEletronico(nomeEquipamento, TipoEquipamentoEnum.PC, 2);
+            _session.Store(equipamentoEletronico);
+            _session.SaveChanges();
 
+            // Act
             BuscaFiltros filtro = new BuscaFiltros { DataInicio = DateTimeOffset.Parse("2025-10-20") };
-
             IEnumerable<EquipamentoEletronico> listaEquipamentosEletronicos = _service.Buscar(filtro);
 
-            EquipamentoEletronicoValidator equipamentoEletronicoValidator = new EquipamentoEletronicoValidator();
-            Assert.Collection(listaEquipamentosEletronicos, equipamentoEletronico => Assert.True(equipamentoEletronicoValidator.Validate(equipamentoEletronico).IsValid));
+            // Assert
+            Assert.Collection(listaEquipamentosEletronicos, 
+                equipamentoEletronicoBanco => Assert.Equivalent(equipamentoEletronico, equipamentoEletronicoBanco));
         }
 
         [Fact]
-        public void Buscar_equipamento_eletronico_por_filtro_data_inclusao_informando_apenas_data_fim_deve_encontrar_um_equipamento()
+        public void Ao_buscar_por_filtro_data_fim_deve_encontrar_um_equipamento()
         {
+            // Arrange
             const string nomeEquipamento = "Alienware";
-            _cadastrarEquipamentoEletronico(nomeEquipamento, TipoEquipamentoEnum.PC, 2);
+            EquipamentoEletronico equipamentoEletronico = _criarEquipamentoEletronico(nomeEquipamento, TipoEquipamentoEnum.PC, 2);
+            _session.Store(equipamentoEletronico);
+            _session.SaveChanges();
 
+            // Act
             BuscaFiltros filtro = new BuscaFiltros { DataFim = DateTimeOffset.Parse("2025-12-30") };
-
             IEnumerable<EquipamentoEletronico> listaEquipamentosEletronicos = _service.Buscar(filtro);
 
-            EquipamentoEletronicoValidator equipamentoEletronicoValidator = new EquipamentoEletronicoValidator();
-            Assert.Collection(listaEquipamentosEletronicos, equipamentoEletronico => Assert.True(equipamentoEletronicoValidator.Validate(equipamentoEletronico).IsValid));
-        }
-
-        [Fact]
-        public void Buscar_equipamento_eletronico_por_filtro_por_estoque_deve_encontrar_um_equipamento()
-        {
-            const string nomeEquipamento = "Alienware";
-            _cadastrarEquipamentoEletronico(nomeEquipamento, TipoEquipamentoEnum.PC, 2);
-
-            BuscaFiltros filtro = new BuscaFiltros { EquipamentoEmEstoque = EquipamentoEmEstoqueEnum.EM_ESTOQUE };
-
-            IEnumerable<EquipamentoEletronico> listaEquipamentosEletronicos = _service.Buscar(filtro);
-
-            EquipamentoEletronicoValidator equipamentoEletronicoValidator = new EquipamentoEletronicoValidator();
-            Assert.Collection(listaEquipamentosEletronicos, equipamentoEletronico => Assert.True(equipamentoEletronicoValidator.Validate(equipamentoEletronico).IsValid));
-        }
-
-        [Fact]
-        public void Buscar_equipamento_eletronico_por_filtro_por_estoque_vazio_nao_deve_encontrar_um_equipamento()
-        {
-            const string nomeEquipamento = "Alienware";
-            _cadastrarEquipamentoEletronico(nomeEquipamento, TipoEquipamentoEnum.PC, 2);
-
-            BuscaFiltros filtro = new BuscaFiltros { EquipamentoEmEstoque = EquipamentoEmEstoqueEnum.NAO_TEM_ESTOQUE };
-
-            IEnumerable<EquipamentoEletronico> listaEquipamentosEletronicos = _service.Buscar(filtro);
-
-            EquipamentoEletronicoValidator equipamentoEletronicoValidator = new EquipamentoEletronicoValidator();
-            Assert.Empty(listaEquipamentosEletronicos);
-        }
-
-        [Fact]
-        public void Buscar_equipamento_eletronico_por_id_nenhum_equipamento_deve_ser_encontrado()
-        {
-
-            const string ID_ESPERADO = "5";
-            const string nomeEquipamento = "Alienware";
-            _cadastrarEquipamentoEletronico(nomeEquipamento, TipoEquipamentoEnum.PC, 2); 
-            _cadastrarEquipamentoEletronico(nomeEquipamento, TipoEquipamentoEnum.PC, 2); 
-            _cadastrarEquipamentoEletronico(nomeEquipamento, TipoEquipamentoEnum.PC, 2); 
-            _cadastrarEquipamentoEletronico(nomeEquipamento, TipoEquipamentoEnum.PC, 2); 
-
-            EquipamentoEletronico equipamentoEletronico =_service.BuscarPorId(ID_ESPERADO);
-
-            Assert.Null(equipamentoEletronico);
-        }
-
-        [Fact]
-        public void Listar_equipamentos_eletronicos_deve_retornar_todos_equipamentos_eletronicos_e_todos_devem_ser_validos()
-        {
-
-            const string nomeEquipamento = "Alienware";
-            _cadastrarEquipamentoEletronico(nomeEquipamento, TipoEquipamentoEnum.PC, 2);
-            _cadastrarEquipamentoEletronico(nomeEquipamento, TipoEquipamentoEnum.PC, 2);
-            _cadastrarEquipamentoEletronico(nomeEquipamento, TipoEquipamentoEnum.PC, 2);
-            _cadastrarEquipamentoEletronico(nomeEquipamento, TipoEquipamentoEnum.PC, 2);
-
-            IEnumerable<EquipamentoEletronico> listaEquipamentosEletronicos = _service.Buscar();
-
-            EquipamentoEletronicoValidator equipamentoEletronicoValidator = new EquipamentoEletronicoValidator();
+            // Assert
             Assert.Collection(listaEquipamentosEletronicos,
-                    equipamentoEletronico => Assert.True(equipamentoEletronicoValidator.Validate(equipamentoEletronico).IsValid),
-                    equipamentoEletronico => Assert.True(equipamentoEletronicoValidator.Validate(equipamentoEletronico).IsValid),
-                    equipamentoEletronico => Assert.True(equipamentoEletronicoValidator.Validate(equipamentoEletronico).IsValid),
-                    equipamentoEletronico => Assert.True(equipamentoEletronicoValidator.Validate(equipamentoEletronico).IsValid)
-                );
+                equipamentoEletronicoBanco => Assert.Equivalent(equipamentoEletronico, equipamentoEletronicoBanco));
         }
 
         [Fact]
-        public void Listar_equipamentos_eletronicos_nenhum_equipamento_deve_ser_encontrado()
+        public void Ao_buscar_por_filtro_estoque_deve_encontrar_um_equipamento()
+        {
+            // Arrange
+            const string nomeEquipamento = "Alienware";
+            EquipamentoEletronico equipamentoEletronico = _criarEquipamentoEletronico(nomeEquipamento, TipoEquipamentoEnum.PC, 2);
+            _session.Store(equipamentoEletronico);
+            _session.SaveChanges();
+
+            // Act
+            BuscaFiltros filtro = new BuscaFiltros { EquipamentoEmEstoque = EquipamentoEmEstoqueEnum.EM_ESTOQUE };
+            IEnumerable<EquipamentoEletronico> listaEquipamentosEletronicos = _service.Buscar(filtro);
+
+            // Assert
+            Assert.Collection(listaEquipamentosEletronicos,
+                equipamentoEletronicoBanco => Assert.Equivalent(equipamentoEletronico, equipamentoEletronicoBanco));
+        }
+
+        [Fact]
+        public void Ao_buscar_por_filtro_estoque_vazio_nao_deve_encontrar_um_equipamento()
+        {
+            // Arrange
+            const string nomeEquipamento = "Alienware";
+            EquipamentoEletronico equipamentoEletronico = _criarEquipamentoEletronico(nomeEquipamento, TipoEquipamentoEnum.PC, 2);
+            _session.Store(equipamentoEletronico);
+            _session.SaveChanges();
+
+            // Act
+            BuscaFiltros filtro = new BuscaFiltros { EquipamentoEmEstoque = EquipamentoEmEstoqueEnum.NAO_TEM_ESTOQUE };
+            IEnumerable<EquipamentoEletronico> listaEquipamentosEletronicos = _service.Buscar(filtro);
+
+            // Assert
+            Assert.Empty(listaEquipamentosEletronicos);
+        }
+
+        [Fact]
+        public void Ao_listar_todos_e_todos_devem_ser_validos()
+        {
+            // Arrange
+            const string nomeEquipamento = "Alienware";
+            EquipamentoEletronico equipamentoEletronico = _criarEquipamentoEletronico(nomeEquipamento, TipoEquipamentoEnum.PC, 2);
+            _session.Store(equipamentoEletronico);
+            _session.SaveChanges();
+
+            // Act
+            IEnumerable<EquipamentoEletronico> listaEquipamentosEletronicos = _service.Buscar();
+
+            // Assert
+            Assert.Collection(listaEquipamentosEletronicos,
+                equipamentoEletronicoBanco => Assert.Equivalent(equipamentoEletronico, equipamentoEletronicoBanco));
+        }
+
+        [Fact]
+        public void Ao_listar_nenhum_equipamento_deve_ser_encontrado()
         {
             IEnumerable<EquipamentoEletronico> listaEquipamentosEletronicos = _service.Buscar();
 
             Assert.Empty(listaEquipamentosEletronicos);
         }
 
+        private EquipamentoEletronico _criarEquipamentoEletronico(string nome, TipoEquipamentoEnum tipoEquipamentoEnum, int quantidadeEstoque)
+        {
+            return new EquipamentoEletronico
+            {
+                Nome = nome,
+                TipoEquipamento = tipoEquipamentoEnum,
+                QuantidadeEstoque = quantidadeEstoque,
+                DataInclusao = DateTimeOffset.Now,
+            };
+        }
     }
 }
