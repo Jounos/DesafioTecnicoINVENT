@@ -8,6 +8,7 @@
 	<SpaProxyServerUrl>https://localhost:44400</SpaProxyServerUrl>
 	<SpaProxyLaunchCommand>npm start</SpaProxyLaunchCommand>
     <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>01a07a6f-95f3-4a48-add7-edfd2ba37474</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -44,6 +45,7 @@
     <PackageReference Include="Microsoft.Testing.Platform" Version="1.7.3" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="9.0.0" />
     <PackageReference Include="RavenDB.Client" Version="7.1.0" />
+    <PackageReference Include="RavenDB.TestDriver" Version="7.1.0" />
     <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="9.0.3" />
     <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="9.0.3" />
 	<DistFiles Include="$(SpaRoot)dist\**" />

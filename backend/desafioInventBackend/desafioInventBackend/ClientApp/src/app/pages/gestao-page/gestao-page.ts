@@ -6,7 +6,6 @@ import Swal from 'sweetalert2';
 import { IEquipamentoEletronico } from '../../../library/models/equipamento-eletronico.model';
 import { EquipamentoEletronicoService } from '../../services/equipamento-eletronico-service';
 import { DetalhesModal } from './detalhes-modal/detalhes-modal';
-import dayjs from 'dayjs';
 
 @Component({
 	selector: 'app-gestao-page',

@@ -1,0 +1,137 @@
+<mvc:View
+    controllerName="desafio.app.listagem.Listagem"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:l="sap.ui.layout"
+>
+  <Page title="{i18n>Listagem.Title}">
+    <content>
+      <VBox>
+        <Panel
+          headerText="{i18n>Listagem.panelHeaderTitle}"
+          class="sapUiResponsiveMargin"
+          width="auto"
+          expandable="{device>/system/phone}"
+          expanded="{= !${device>/system/phone} }"
+          accessibleRole="Region">
+          <content>
+            <VBox width="97%" backgroundDesign="Solid">
+              <HBox class="sapUiLargeMarginBegin sapUiSmallMarginTopBottom" width="100%">
+                <VBox class="sapUiLargeMarginEnd sapUiTinyMarginTop" width="50%">
+                  <Label text="Nome" displayOnly="true" labelFor="nome"/>
+                  <Input id="idInputNome" width="100%" value="{filtros>/nome}"/>
+                </VBox>
+
+                <VBox class="sapUiLargeMarginEnd sapUiTinyMarginTop" width="35%">
+                  <Label text="Tipo Equipamento" labelFor="tipoEquipamento"/>
+                  <Select id="idSelectTipoEquipamento"
+                          selectedKey="{filtros>/tipoEquipamento}"
+                          items="{selects>/tipoEquipamentoCollection}"
+                          width="100%">
+                    <core:Item key="{selects>id}" text="{selects>label}"/>
+                  </Select>
+                </VBox>
+              </HBox>
+            </VBox>
+            <VBox width="97%" backgroundDesign="Solid">
+              <HBox class="sapUiLargeMarginBegin">
+                <VBox class="sapUiLargeMarginEnd sapUiTinyMarginTop">
+                  <Label text="Data" labelFor="DRS1"/>
+                  <DateRangeSelection id="id" class="DRS1"
+                    value= "{
+                      'type': 'sap.ui.model.type.DateInterval',
+                      'formatOptions': {
+                        'pattern': 'dd/MM/yyyy'
+                      },
+                      'parts': [
+                        {
+                          'type': 'sap.ui.model.type.Date',
+                          'path': 'filtros>/dataInicio'
+                        },
+                        {
+                          'type': 'sap.ui.model.type.Date',
+                          'path': 'filtros>/dataFim'
+                        }
+                      ]
+                    }"/>
+                </VBox>
+
+                <VBox class="sapUiLargeMarginEnd sapUiTinyMarginTop" width="20%">
+                  <Label text="Estoque" labelFor="haEstoque"/>
+                  <Select id="idSelectHaEstoque"
+                          selectedKey="{filtros>/equipamentoEmEstoque}"
+                          items="{selects>/estoqueCollection}"
+                          width="100%">
+                    <core:Item key="{selects>id}" text="{selects>label}"/>
+                  </Select>
+                </VBox>
+                <VBox class="sapUiSmallMarginEnd sapUiMediumMarginTop">
+                  <Button text="Cadastrar" type="Emphasized" class="myCustomButton" press="aoClicarBotaoCadastrar"/>
+                </VBox>
+                <VBox class="sapUiMediumMarginTop">
+                  <Button text="Pesquisar" type="Emphasized" class="myCustomButton" press="aoClicarBotaoPesquisar" />
+                </VBox>
+              </HBox>
+            </VBox>
+          </content>
+        </Panel>
+
+        <Panel
+          class="sapUiResponsiveMargin"
+          width="auto"
+          expandable="{device>/system/phone}"
+          expanded="{= !${device>/system/phone} }"
+          accessibleRole="Region">
+          <headerToolbar>
+            <Toolbar>
+              <Title text="{i18n>Listagem.tableHeaderTitle}"/>
+            </Toolbar>
+          </headerToolbar>
+          <Table
+            items="{
+              path: 'listaEquipamentosEletronicos>/',
+              sorter: {
+                path: 'id',
+                descending: false
+              }
+            }"
+            class="sapUiResponsiveMargin"
+            width="auto">
+            <columns>
+              <Column>
+                <Text text="Nome do produto"/>
+              </Column>
+              <Column>
+                <Text text="Tipo do Equipamento"/>
+              </Column>
+              <Column>
+                <Text text="Quantidade"/>
+              </Column>
+              <Column>
+                <Text text="Data"/>
+              </Column>
+              <Column>
+                <Text text="Ações"/>
+              </Column>
+            </columns>
+            <items>
+              <ColumnListItem type="Navigation" press="aoClicarBotaoCadastrar">
+                <cells>
+                  <Text text="{ path: 'listaEquipamentosEletronicos>nome' }"></Text>
+                  <Text text="{ path: 'listaEquipamentosEletronicos>tipoEquipamento', formatter: '.formatter.formatarTipoEquipamento' }"></Text>
+                  <Text text="{ path: 'listaEquipamentosEletronicos>quantidadeEstoque' }"></Text>
+                  <Text text="{ path: 'listaEquipamentosEletronicos>dataInclusao', formatter: '.formatter.formatarData'}"></Text>
+                  <HBox>
+                    <Button icon="sap-icon://edit" type="Attention" class="myCustomButton" press="" />
+                    <Button icon="sap-icon://delete" type="Reject" class="myCustomButton" press="" />
+                  </HBox>
+                </cells>
+              </ColumnListItem>
+            </items>
+          </Table>
+        </Panel>
+      </VBox>
+    </content>
+  </Page>
+</mvc:View>

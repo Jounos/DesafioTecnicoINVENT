@@ -10,13 +10,13 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowAngularApp",
-        policy => policy.WithOrigins("https://localhost:44400")
-                        .AllowAnyHeader()
-                        .AllowAnyMethod());
+    options.AddPolicy("AllowFrontApp",
+        policy => policy.WithOrigins(["https://localhost:44400", "http://localhost:55500"])
+                         .AllowAnyHeader()
+                         .AllowAnyMethod());
 });
 
-builder.Services.AddSingleton<RavenDbContext>();
+builder.Services.AddSingleton<IServicoSessaoRaven, RavenDbContext>();
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<IRepositoryEquipamentoEletronico, RavenDbRepository>();
@@ -55,6 +55,6 @@ app.MapControllerRoute(
 app.MapFallbackToFile("index.html");
 app.MapControllers();
 
-app.UseCors("AllowAngularApp");
+app.UseCors("AllowFrontApp");
 
 app.Run();

@@ -1,5 +1,4 @@
-﻿using DesafioInventBackend.Model.DTO;
-using DesafioInventBackend.Model.Enum;
+﻿using DesafioInventBackend.Model.Enum;
 
 namespace DesafioInventBackend.Model.Entity
 {

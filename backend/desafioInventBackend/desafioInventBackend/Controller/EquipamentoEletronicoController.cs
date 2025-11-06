@@ -1,15 +1,14 @@
 ﻿using AutoMapper;
 using DesafioInventBackend.Model.DTO;
 using DesafioInventBackend.Model.Entity;
+using DesafioInventBackend.Model.Filters;
 using DesafioInventBackend.Service;
-using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DesafioInventBackend.Controller
 {
     [ApiController]
     [Route("api/equipamento-eletronico")]
-    [EnableCors("AllowAngularApp")]
     public class EquipamentoEletronicoController: ControllerBase
     {
 
@@ -26,10 +25,9 @@ namespace DesafioInventBackend.Controller
         }
 
         [HttpGet]
-        public OkObjectResult ListarTodosEquipamentosEletronicos()
+        public ObjectResult BuscarEquipamentosEletronicaos([FromQuery] BuscaFiltros filtros)
         {
-            IEnumerable<EquipamentoEletronico> listaEquipamentosEletronicos = _service.ListarTodos();
-            return Ok(_mapper.Map<IEnumerable<EquipamentoEletronicoDTO>>(listaEquipamentosEletronicos));
+            return Ok(_service.Buscar(filtros));
         }
 
         [HttpGet("{id}")]
@@ -53,9 +51,9 @@ namespace DesafioInventBackend.Controller
         }
 
         [HttpDelete("{id}")]
-        public NoContentResult excluirEquipamentoEletronico([FromBody] EquipamentoEletronicoDTO equipamentoEletronicoDto)
+        public NoContentResult excluirEquipamentoEletronico([FromRoute] string id)
         {
-            _service.Excluir(_mapper.Map<EquipamentoEletronico>(equipamentoEletronicoDto));
+            _service.Excluir(id);
             return NoContent();
         }
 

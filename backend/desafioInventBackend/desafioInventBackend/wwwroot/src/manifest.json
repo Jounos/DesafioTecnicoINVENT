@@ -1,0 +1,97 @@
+{
+  "_version": "1.65.0",
+  "sap.app": {
+    "id": "desafio",
+    "type": "application",
+    "i18n": "i18n/i18n.properties",
+    "title": "{{appTitle}}",
+    "description": "{{appDescription}}",
+    "applicationVersion": {
+      "version": "1.0.0"
+    }
+  },
+  "sap.ui": {
+    "technology": "UI5",
+    "theme": "sap_horizon",
+    "deviceTypes": {
+      "desktop": true,
+      "tablet": true,
+      "phone": true
+    }
+  },
+  "sap.ui5": {
+    "rootView": {
+      "viewName": "desafio.app.App",
+      "type": "XML",
+      "async": true,
+      "id": "app"
+    },
+    "config": {
+      "serviceUrl": "/api/"
+    },
+    "dependencies": {
+      "minUI5Version": "1.108.0",
+      "libs": {
+        "sap.ui.core": {},
+        "sap.m": {}
+      }
+    },
+    "models": {
+      "i18n": {
+        "type": "sap.ui.model.resource.ResourceModel",
+        "settings": {
+          "bundleUrl": "i18n/i18n.properties",
+          "supportedLocales": [
+            "",
+            "en"
+          ],
+          "fallbackLocale": ""
+        }
+      }
+    },
+    "resources": {
+      "css": [
+        {
+          "uri": "css/style.css"
+        }
+      ]
+    },
+    "routing": {
+      "config": {
+        "routerClass": "sap.m.routing.Router",
+        "type": "View",
+        "viewType": "XML",
+        "path": "desafio.app",
+        "controlId": "app",
+        "controlAggregation": "pages",
+        "async": true
+      },
+      "routes": [
+        {
+          "pattern": ":?query:",
+          "name": "listagem",
+          "target": "listagem"
+        },
+        {
+          "pattern": "cadastro:?query:",
+          "name": "cadastro",
+          "target": "cadastro"
+        }
+      ],
+      "targets": {
+        "listagem": {
+          "viewId": "listagem",
+          "viewName": "listagem.Listagem"
+        },
+        "cadastro": {
+          "viewId": "cadastro",
+          "viewName": "cadastro.Cadastro"
+        }
+      }
+    },
+    "contentDensities": {
+      "compact": true,
+      "cozy": true
+    }
+  }
+}

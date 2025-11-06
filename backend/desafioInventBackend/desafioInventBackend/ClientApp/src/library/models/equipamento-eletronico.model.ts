@@ -8,7 +8,6 @@ export interface IEquipamentoEletronico {
 }
 
 export class EquipamentoEletronico implements IEquipamentoEletronico {
-
 	constructor(
 		public id: string,
 		public nome: string,

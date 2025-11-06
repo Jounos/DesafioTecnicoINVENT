@@ -1,4 +1,6 @@
 ﻿using DesafioInventBackend.Model.Entity;
+using DesafioInventBackend.Model.Enum;
+using DesafioInventBackend.Model.Filters;
 using Raven.Client.Documents.Session;
 
 namespace DesafioInventBackend.Repository
@@ -7,13 +9,57 @@ namespace DesafioInventBackend.Repository
     {
         
         private readonly List<EquipamentoEletronico> _itens = new List<EquipamentoEletronico>();
-           
-        public IEnumerable<EquipamentoEletronico> ListarTodos()
+
+        public IEnumerable<EquipamentoEletronico> Buscar(BuscaFiltros filtros = null)
         {
-            return _itens.OrderByDescending(i => i.DataInclusao);
+
+            if (filtros == null)
+            {
+                return _itens.OrderByDescending(i => i.DataInclusao);
+            }
+
+            List<EquipamentoEletronico> itensFiltrados = new List<EquipamentoEletronico>();
+
+
+            if (filtros.Nome != string.Empty)
+            {
+                itensFiltrados = _itens.FindAll(i => i.Nome.Contains(filtros.Nome));
+            }
+
+            if (filtros.TipoEquipamento != 0)
+            {
+                itensFiltrados.AddRange(_itens.FindAll(i => i.TipoEquipamento == filtros.TipoEquipamento));
+            }
+
+            if (filtros.DataInicio != DateTimeOffset.MinValue)
+            {
+                itensFiltrados.AddRange(_itens.FindAll(i => i.DataInclusao >= filtros.DataInicio));
+            }
+
+            if (filtros.DataFim != DateTimeOffset.MinValue)
+            {
+                itensFiltrados.AddRange(_itens.FindAll(i => i.DataInclusao <= filtros.DataFim));
+            }
+
+            itensFiltrados.AddRange(_itens.FindAll(i =>
+            {
+                if (filtros.EquipamentoEmEstoque == EquipamentoEmEstoqueEnum.EM_ESTOQUE)
+                {
+                    return i.QuantidadeEstoque > 0;
+                }
+
+                if (filtros.EquipamentoEmEstoque == EquipamentoEmEstoqueEnum.NAO_TEM_ESTOQUE)
+                {
+                    return i.QuantidadeEstoque == 0;
+                }
+
+                return true;
+            }));
+
+            return itensFiltrados.Distinct().ToList();
         }
         
-        public EquipamentoEletronico BuscarPorId(string id, IDocumentSession session = null)
+        public EquipamentoEletronico BuscarPorId(string id)
         {
             if (_itens.Count == 0)
             {
