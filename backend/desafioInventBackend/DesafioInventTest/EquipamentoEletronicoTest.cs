@@ -42,7 +42,8 @@ namespace DesafioInventTest
             EquipamentoEletronico equipamentoEletronico = _criarEquipamentoEletronico(nomeEquipamento, TipoEquipamentoEnum.PC, 0);
 
             // Act - Assert
-            Assert.Throws<ValidationException>(() => _service.Cadastrar(equipamentoEletronico));
+            var ex = Assert.Throws<ValidationException>(() => _service.Cadastrar(equipamentoEletronico));
+            Assert.Equal("Validation failed: \r\n -- QuantidadeEstoque: 'Quantidade Estoque' deve ser superior ou igual a '1'. Severity: Error", ex.Message);
         }
 
         [Fact]
@@ -78,7 +79,8 @@ namespace DesafioInventTest
             equipamentoEletronico.Nome = string.Empty;
              
             // Act - Assert
-            Assert.Throws<ValidationException>(() => _service.Atualizar(equipamentoEletronico.Id, equipamentoEletronico));
+            var ex = Assert.Throws<ValidationException>(() => _service.Atualizar(equipamentoEletronico.Id, equipamentoEletronico));
+            Assert.Equal("Validation failed: \r\n -- Nome: 'Nome' deve ser informado. Severity: Error\r\n -- Nome: 'Nome' deve ser maior ou igual a 2 caracteres. Você digitou 0 caracteres. Severity: Error", ex.Message);
         }
 
         [Fact]
@@ -98,7 +100,8 @@ namespace DesafioInventTest
             _service.Excluir(equipamentoEletronico.Id);
 
             // Assert
-            Assert.Throws<FormatException>(() => _service.BuscarPorId(equipamentoEletronico.Id));
+            var ex = Assert.Throws<FormatException>(() => _service.BuscarPorId(equipamentoEletronico.Id));
+            Assert.Equal($"Não foi possível encontrar um equipamento eletrônico com id { equipamentoEletronico.Id}", ex.Message);
         }
 
         [Fact]
@@ -111,7 +114,8 @@ namespace DesafioInventTest
             _session.SaveChanges();
 
             // Act - Assert
-            Assert.Throws<ValidationException>(() => _service.Excluir(equipamentoEletronico.Id));
+            var ex = Assert.Throws<ValidationException>(() => _service.Excluir(equipamentoEletronico.Id));
+            Assert.Equal("Validation failed: \r\n -- QuantidadeEstoque: 'Quantidade Estoque' deve ser igual a '0'. Severity: Error", ex.Message);
         }
 
         [Fact]
