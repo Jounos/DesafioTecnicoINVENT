@@ -25,7 +25,7 @@ namespace DesafioInventBackend.Controller
         }
 
         [HttpGet]
-        public ObjectResult BuscarEquipamentosEletronicaos([FromQuery] BuscaFiltros filtros = null)
+        public ObjectResult BuscarEquipamentosEletronicaos([FromQuery] BuscaFiltros filtros)
         {
             return Ok(_service.Buscar(filtros));
         }
