@@ -4,35 +4,18 @@
 		<div class="row">
 			<div class="col-xl-7 col-lg-8 col-md-6 col-sm-12 col-12">
 				<label for="nome" class="form-label">Nome</label>
-				<input type="text" class="form-control" [(ngModel)]="nome">
+				<input type="text" class="form-control" [(ngModel)]="nome" (keyup)="filtrar()">
 			</div>
 			<div class="col-xl-5 col-lg-4 col-md-6 col-sm-12 col-12">
 				<label for="tipoEquipamento" class="form-label">Tipo de Equipamento</label>
-				<ng-select [(ngModel)]="tipoEquipamento" [items]="listaTiposEquipamento" bindLabel="label" bindValue="id"></ng-select>
+				<ng-select [(ngModel)]="tipoEquipamento" (change)="filtrar()" (clear)="filtrarAoLimparTipoEquipamento()" [items]="listaTiposEquipamento" bindLabel="label" bindValue="id"></ng-select>
 			</div>
 		</div>
-		<div class="row mt-4 align-items-end">
-			<div class="col-2">
-				<label for="dataInicio" class="form-label">Inicio</label>
-				<input type="date" [(ngModel)]="dataInicio" id="dataInicio" class="form-control">
-			</div>
-			<div class="col-2">
-				<label for="dataFim" class="form-label">Fim</label>
-				<input type="date" [(ngModel)]="dataFim" id="dataFim" class="form-control">
-			</div>
-			<div class="col-3">
-				<label for="estoque" class="form-label">Estoque</label>
-				<ng-select [(ngModel)]="haEstoque" [items]="estoque" bindLabel="label" bindValue="id"></ng-select>
-			</div>
-			<div class="col-5">
-				<div class="d-flex justify-content-end">
-					<a class="btn btn-dark me-4" type="button"  [routerLink]="'/cadastrar'">
-						<i class="bi bi-plus-lg me-2"></i>Cadastrar
-					</a>
-					<a class="btn btn-dark" type="button" (click)="pesquisar()">
-						<i class="bi bi-search me-2"></i>Pesquisar
-					</a>
-				</div>
+		<div class="row mt-4">
+			<div class="d-flex justify-content-end">
+				<a class="btn btn-dark me-4" type="button"  [routerLink]="'/cadastrar'">
+					<i class="bi bi-plus-lg me-2"></i>Cadastrar
+				</a>
 			</div>
 		</div>
 	</div>

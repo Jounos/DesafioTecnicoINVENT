@@ -1,13 +1,11 @@
 import { HttpResponse } from '@angular/common/http';
-import { ChangeDetectorRef, Component, OnDestroy } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Subscription } from 'rxjs';
 import Swal from 'sweetalert2';
 import { IEquipamentoEletronico } from '../../../library/models/equipamento-eletronico.model';
 import { EquipamentoEletronicoService } from '../../services/equipamento-eletronico-service';
 import { DetalhesModal } from './detalhes-modal/detalhes-modal';
-import { EquipamentoEletronicoFilter } from '../../../library/filters/equipamento-eletronico.filter';
-import { GestaoFacade } from './gestao-facade';
 
 @Component({
 	selector: 'app-gestao-page',
@@ -15,30 +13,20 @@ import { GestaoFacade } from './gestao-facade';
 	styleUrl: './gestao-page.css',
 	standalone: false,
 })
-export class GestaoPage implements OnDestroy {
+export class GestaoPage implements OnInit, OnDestroy {
 
 	protected page = 1;
 	protected itemsPerPage: number = 10;
 
 	protected nome = '';
 	protected tipoEquipamento = 0;
-	protected dataInicio = '';
-	protected dataFim = '';
-	protected haEstoque = 0;
 
 	listaTiposEquipamento = [
-		{ id: 0, label: 'TODOS' },
 		{ id: 1, label: 'PC' },
 		{ id: 2, label: 'Notebook' },
 		{ id: 3, label: 'Mouse' },
 		{ id: 4, label: 'Teclado' },
 		{ id: 5, label: 'Celular' },
-	];
-
-	estoque = [
-		{ id: 0, label: 'TODOS' },
-		{ id: 1, label: 'Há Estoque' },
-		{ id: 2, label: 'Não Há Estoque' },
 	];
 
 	listaEquipamentosEletronicos: IEquipamentoEletronico[] = [];
@@ -49,24 +37,19 @@ export class GestaoPage implements OnDestroy {
 
 	constructor(
 		private equipamentoEletronicoService: EquipamentoEletronicoService,
-		private gestaoFacade: GestaoFacade,
 		private cdr: ChangeDetectorRef,
 		private ngbModal: NgbModal
 	) { }
 
-	pesquisar() {
+	ngOnInit(): void {
+		this.listar();
+	}
 
-		const filter: EquipamentoEletronicoFilter = {
-			nome: this.nome,
-			equipamentoEmEstoque: this.haEstoque,
-			dataInicio: this.dataInicio,
-			dataFim: this.dataFim,
-			tipoEquipamento: this.tipoEquipamento
-		};
-
+	listar() {
 		this.subscription.add(
-			this.gestaoFacade.pesquisar(filter).subscribe({
+			this.equipamentoEletronicoService.listarTodosEquipamentosEleronicos().subscribe({
 				next: (value: HttpResponse<IEquipamentoEletronico[]>) => {
+
 					this.listaEquipamentosEletronicos = value.body!;
 					this.listaEquipamentosEletronicosFiltrada = value.body!;
 					this.updatePagination();
@@ -74,6 +57,43 @@ export class GestaoPage implements OnDestroy {
 				}
 			})
 		);
+	}
+
+	filtrar() {
+		if (!this.listaEquipamentosEletronicos || this.listaEquipamentosEletronicos?.length === 0) {
+			return
+		}
+
+		if ((this.nome === '' || !this.nome) && !this.tipoEquipamento) {
+			this.listaEquipamentosEletronicosFiltrada = this.listaEquipamentosEletronicos;
+			this.updatePagination();
+			return;
+		}
+
+		this.listaEquipamentosEletronicosFiltrada = this.listaEquipamentosEletronicos.filter((equipamentoEletronico) => {
+
+			if ((this.nome !== '' || this.nome) && this.tipoEquipamento) {
+				return (this.nome.length > 0 && equipamentoEletronico.nome.toUpperCase().includes(this.nome.toUpperCase())) && equipamentoEletronico.tipoEquipamento === this.tipoEquipamento;
+			}
+
+			if (!this.tipoEquipamento) {
+				return this.nome.length > 0 && equipamentoEletronico.nome.toUpperCase().includes(this.nome.toUpperCase());
+			}
+
+			return equipamentoEletronico.tipoEquipamento === this.tipoEquipamento;
+		});
+		this.updatePagination();
+		this.cdr.detectChanges();
+	}
+
+	filtrarAoLimparTipoEquipamento() {
+		if (this.nome === '' || !this.nome) {
+			this.listaEquipamentosEletronicosFiltrada = this.listaEquipamentosEletronicos;
+		}
+
+		this.listaEquipamentosEletronicosFiltrada = this.listaEquipamentosEletronicos.filter((equipamentoEletronico) => equipamentoEletronico.nome.toUpperCase().includes(this.nome.toUpperCase()));
+		this.updatePagination();
+		this.cdr.detectChanges();
 	}
 
 	excluir(equipamentoEletronico: IEquipamentoEletronico) {
@@ -91,9 +111,9 @@ export class GestaoPage implements OnDestroy {
 
 		this.confirmarExclusao().then((result) => {
 			if (result.isConfirmed) {
-				this.equipamentoEletronicoService.deletarEquipamentoEletronico(equipamentoEletronico.id).subscribe({
+				this.equipamentoEletronicoService.deletarEquipamentoEletronico(equipamentoEletronico).subscribe({
 					next: () => {
-						this.pesquisar();
+						this.listar();
 					},
 					complete: () => {
 						Swal.fire({

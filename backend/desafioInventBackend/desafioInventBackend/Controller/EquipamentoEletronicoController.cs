@@ -24,6 +24,13 @@ namespace DesafioInventBackend.Controller
             this._mapper = mapper;
         }
 
+        [HttpGet("todos")]
+        public OkObjectResult ListarTodosEquipamentosEletronicos()
+        {
+            IEnumerable<EquipamentoEletronico> listaEquipamentosEletronicos = _service.ListarTodos();
+            return Ok(_mapper.Map<IEnumerable<EquipamentoEletronicoDTO>>(listaEquipamentosEletronicos));
+        }
+
         [HttpGet]
         public ObjectResult BuscarEquipamentosEletronicaos([FromQuery] BuscaFiltros filtros = null)
         {
@@ -51,9 +58,9 @@ namespace DesafioInventBackend.Controller
         }
 
         [HttpDelete("{id}")]
-        public NoContentResult excluirEquipamentoEletronico([FromRoute] string id)
+        public NoContentResult excluirEquipamentoEletronico([FromBody] EquipamentoEletronicoDTO equipamentoEletronicoDto)
         {
-            _service.Excluir(id);
+            _service.Excluir(_mapper.Map<EquipamentoEletronico>(equipamentoEletronicoDto));
             return NoContent();
         }
 

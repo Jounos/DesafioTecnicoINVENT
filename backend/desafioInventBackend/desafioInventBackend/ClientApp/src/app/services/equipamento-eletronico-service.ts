@@ -1,4 +1,4 @@
-import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment.development';
@@ -13,8 +13,8 @@ export class EquipamentoEletronicoService {
 
 	constructor(private http: HttpClient) { }
 
-	pesquisarEquipamentoEletronico(params: HttpParams): Observable<HttpResponse<IEquipamentoEletronico[]>> {
-		return this.http.get<IEquipamentoEletronico[]>(this.endpoint, { params: params, observe: 'response', responseType: 'json' });
+	listarTodosEquipamentosEleronicos(): Observable<HttpResponse<IEquipamentoEletronico[]>> {
+		return this.http.get<IEquipamentoEletronico[]>(this.endpoint, { observe: 'response', responseType: 'json' });
 	}
 
 	buscarEquipamentoEletronicoPorId(id: string): Observable<HttpResponse<IEquipamentoEletronico>> {
@@ -29,7 +29,7 @@ export class EquipamentoEletronicoService {
 		return this.http.put(`${this.endpoint}/${id}`, equipamentoEletronico, { observe: 'response', responseType: 'json' });
 	}
 
-	deletarEquipamentoEletronico(id: string) {
-		return this.http.delete(`${this.endpoint}/${id}`, { observe: 'response', responseType: 'json' })
+	deletarEquipamentoEletronico(equipamentoEletronico: IEquipamentoEletronico) {
+		return this.http.delete(`${this.endpoint}/${equipamentoEletronico.id}`, { observe: 'response', responseType: 'json', body: equipamentoEletronico })
 	}
 }
