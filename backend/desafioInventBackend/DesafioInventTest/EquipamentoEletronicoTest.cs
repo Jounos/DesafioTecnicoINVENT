@@ -32,7 +32,6 @@ namespace DesafioInventTest
 
             // Assert
             EquipamentoEletronico equipamentoEletronicoBanco = _session.Load<EquipamentoEletronico>(equipamentoEletronico.Id);
-            _fixture.Dispose();
             Assert.Equivalent(equipamentoEletronico, equipamentoEletronicoBanco);
         }
 
@@ -104,7 +103,7 @@ namespace DesafioInventTest
         }
 
         [Fact]
-        public void Ao_excluir_retornaa_uma_excessao_ValidationException_ao_tentar_excluir_produto_com_estoque()
+        public void Ao_excluir_retorna_uma_excessao_ValidationException_ao_tentar_excluir_produto_com_estoque()
         {
             // Arrange
             const string nomeEquipamento = "Alienware";
