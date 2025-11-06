@@ -8,7 +8,6 @@ namespace DesafioInventTest.Configuracao
     public class RavenTestesUnitarios : RavenTestDriver
     {
         public Dictionary<string, IDocumentStore> storesDosBancos { get; private set; }
-        public string UrlDoServidorDeBanco { get; private set; }
         private static bool _initialized = false;
 
 

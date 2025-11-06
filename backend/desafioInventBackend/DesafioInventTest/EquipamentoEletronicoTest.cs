@@ -1,7 +1,6 @@
 using DesafioInventBackend.Model.Entity;
 using DesafioInventBackend.Model.Enum;
 using DesafioInventBackend.Model.Filters;
-using DesafioInventBackend.Model.Validator;
 using DesafioInventBackend.Service;
 using DesafioInventTest.Configuracao;
 using FluentValidation;
