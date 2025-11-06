@@ -100,7 +100,7 @@ namespace DesafioInventTest
             _service.Excluir(equipamentoEletronico.Id);
 
             // Assert
-            var ex = Assert.Throws<FormatException>(() => _service.BuscarPorId(equipamentoEletronico.Id));
+            var ex = Assert.Throws<KeyNotFoundException>(() => _service.BuscarPorId(equipamentoEletronico.Id));
             Assert.Equal($"Não foi possível encontrar um equipamento eletrônico com id { equipamentoEletronico.Id}", ex.Message);
         }
 

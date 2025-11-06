@@ -61,7 +61,7 @@ namespace DesafioInventBackend.Repository
 
         public EquipamentoEletronico BuscarPorId(string id)
         { 
-            return _servicoSessaoRaven.Session.Load<EquipamentoEletronico>(id) ?? throw new FormatException($"Não foi possível encontrar um equipamento eletrônico com id {id}");
+            return _servicoSessaoRaven.Session.Load<EquipamentoEletronico>(id) ?? throw new KeyNotFoundException($"Não foi possível encontrar um equipamento eletrônico com id {id}");
         }
 
         public void Cadastrar(EquipamentoEletronico equipamentoEletronico)
