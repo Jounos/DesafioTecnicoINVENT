@@ -20,24 +20,24 @@
           <HBox class="sapUiLargeMarginBegin sapUiSmallMarginTopBottom" width="100%">
             <VBox class="sapUiLargeMarginEnd sapUiTinyMarginTop" width="50%">
               <Label text="{i18n>Cadastro.NomeInput}" required="true" displayOnly="true" labelFor="idInputNome"/>
-              <Input id="idInputNome" required="true" width="100%" />
+              <Input id="idInputNome" required="true" width="100%" value="{form>/nome}"/>
             </VBox>
 
             <VBox class="sapUiLargeMarginEnd sapUiTinyMarginTop" width="35%">
               <Label text="{i18n>Cadastro.TipoEquipamentoSelect}" required="true" labelFor="tipoEquipamento"/>
-              <Select id="tipoEquipamento" required="true" width="100%">
-                <core:Item />
+              <Select id="tipoEquipamento" selectedKey="{form>/tipoEquipamento}"
+                items="{tiposEquipamentos>/tipoEquipamentoCollection}"
+                required="true" width="100%">
+                <core:Item key="{tiposEquipamentos>/id}" text="{tiposEquipamentos>label}"/>
               </Select>
             </VBox>
           </HBox>
         </VBox>
         <VBox width="97%">
           <HBox class="sapUiLargeMarginBegin">
-            <VBox class="sapUiLargeMarginEnd sapUiTinyMarginTop" width="50%">
-              <Label text="{i18n>Cadastro.EstoqueSelect}" labelFor="haEstoque" required="true"/>
-              <Select id="haEstoque" required="true" width="50%">
-                <core:Item key="{selects>id}" text="{selects>label}"/>
-              </Select>
+            <VBox class="sapUiLargeMarginEnd sapUiTinyMarginTop" width="20%">
+              <Label text="{i18n>Cadastro.EstoqueSelect}" labelFor="idInputQuantidade" required="true"/>
+              <Input id="idInputQuantidade" required="true" width="100%" value="{form>/quantidade}"/>
             </VBox>
           </HBox>
         </VBox>
@@ -46,7 +46,7 @@
     <footer>
       <OverflowToolbar>
         <ToolbarSpacer/>
-        <Button text="{i18n>Cadastro.VoltarBotao}" type="Ghost" press="aoClicarBotaoPesquisar" />
+        <Button text="{i18n>Cadastro.VoltarBotao}" type="Ghost" press=".aoNavegarUltimaPagina" />
         <Button text="{i18n>Cadastro.SalvarBotao}" type="Emphasized" press="aoClicarBotaoCadastrar"/>
       </OverflowToolbar>
     </footer>

@@ -68,6 +68,89 @@ sap.ui.define([
 
 		_getRouter: function () {
 			return this.getOwnerComponent().getRouter();
-		}
+		},
+
+		/**
+		 * @param {boolean} estado
+		 */
+		_setarCarregamentoDaToolPage: function(estado) {
+			const aggregation = "mainContents";
+			const conteudo = 0;
+
+			const idAppView = "app";
+			let toolPageBase = this
+				.getOwnerComponent()
+				.byId(idAppView);
+
+			this.toolPage = (toolPageBase.getAggregation(aggregation) || [])[conteudo] || toolPageBase;
+
+			this._setarCarregamento(estado, this.toolPage);
+		},
+
+		/**
+		 * @param {boolean} estado
+		 * @param {Object} busyControl
+		 */
+		_setarCarregamento: function(estado, busyControl) {
+			if (busyControl) {
+				const tempoMinimoDeDelay = 0;
+				busyControl.setBusyIndicatorDelay(tempoMinimoDeDelay);
+				if (estado) {
+					BusyIndicator.show(tempoMinimoDeDelay);
+				} else {
+					BusyIndicator.hide();
+				}
+			}
+		},
+
+		/**
+		 * @param {boolean} estado
+		 * @param {Object} [busyControl]
+		 */
+		_carregamentoDaToolPageOuControle: function(estado, busyControl) {
+			if (busyControl) {
+				this._setarCarregamento(estado, busyControl);
+			} else {
+				this._setarCarregamentoDaToolPage(estado);
+			}
+		},
+
+		_executarEObterPromiseDaAction: function(action, busyControl) {
+			let prom = null;
+			try {
+				this._carregamentoDaToolPageOuControle(true, busyControl);
+				let result = action();
+				const nomeDoMetodoThen = "then";
+				const nomeDoTipo = "function";
+
+				if (result === null || result === undefined) {
+					prom = Promise.resolve();
+				} else if (typeof(result[nomeDoMetodoThen]) !== nomeDoTipo) {
+					prom = Promise.resolve(result);
+				} else {
+					prom = result;
+				}
+
+			} catch (e) {
+				prom = Promise.reject(e);
+			}
+
+			return prom;
+		},
+
+		/**
+		 * @param {function} action
+		 * @param {Object} [busyControl]
+		 */
+		exibirEspera: function(action, busyControl) {
+			let prom = this._executarEObterPromiseDaAction(action, busyControl);
+			setTimeout(() => {
+				prom.catch((x) => {
+					const inicioDoTexto = "Catch: ";
+					console.log(inicioDoTexto, x.status);
+					console.log(x.message);
+				}).finally(() => this._carregamentoDaToolPageOuControle(false, busyControl));
+			}, 750);
+		},
 	});
 });

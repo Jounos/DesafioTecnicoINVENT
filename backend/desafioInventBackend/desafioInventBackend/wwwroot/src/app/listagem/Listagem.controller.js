@@ -110,14 +110,13 @@ sap.ui.define([
 		},
 
 		_pesquisar() {
-			this.mostrarBusyIndicator();
-			setTimeout(() => {
+			this.exibirEspera(() => {
 				const filtrosFormatados = this._obterFiltrosFormatados();
 				const nomeModeloListaEquipamentosEletronicos = "listaEquipamentosEletronicos";
-				ServiceEquipamentoEletronico.buscarTodos(filtrosFormatados).then(result => {
-					this.criarModelo(nomeModeloListaEquipamentosEletronicos, result)
-				}).finally(() => this.esconderBusyIndicator());
-			}, 1000);
+				ServiceEquipamentoEletronico.buscarTodos(filtrosFormatados)
+					.then(result => this.criarModelo(nomeModeloListaEquipamentosEletronicos, result))
+					.finally(() => console.log("busca finalizada!!!"));
+			});
 		},
 
 		_obterFiltrosFormatados() {
