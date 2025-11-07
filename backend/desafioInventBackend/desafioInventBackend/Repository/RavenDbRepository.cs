@@ -1,5 +1,4 @@
-﻿using DesafioInventBackend.Data;
-using DesafioInventBackend.Model.Entity;
+﻿using DesafioInventBackend.Model.Entity;
 using DesafioInventBackend.Model.Enum;
 using DesafioInventBackend.Model.Filters;
 using Raven.Client.Documents;
@@ -11,17 +10,17 @@ namespace DesafioInventBackend.Repository
     public class RavenDbRepository : IRepositoryEquipamentoEletronico
     {
 
-        private readonly IServicoSessaoRaven _servicoSessaoRaven;
+        private readonly IDocumentSession _session;
 
-        public RavenDbRepository(IServicoSessaoRaven servicoSessaoRaven)
+        public RavenDbRepository(IDocumentSession session)
         {
-            _servicoSessaoRaven = servicoSessaoRaven;
+            _session = session;
         }
 
         public IEnumerable<EquipamentoEletronico> Buscar(BuscaFiltros filtros = null)
         {
-            using IDocumentSession session = _servicoSessaoRaven.Session;
-            IRavenQueryable<EquipamentoEletronico> equipamentoEletronicoQuery = session.Query<EquipamentoEletronico>();
+            //using IDocumentSession session = _session.obterSessaoAberta();
+            IRavenQueryable<EquipamentoEletronico> equipamentoEletronicoQuery = _session.Query<EquipamentoEletronico>();
 
             if (filtros != null)
             {
@@ -60,37 +59,38 @@ namespace DesafioInventBackend.Repository
         }
 
         public EquipamentoEletronico BuscarPorId(string id)
-        { 
-            return _servicoSessaoRaven.Session.Load<EquipamentoEletronico>(id) ?? throw new KeyNotFoundException($"Não foi possível encontrar um equipamento eletrônico com id {id}");
+        {
+            //using IDocumentSession session = _session.obterSessaoAberta();
+            return _session.Load<EquipamentoEletronico>(id) ?? throw new KeyNotFoundException($"Não foi possível encontrar um equipamento eletrônico com id {id}");
         }
 
         public void Cadastrar(EquipamentoEletronico equipamentoEletronico)
         {
             equipamentoEletronico.DataInclusao = DateTimeOffset.Now;
 
-            using IDocumentSession session = _servicoSessaoRaven.Session;
-            session.Store(equipamentoEletronico);
-            session.SaveChanges();
+            //using IDocumentSession session = _servicoSessaoRaven.obterSessaoAberta();
+            _session.Store(equipamentoEletronico);
+            _session.SaveChanges();
         }
 
         public void Atualizar(string id, EquipamentoEletronico equipamentoEletronicoModificado)
         {
-            using IDocumentSession session = _servicoSessaoRaven.Session;
+            //using IDocumentSession session = _servicoSessaoRaven.obterSessaoAberta();
             
             EquipamentoEletronico equipamentoEletronico = BuscarPorId(id);
 
             equipamentoEletronico.Nome = equipamentoEletronicoModificado.Nome;
             equipamentoEletronico.TipoEquipamento = equipamentoEletronicoModificado.TipoEquipamento;
             equipamentoEletronico.QuantidadeEstoque = equipamentoEletronicoModificado.QuantidadeEstoque;
-            
-            session.SaveChanges();
+
+            _session.SaveChanges();
         }
 
         public void Deletar(string id)
         {
-            using IDocumentSession session = _servicoSessaoRaven.Session;
-            session.Delete(id);
-            session.SaveChanges();
+            //using IDocumentSession session = _servicoSessaoRaven.obterSessaoAberta();
+            _session.Delete(id);
+            _session.SaveChanges();
         }
 
     }
