@@ -8,14 +8,47 @@
   <Page title="{i18n>Cadastro.Title}"
         showNavButton="true"
 		    navButtonPress=".aoNavegarUltimaPagina">
-    <content>
-      <Panel
-            class="sapUiResponsiveMargin"
-            width="auto"
-            expandable="{device>/system/phone}"
-		        expanded="{= !${device>/system/phone} }"
-            accessibleRole="Region">
+    <Panel
+          class="sapUiResponsiveMargin"
+          width="auto"
+          expandable="{device>/system/phone}"
+          expanded="{= !${device>/system/phone} }"
+          accessibleRole="Region">
+
+      <content>
+        <VBox width="97%" backgroundDesign="Solid">
+          <HBox class="sapUiLargeMarginBegin sapUiSmallMarginTopBottom" width="100%">
+            <VBox class="sapUiLargeMarginEnd sapUiTinyMarginTop" width="50%">
+              <Label text="{i18n>Cadastro.NomeInput}" required="true" displayOnly="true" labelFor="idInputNome"/>
+              <Input id="idInputNome" required="true" width="100%" />
+            </VBox>
+
+            <VBox class="sapUiLargeMarginEnd sapUiTinyMarginTop" width="35%">
+              <Label text="{i18n>Cadastro.TipoEquipamentoSelect}" required="true" labelFor="tipoEquipamento"/>
+              <Select id="tipoEquipamento" required="true" width="100%">
+                <core:Item />
+              </Select>
+            </VBox>
+          </HBox>
+        </VBox>
+        <VBox width="97%">
+          <HBox class="sapUiLargeMarginBegin">
+            <VBox class="sapUiLargeMarginEnd sapUiTinyMarginTop" width="50%">
+              <Label text="{i18n>Cadastro.EstoqueSelect}" labelFor="haEstoque" required="true"/>
+              <Select id="haEstoque" required="true" width="50%">
+                <core:Item key="{selects>id}" text="{selects>label}"/>
+              </Select>
+            </VBox>
+          </HBox>
+        </VBox>
+      </content>
     </Panel>
-    </content>
+    <footer>
+      <OverflowToolbar>
+        <ToolbarSpacer/>
+        <Button text="{i18n>Cadastro.VoltarBotao}" type="Ghost" press="aoClicarBotaoPesquisar" />
+        <Button text="{i18n>Cadastro.SalvarBotao}" type="Emphasized" press="aoClicarBotaoCadastrar"/>
+      </OverflowToolbar>
+    </footer>
   </Page>
 </mvc:View>
