@@ -1,19 +1,29 @@
 sap.ui.define([
 	"desafio/common/BaseController",
-	"sap/ui/core/routing/History"
-], (BaseController) => {
+	"desafio/app/validadores/ValidadorEquipamentoEletronico"
+], (BaseController, ValidadorEquipamentoEletronico) => {
 	"use strict";
 
 	const NOME_CONTROLLER = "desafio.app.cadastro.Cadastro"
 	const NOME_MODELO_PARAMETROS = "params";
-
+	const NOME_MODELO_FORM = "form";
 	return BaseController.extend(NOME_CONTROLLER, {
+
+		_validadorEquipamentoEletronico: null,
 
 		onInit() {
 			const rotaCadastro = "cadastro";
 			this.vincularRota(rotaCadastro, this._obterParametros);
 
 			this._criarModelos();
+		},
+
+		_obterParametros: function (event) {
+			const parametro = "arguments";
+			let querys = event.getParameter(parametro)[this.query];
+
+			this.criarModelo(NOME_MODELO_PARAMETROS, querys);
+			this._prepararValidacoes();
 		},
 
 		_criarModelos() {
@@ -23,7 +33,7 @@ sap.ui.define([
 
 		_criarModeloFormualrio() {
 
-			this.criarModelo("form", {
+			this.criarModelo(NOME_MODELO_FORM, {
 				nome: '',
 				tipoEquipamento: 1,
 				quantidade: null,
@@ -40,6 +50,7 @@ sap.ui.define([
 
 			const tiposEquipamentos =  {
 				tipoEquipamentoCollection: [
+					{ label: 'todos' },
 					{ label: labelPC, id: 1 },
 					{ label: labelNotebook, id: 2 },
 					{ label: labelMouse, id: 3 },
@@ -51,17 +62,46 @@ sap.ui.define([
 			this.criarModelo("tiposEquipamentos", tiposEquipamentos);
 		},
 
-		_obterParametros: function (event) {
-			const parametro = "arguments";
-			let querys = event.getParameter(parametro)[this.query];
-
-			this.criarModelo(NOME_MODELO_PARAMETROS, querys);
-		},
-
 		aoNavegarUltimaPagina: function () {
 			const params = this.obterValorModelo(NOME_MODELO_PARAMETROS);
 			const rotaListagem = "listagem";
 			this.navegarPara(rotaListagem, params);
+		},
+
+		_prepararValidacoes() {
+			this._validadorEquipamentoEletronico = new ValidadorEquipamentoEletronico(this.resourceBundle());
+
+			const propriedadeNome = 'nome';
+			const nomeId = 'idInputNome';
+			const propriedadeQuantidade = 'quantidade';
+			const quantidadeId = 'idInputQuantidade';
+
+			this._validadorEquipamentoEletronico.vincularControle(propriedadeNome, this.byId(nomeId));
+			this._validadorEquipamentoEletronico.vincularControle(propriedadeQuantidade, this.byId(quantidadeId));
+			this._validadorEquipamentoEletronico.limparEstadoDosControles();
+		},
+
+		aoClicarBotaoCadastrar: function () {
+			this.exibirEspera(() => {
+				this._validarCampos();
+
+			});
+		},
+
+		_validarCampos() {
+			const nome = 'nome';
+			const quantidade = 'quantidade';
+			const propriedadeTipoEquipamento = '/tipoEquipamentoCollection';
+
+			var validadorNome = this._validadorEquipamentoEletronico.validarParaCampo(nome, this.obterModelo(NOME_MODELO_FORM));
+			var validadorQuantidade = this._validadorEquipamentoEletronico.validarParaCampo(quantidade, this.obterModelo(NOME_MODELO_FORM));
+			var validarTipoEquipamento = !!this.obterModelo(NOME_MODELO_FORM).getProperty(propriedadeTipoEquipamento);
+
+			let validacao = validadorNome && validadorQuantidade && validarTipoEquipamento;
+			if (!validacao) {
+				const mensagem = 'Common.PreenchaTodosOsCampos';
+				throw new Error(this.getTextOrName(mensagem));
+			}
 		}
 	});
 });

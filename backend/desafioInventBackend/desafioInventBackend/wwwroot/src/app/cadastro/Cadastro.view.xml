@@ -36,7 +36,7 @@
         <VBox width="97%">
           <HBox class="sapUiLargeMarginBegin">
             <VBox class="sapUiLargeMarginEnd sapUiTinyMarginTop" width="20%">
-              <Label text="{i18n>Cadastro.EstoqueSelect}" labelFor="idInputQuantidade" required="true"/>
+              <Label text="{i18n>Cadastro.QuantidadeInput}" labelFor="idInputQuantidade" required="true"/>
               <Input id="idInputQuantidade" required="true" width="100%" value="{form>/quantidade}"/>
             </VBox>
           </HBox>
@@ -47,7 +47,7 @@
       <OverflowToolbar>
         <ToolbarSpacer/>
         <Button text="{i18n>Cadastro.SalvarBotao}" type="Emphasized" press="aoClicarBotaoCadastrar"/>
-        <Button text="{i18n>Cadastro.CancelarBotao}" type="Ghost" press=".aoNavegarUltimaPagina" />
+        <Button text="{i18n>Cadastro.CancelarBotao}" type="Ghost" press="aoNavegarUltimaPagina" />
       </OverflowToolbar>
     </footer>
   </Page>

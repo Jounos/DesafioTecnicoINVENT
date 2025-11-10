@@ -1,7 +1,8 @@
 sap.ui.define([
 	"sap/ui/core/mvc/Controller",
-	"sap/ui/model/json/JSONModel"
-], function(Controller, JSONModel) {
+	"sap/ui/model/json/JSONModel",
+	"desafion/common/client/ApiResponse"
+], function(Controller, ApiResponse, JSONModel) {
 
 	const NAMESPACE_CONTROLLER = "desafio.common.BaseController";
 	const QUERY = "?query";
@@ -9,16 +10,35 @@ sap.ui.define([
 
 		query: QUERY,
 
+		apiResponse: function () {
+			if (_apiResponse === null || this._apiResponse === undefined) {
+				this._apiResponse = new ApiResponse(this.resourceBundle());
+			}
+		},
+
+		resourceBundle() {
+			if (this._resourceBundle === null || this.resourceBundle === undefined) {
+				this._resourceBundle = this.getResourceBundle();
+			}
+
+			return this._resourceBundle;
+		},
+
+		getResourceBundle: function() {
+			const nome = 'i18n';
+			return this.getOwnerComponent().getModel(nome).getResourceBundle();
+		},
+
 		criarModelo: function(nameModel, objectModel) {
 			this.getView().setModel(new JSONModel(objectModel), nameModel);
 		},
 
-		_obterModelo: function(nameModel) {
+		obterModelo: function(nameModel) {
 			return this.getView().getModel(nameModel)
 		},
 
 		obterValorModelo: function(nameModel) {
-			const data =  this._obterModelo(nameModel).getData();
+			const data =  this.obterModelo(nameModel).getData();
 			return Object.assign({}, data);
 		},
 
@@ -132,10 +152,17 @@ sap.ui.define([
 		exibirEspera: function(action, busyControl) {
 			let prom = this._executarEObterPromiseDaAction(action, busyControl);
 			setTimeout(() => {
-				prom
-					.catch((x) => console.log(x))
-					.finally(() => this._carregamentoDaToolPageOuControle(false, busyControl));
+				prom.catch((x) => {
+					console.log(x);
+					return this.apiResponse().
+				}).finally(() => this._carregamentoDaToolPageOuControle(false, busyControl));
 			}, 750);
 		},
+
+		getTextOrName: function (i18nNameOrMessage, arrayDeParametros = undefined) {
+			return this.resourceBundle().hasText(i18nNameOrMessage)
+						? this.resourceBundle().getText(i18nNameOrMessage, arrayDeParametros)
+						: i18nNameOrMessage;
+		}
 	});
 });

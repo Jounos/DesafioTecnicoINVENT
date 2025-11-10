@@ -1,4 +1,4 @@
-sap.ui.define(["desafio/common/HttpClient"], function(HttpClient) {
+sap.ui.define(["desafio/common/client/HttpClient"], function(HttpClient) {
 	"use strict";
 
 	const URI_CONTROLLER = "/equipamento-eletronico";
