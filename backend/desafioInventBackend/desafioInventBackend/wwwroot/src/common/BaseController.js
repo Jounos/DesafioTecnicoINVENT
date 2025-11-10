@@ -1,8 +1,7 @@
 sap.ui.define([
 	"sap/ui/core/mvc/Controller",
-	"sap/ui/model/json/JSONModel",
-	'sap/ui/core/BusyIndicator'
-], function(Controller, JSONModel, BusyIndicator) {
+	"sap/ui/model/json/JSONModel"
+], function(Controller, JSONModel) {
 
 	const NAMESPACE_CONTROLLER = "desafio.common.BaseController";
 	const QUERY = "?query";
@@ -29,14 +28,6 @@ sap.ui.define([
 			date.setUTCMonth(mes - 1);
 			date.setUTCFullYear(ano);
 			return date;
-		},
-
-		mostrarBusyIndicator: function () {
-			BusyIndicator.show(0);
-		},
-
-		esconderBusyIndicator() {
-			BusyIndicator.hide();
 		},
 
 		vincularRota: function (routeName, func) {
@@ -95,11 +86,7 @@ sap.ui.define([
 			if (busyControl) {
 				const tempoMinimoDeDelay = 0;
 				busyControl.setBusyIndicatorDelay(tempoMinimoDeDelay);
-				if (estado) {
-					BusyIndicator.show(tempoMinimoDeDelay);
-				} else {
-					BusyIndicator.hide();
-				}
+				busyControl.setBusy(estado);
 			}
 		},
 
@@ -145,11 +132,9 @@ sap.ui.define([
 		exibirEspera: function(action, busyControl) {
 			let prom = this._executarEObterPromiseDaAction(action, busyControl);
 			setTimeout(() => {
-				prom.catch((x) => {
-					const inicioDoTexto = "Catch: ";
-					console.log(inicioDoTexto, x.status);
-					console.log(x.message);
-				}).finally(() => this._carregamentoDaToolPageOuControle(false, busyControl));
+				prom
+					.catch((x) => console.log(x))
+					.finally(() => this._carregamentoDaToolPageOuControle(false, busyControl));
 			}, 750);
 		},
 	});

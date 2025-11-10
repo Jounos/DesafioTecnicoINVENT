@@ -46,8 +46,8 @@
     <footer>
       <OverflowToolbar>
         <ToolbarSpacer/>
-        <Button text="{i18n>Cadastro.VoltarBotao}" type="Ghost" press=".aoNavegarUltimaPagina" />
         <Button text="{i18n>Cadastro.SalvarBotao}" type="Emphasized" press="aoClicarBotaoCadastrar"/>
+        <Button text="{i18n>Cadastro.CancelarBotao}" type="Ghost" press=".aoNavegarUltimaPagina" />
       </OverflowToolbar>
     </footer>
   </Page>
