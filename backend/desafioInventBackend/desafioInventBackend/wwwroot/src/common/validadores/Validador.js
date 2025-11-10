@@ -38,7 +38,7 @@ sap.ui.define([
 
 		segueRegex: function (regex, mensagem) {
 			mensagem = mensagem || `${TEXTO_CAMPO} ${this.nomeDoCampo} ${TEXTO_INVALIDO}`;
-			this.adicionarValidacao(valor => valor && valor.match(regex), mensagem);
+			this.adicionarValidacao(valor => valor && valor > 0, mensagem);
 			return this;
 		},
 
@@ -58,8 +58,6 @@ sap.ui.define([
 			let validacoesFalhas = this.validacoes.filter(validacao => !validacao.regraDeValidacao(valor));
 
 			if (validacoesFalhas) {
-				// validacoesFalhas = this.pararNaPrimeiraFalha ? validacoesFalhas.slice(0, 1) : validacoesFalhas;
-
 				validacoesFalhas.forEach((validacao) => {
 					mensagens += validacao.mensagem + "\n";
 				});

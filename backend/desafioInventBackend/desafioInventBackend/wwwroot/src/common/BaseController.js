@@ -1,23 +1,17 @@
 sap.ui.define([
 	"sap/ui/core/mvc/Controller",
-	"sap/ui/model/json/JSONModel",
-	"desafion/common/client/ApiResponse"
-], function(Controller, ApiResponse, JSONModel) {
+	"sap/ui/model/json/JSONModel"
+], function(Controller, JSONModel) {
 
 	const NAMESPACE_CONTROLLER = "desafio.common.BaseController";
 	const QUERY = "?query";
 	return Controller.extend(NAMESPACE_CONTROLLER, {
 
 		query: QUERY,
-
-		apiResponse: function () {
-			if (_apiResponse === null || this._apiResponse === undefined) {
-				this._apiResponse = new ApiResponse(this.resourceBundle());
-			}
-		},
+		_resourceBundle: null,
 
 		resourceBundle() {
-			if (this._resourceBundle === null || this.resourceBundle === undefined) {
+			if (this._resourceBundle === null || this._resourceBundle === undefined) {
 				this._resourceBundle = this.getResourceBundle();
 			}
 
@@ -152,10 +146,7 @@ sap.ui.define([
 		exibirEspera: function(action, busyControl) {
 			let prom = this._executarEObterPromiseDaAction(action, busyControl);
 			setTimeout(() => {
-				prom.catch((x) => {
-					console.log(x);
-					return this.apiResponse().
-				}).finally(() => this._carregamentoDaToolPageOuControle(false, busyControl));
+				prom.catch((x) => console.log(x)).finally(() => this._carregamentoDaToolPageOuControle(false, busyControl));
 			}, 750);
 		},
 

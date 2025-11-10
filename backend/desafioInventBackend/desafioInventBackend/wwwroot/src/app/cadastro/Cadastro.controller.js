@@ -50,7 +50,6 @@ sap.ui.define([
 
 			const tiposEquipamentos =  {
 				tipoEquipamentoCollection: [
-					{ label: 'todos' },
 					{ label: labelPC, id: 1 },
 					{ label: labelNotebook, id: 2 },
 					{ label: labelMouse, id: 3 },

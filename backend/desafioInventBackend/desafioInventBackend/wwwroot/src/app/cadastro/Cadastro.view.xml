@@ -37,7 +37,7 @@
           <HBox class="sapUiLargeMarginBegin">
             <VBox class="sapUiLargeMarginEnd sapUiTinyMarginTop" width="20%">
               <Label text="{i18n>Cadastro.QuantidadeInput}" labelFor="idInputQuantidade" required="true"/>
-              <Input id="idInputQuantidade" required="true" width="100%" value="{form>/quantidade}"/>
+              <Input id="idInputQuantidade" type="Number" required="true" width="100%" value="{form>/quantidade}"/>
             </VBox>
           </HBox>
         </VBox>

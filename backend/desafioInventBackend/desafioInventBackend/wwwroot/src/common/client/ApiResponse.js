@@ -8,7 +8,5 @@ sap.ui.define(["sap/ui/base/Object"], function(sapBaseObject) {
 		constructor: function (resourceBundle) {
 			this._resourceBundle = resourceBundle;
 		}
-
-		
 	});
 });
