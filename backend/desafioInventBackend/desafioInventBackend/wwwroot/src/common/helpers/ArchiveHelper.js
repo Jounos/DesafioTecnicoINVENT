@@ -9,7 +9,6 @@ sap.ui.define([], function () {
 	return {
 		lerCorpo: function (response) {
 			const nomeDoHeader = 'content-type';
-			debugger;
 			let contentTypeData = response.headers.get(nomeDoHeader);
 
 			var contentType = null;

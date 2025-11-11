@@ -96,7 +96,6 @@ sap.ui.define([
 			var validarTipoEquipamento = !!this.obterModelo(NOME_MODELO_FORM).getProperty(propriedadeTipoEquipamento);
 
 			let validacao = validadorNome && validadorQuantidade && validarTipoEquipamento;
-			debugger;
 			if (!validacao) {
 				const mensagem = 'Common.PreenchaTodosOsCampos';
 				throw new Error(this.getTextOrName(mensagem));

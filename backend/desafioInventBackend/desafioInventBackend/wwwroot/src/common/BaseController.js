@@ -160,7 +160,6 @@ sap.ui.define([
 		exibirEspera: function(action, busyControl) {
 			let prom = this._executarEObterPromiseDaAction(action, busyControl);
 			setTimeout(() => {
-				debugger;
 				prom.catch((x) => this.apiResponse()
 										.obterErro(x)
 										.then(erro => this._criarDialogDeErro(erro))
