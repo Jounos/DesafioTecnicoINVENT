@@ -1,16 +1,30 @@
 sap.ui.define([
 	"sap/ui/core/mvc/Controller",
-	"sap/ui/model/json/JSONModel"
-], function(Controller, JSONModel) {
+	"./client/ApiResponse",
+	"sap/ui/model/json/JSONModel",
+	"./control/DialogoDeErro"
+], function(
+	Controller,
+	ApiResponse,
+	JSONModel,
+	DialogoDeErro
+) {
 
 	const NAMESPACE_CONTROLLER = "desafio.common.BaseController";
 	const QUERY = "?query";
 	return Controller.extend(NAMESPACE_CONTROLLER, {
 
 		query: QUERY,
-		_resourceBundle: null,
 
-		resourceBundle() {
+		apiResponse: function () {
+			if (this._apiResponse === null ||  this._apiResponse === undefined) {
+				this._apiResponse = new ApiResponse(this.resourceBundle());
+			}
+
+			return this._apiResponse;
+		},
+
+		resourceBundle: function () {
 			if (this._resourceBundle === null || this._resourceBundle === undefined) {
 				this._resourceBundle = this.getResourceBundle();
 			}
@@ -146,8 +160,35 @@ sap.ui.define([
 		exibirEspera: function(action, busyControl) {
 			let prom = this._executarEObterPromiseDaAction(action, busyControl);
 			setTimeout(() => {
-				prom.catch((x) => console.log(x)).finally(() => this._carregamentoDaToolPageOuControle(false, busyControl));
+				debugger;
+				prom.catch((x) => this.apiResponse()
+										.obterErro(x)
+										.then(erro => this._criarDialogDeErro(erro))
+					).finally(() => this._carregamentoDaToolPageOuControle(false, busyControl));
 			}, 750);
+		},
+
+		_criarDialogDeErro: function (erro) {
+			const falhaDeComunicacao = 'failed to fetch';
+			const traducaoDeFalhaDeComunicacao = 'Common.FalhaAoRequisitarServidor';
+			let mensagemMinusculo = erro.mensagem.toLowerCase();
+			const idDialogoDeErro = 'apiErrorDialog';
+
+			var dialogo = new DialogoDeErro(idDialogoDeErro, {
+				title: erro.titulo,
+				cabecalho: erro.textoCabecalho,
+				mensagem: mensagemMinusculo === falhaDeComunicacao ? this.getTextOrName(traducaoDeFalhaDeComunicacao) : erro.mensagem,
+				stack: erro.stack
+			});
+
+			this._setarI18nNoControle(dialogo);
+			return dialogo.open();
+		},
+
+		_setarI18nNoControle: function (dialog) {
+			const nomeModeloI18n = 'i18n';
+			var modelo = this.getOwnerComponent().getModel(nomeModeloI18n);
+			dialog.setModel(modelo, nomeModeloI18n);
 		},
 
 		getTextOrName: function (i18nNameOrMessage, arrayDeParametros = undefined) {

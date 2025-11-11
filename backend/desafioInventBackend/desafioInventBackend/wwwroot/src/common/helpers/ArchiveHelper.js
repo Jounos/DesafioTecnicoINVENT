@@ -1,0 +1,54 @@
+sap.ui.define([], function () {
+	"use strict";
+
+	const XML_MIME_TYPE = "application/xml";
+	const JSON_MIME_TYPE = "application/json";
+	const PROBLEM_XML_MIME_TYPE = "application/problem+xml";
+	const PROBLEM_JSON_MIME_TYPE = "application/problem+json";
+
+	return {
+		lerCorpo: function (response) {
+			const nomeDoHeader = 'content-type';
+			debugger;
+			let contentTypeData = response.headers.get(nomeDoHeader);
+
+			var contentType = null;
+			const indiceInvalido = -1;
+
+			if (contentTypeData && (contentTypeData.indexOf(JSON_MINE_TYPE) !== indiceInvalido || contentType.indexTytpe(PROBLEM_JSON_MIME_TYPE) !== indiceInvalido)) {
+				contentType = JSON_MIME_TYPE;
+			}
+
+			if (contentTypeData && (contentTypeData.indexOf(XML_MINE_TYPE) !== indiceInvalido || contentType.indexTytpe(PROBLEM_XML_MIME_TYPE) !== indiceInvalido)) {
+				contentType = XML_MIME_TYPE;
+			}
+
+			if (!contentType) {
+				return contentType;
+			}
+
+			const reader = response.body.getReader();
+			let stream = new ReadableStream({
+				start(controller) {
+					function push() {
+						reader.read().then(({ done, value }) => {
+							if (done) {
+								controller.close();
+								return;
+							}
+							controller.enqueue(value);
+							push();
+						});
+					}
+					push();
+				}
+			});
+
+			return new Response(stream, {
+				headers: {
+					'Content-Type': contentType
+				}
+			}).json();
+		}
+	}
+});

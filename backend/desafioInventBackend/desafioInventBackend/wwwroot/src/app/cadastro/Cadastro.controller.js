@@ -32,7 +32,6 @@ sap.ui.define([
 		},
 
 		_criarModeloFormualrio() {
-
 			this.criarModelo(NOME_MODELO_FORM, {
 				nome: '',
 				tipoEquipamento: 1,
@@ -97,6 +96,7 @@ sap.ui.define([
 			var validarTipoEquipamento = !!this.obterModelo(NOME_MODELO_FORM).getProperty(propriedadeTipoEquipamento);
 
 			let validacao = validadorNome && validadorQuantidade && validarTipoEquipamento;
+			debugger;
 			if (!validacao) {
 				const mensagem = 'Common.PreenchaTodosOsCampos';
 				throw new Error(this.getTextOrName(mensagem));
