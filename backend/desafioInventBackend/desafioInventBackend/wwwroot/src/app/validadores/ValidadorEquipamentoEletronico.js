@@ -19,7 +19,7 @@ sap.ui.define(['desafio/common/validadores/ValidadorBase'], function(ValidadorBa
 		},
 
 		validarQuantidade: function (resourceBundle) {
-			const quantidade = 'quantidade';
+			const quantidade = 'quantidadeEstoque';
 			const necessarioQuantidade = 'Cadastro.QuantidadeInput';
 			const numeroZero = 0;
 			this.validacaoPara(quantidade).numeroMaiorQue(numeroZero, resourceBundle.getText(necessarioQuantidade));

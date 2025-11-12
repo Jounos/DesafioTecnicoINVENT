@@ -62,7 +62,6 @@ sap.ui.define([
 				content: texto
 			});
 
-
 			var layout = new VerticalLayout({
 				width: '100%',
 				content: [

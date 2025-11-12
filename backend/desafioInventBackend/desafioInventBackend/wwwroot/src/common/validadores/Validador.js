@@ -49,7 +49,6 @@ sap.ui.define([
 			});
 		},
 
-
 		validar: function (objeto) {
 			const campos =  this.nomeDoCampo.split('/');
 			const valor = campos.reduce((o, i) => (o ? o[i] : undefined), objeto.getData());

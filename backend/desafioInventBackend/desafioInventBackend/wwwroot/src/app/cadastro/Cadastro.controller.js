@@ -1,7 +1,11 @@
 sap.ui.define([
 	"desafio/common/BaseController",
-	"desafio/app/validadores/ValidadorEquipamentoEletronico"
-], (BaseController, ValidadorEquipamentoEletronico) => {
+	"desafio/app/validadores/ValidadorEquipamentoEletronico",
+	"desafio/app/servicos/ServiceEquipamentoEletronico"
+], (
+	BaseController,
+	ValidadorEquipamentoEletronico,
+	ServiceEquipamentoEletronico) => {
 	"use strict";
 
 	const NOME_CONTROLLER = "desafio.app.cadastro.Cadastro"
@@ -35,7 +39,7 @@ sap.ui.define([
 			this.criarModelo(NOME_MODELO_FORM, {
 				nome: '',
 				tipoEquipamento: 1,
-				quantidade: null,
+				quantidadeEstoque: null,
 			});
 		},
 
@@ -71,7 +75,7 @@ sap.ui.define([
 
 			const propriedadeNome = 'nome';
 			const nomeId = 'idInputNome';
-			const propriedadeQuantidade = 'quantidade';
+			const propriedadeQuantidade = 'quantidadeEstoque';
 			const quantidadeId = 'idInputQuantidade';
 
 			this._validadorEquipamentoEletronico.vincularControle(propriedadeNome, this.byId(nomeId));
@@ -81,17 +85,14 @@ sap.ui.define([
 
 		aoClicarBotaoCadastrar: function () {
 			this.exibirEspera(() => {
-				this._validarCampos();
-
+				this._salvar();
 			});
 		},
 
 		_validarCampos() {
 			const nome = 'nome';
-			const quantidade = 'quantidade';
+			const quantidade = 'quantidadeEstoque';
 			const propriedadeTipoEquipamento = '/tipoEquipamento';
-
-			debugger;
 
 			const modeloForm =  this.obterModelo(NOME_MODELO_FORM);
 
@@ -104,6 +105,12 @@ sap.ui.define([
 				const mensagem = 'Common.PreenchaTodosOsCampos';
 				throw new Error(this.getTextOrName(mensagem));
 			}
+		},
+
+		_salvar() {
+			this._validarCampos();
+			const equipamentoEletronico = this.obterValorModelo(NOME_MODELO_FORM);
+			ServiceEquipamentoEletronico.salvar(equipamentoEletronico);
 		}
 	});
 });
