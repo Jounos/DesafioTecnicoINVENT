@@ -36,9 +36,9 @@ sap.ui.define([
 			return this;
 		},
 
-		segueRegex: function (regex, mensagem) {
+		numeroMaiorQue: function (numero, mensagem) {
 			mensagem = mensagem || `${TEXTO_CAMPO} ${this.nomeDoCampo} ${TEXTO_INVALIDO}`;
-			this.adicionarValidacao(valor => valor && valor > 0, mensagem);
+			this.adicionarValidacao(valor => valor && valor > numero, mensagem);
 			return this;
 		},
 
@@ -65,7 +65,7 @@ sap.ui.define([
 
 			mensagens ? this.setarStatusErro(mensagens) : this.setarStatusSucesso();
 
-
+			return this.validadoComSucesso;
 		},
 
 		setarStatusErro(mensagens) {
@@ -85,6 +85,8 @@ sap.ui.define([
 						this.controle.setValueStateText(mensagens);
 					}
 			}
+
+			this.validadoComSucesso = false;
 		},
 
 		setarStatusSucesso: function () {
@@ -99,6 +101,8 @@ sap.ui.define([
 						this.controle.setValueState(ValueState.None);
 					}
 			}
+
+			this.validadoComSucesso = true;
 		},
 	});
 });

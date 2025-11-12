@@ -89,14 +89,18 @@ sap.ui.define([
 		_validarCampos() {
 			const nome = 'nome';
 			const quantidade = 'quantidade';
-			const propriedadeTipoEquipamento = '/tipoEquipamentoCollection';
+			const propriedadeTipoEquipamento = '/tipoEquipamento';
 
-			var validadorNome = this._validadorEquipamentoEletronico.validarParaCampo(nome, this.obterModelo(NOME_MODELO_FORM));
-			var validadorQuantidade = this._validadorEquipamentoEletronico.validarParaCampo(quantidade, this.obterModelo(NOME_MODELO_FORM));
-			var validarTipoEquipamento = !!this.obterModelo(NOME_MODELO_FORM).getProperty(propriedadeTipoEquipamento);
+			debugger;
 
-			let validacao = validadorNome && validadorQuantidade && validarTipoEquipamento;
-			if (!validacao) {
+			const modeloForm =  this.obterModelo(NOME_MODELO_FORM);
+
+			var nomeValidado = this._validadorEquipamentoEletronico.validarParaCampo(nome, modeloForm);
+			var quantidadeValidado = this._validadorEquipamentoEletronico.validarParaCampo(quantidade, modeloForm);
+			var tipoEquipamentoValidado = !!modeloForm.getProperty(propriedadeTipoEquipamento);
+
+			let formularioValidado = nomeValidado && quantidadeValidado && tipoEquipamentoValidado;
+			if (!formularioValidado) {
 				const mensagem = 'Common.PreenchaTodosOsCampos';
 				throw new Error(this.getTextOrName(mensagem));
 			}

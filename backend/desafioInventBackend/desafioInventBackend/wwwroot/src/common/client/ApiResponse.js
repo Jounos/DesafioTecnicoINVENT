@@ -33,8 +33,8 @@ sap.ui.define([
 			const propriedade = 'bodyLido';
 			if (resposta.body) {
 				return ArchiveHelper
-				.lerCorpo(resposta)
-				.then(bodyLido => resposta[propriedade] = bodyLido);
+					.lerCorpo(resposta)
+					.then(bodyLido => resposta[propriedade] = bodyLido);
 			}
 
 			if (resposta.detail) {

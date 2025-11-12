@@ -28,7 +28,7 @@
               <Select id="tipoEquipamento" selectedKey="{form>/tipoEquipamento}"
                 items="{tiposEquipamentos>/tipoEquipamentoCollection}"
                 required="true" width="100%">
-                <core:Item key="{tiposEquipamentos>/id}" text="{tiposEquipamentos>label}"/>
+                <core:Item key="{tiposEquipamentos>id}" text="{tiposEquipamentos>label}"/>
               </Select>
             </VBox>
           </HBox>

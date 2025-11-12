@@ -21,9 +21,8 @@ sap.ui.define(['desafio/common/validadores/ValidadorBase'], function(ValidadorBa
 		validarQuantidade: function (resourceBundle) {
 			const quantidade = 'quantidade';
 			const necessarioQuantidade = 'Cadastro.QuantidadeInput';
-			const regexNumeroInteiroMaiorQueZero = '^[1-9]\d*$';
-			this.validacaoPara(quantidade)
-				.segueRegex(regexNumeroInteiroMaiorQueZero , resourceBundle.getText(necessarioQuantidade));
+			const numeroZero = 0;
+			this.validacaoPara(quantidade).numeroMaiorQue(numeroZero, resourceBundle.getText(necessarioQuantidade));
 		},
 	});
 });

@@ -62,6 +62,7 @@ sap.ui.define([
 				content: texto
 			});
 
+
 			var layout = new VerticalLayout({
 				width: '100%',
 				content: [
@@ -72,8 +73,8 @@ sap.ui.define([
 			});
 
 			const classeMinima = 'sapUiTinyMargin';
-			const classePequena = 'sapSmallMarginBegin';''
-			const classeMinimaAcima = 'sapUiTinymarginAbove';
+			const classePequena = 'sapUiSmallMarginBegin';
+			const classeMinimaAcima = 'sapUiTinyMarginAbove';
 
 			cabecalho.addStyleClass(classeMinima);
 			mensagem.addStyleClass(classePequena);
