@@ -18,7 +18,6 @@ sap.ui.define(["../helpers/ArchiveHelper"], function (ArchiveHelper) {
 		},
 
 		_ajaxRequest(type, apiUrl, data, aditionalParams, callback = null) {
-			debugger;
 			const params = this._obterParametrosHttp(type, data, aditionalParams);
 
 			return fetch(apiUrl, params).then(response => {
@@ -27,25 +26,26 @@ sap.ui.define(["../helpers/ArchiveHelper"], function (ArchiveHelper) {
 					callback(response);
 				}
 
-				return response;
-			}).then(response => response.json()).catch(error => {
+				return this._erroOuResponse(response);
+			}).then(response => response.json().catch(error => {
+				ArchiveHelper.lerCorpo(response);
 				console.log(error);
-			});
+			}));
 		},
 
-		_obterParametrosHttp(type, body, aditionalParams) {
+		_obterParametrosHttp(type, dados, aditionalParams) {
 			const CONTENT_TYPE_JSON = "application/json";
+
+			const myHeaders = new Headers();
+			myHeaders.append("Content-Type", CONTENT_TYPE_JSON);
 			var params = {
 				method: type,
-				headers: {
-					Accept: CONTENT_TYPE_JSON,
-					"Content-Type": CONTENT_TYPE_JSON
-				},
-				body: body
+				headers: myHeaders,
+				body: dados ? JSON.stringify(dados) : null,
+				redirect: 'follow'
 			};
 
 			Object.assign(params, (aditionalParams || {}));
-
 			return params;
 		},
 

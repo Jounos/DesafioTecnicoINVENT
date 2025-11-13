@@ -109,7 +109,7 @@ sap.ui.define([
 
 		_salvar() {
 			this._validarCampos();
-			const equipamentoEletronico = this.obterValorModelo(NOME_MODELO_FORM);
+			const equipamentoEletronico = this.obterModelo(NOME_MODELO_FORM).getData();
 			ServiceEquipamentoEletronico.salvar(equipamentoEletronico);
 		}
 	});

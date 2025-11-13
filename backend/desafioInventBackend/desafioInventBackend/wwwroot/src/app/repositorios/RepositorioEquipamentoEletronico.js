@@ -37,8 +37,8 @@ sap.ui.define(["desafio/common/client/HttpClient"], function(HttpClient) {
 		return `?${params.toString()}`;
 	}
 
-	function _salvar(equipamentoEletronico) {
+	function _salvar(equipamentoEletronico, callback = null) {
 		const url = URI_CONTROLLER;
-		return HttpClient.post(url, equipamentoEletronico);
+		return HttpClient.post(url, equipamentoEletronico, callback);
 	}
 });
