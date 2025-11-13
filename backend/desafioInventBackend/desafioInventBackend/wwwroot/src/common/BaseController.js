@@ -2,12 +2,14 @@ sap.ui.define([
 	"sap/ui/core/mvc/Controller",
 	"./client/ApiResponse",
 	"sap/ui/model/json/JSONModel",
-	"./control/DialogoDeErro"
+	"./control/DialogoDeErro",
+	"./control/DialogoDeConfirmacao",
 ], function(
 	Controller,
 	ApiResponse,
 	JSONModel,
-	DialogoDeErro
+	DialogoDeErro,
+	DialogoDeConfirmacao
 ) {
 
 	const NAMESPACE_CONTROLLER = "desafio.common.BaseController";
@@ -195,6 +197,23 @@ sap.ui.define([
 			return this.resourceBundle().hasText(i18nNameOrMessage)
 						? this.resourceBundle().getText(i18nNameOrMessage, arrayDeParametros)
 						: i18nNameOrMessage;
+		},
+
+		exibirMensagem: function (traducao_mensagem, evento) {
+			const textoSucesso = "Common.Sucesso";
+			const textoOK = "Common.OK";
+			const larguraDoDialogo = "40px";
+			const noop= () => {};
+
+			var dialogo = new DialogoDeConfirmacao({
+				textoConteudo : this.getTextOrName(traducao_mensagem),
+				title: this.getTextOrName(textoSucesso),
+				contentWidth: larguraDoDialogo,
+				textoBotaoDireito: this.getTextOrName(textoOK),
+				botaoDireito: evento || noop
+			});
+			this._setarI18nNoControle(dialogo);
+			return dialogo.open();
 		}
 	});
 });
