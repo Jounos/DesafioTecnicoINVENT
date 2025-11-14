@@ -203,7 +203,7 @@ sap.ui.define([
 			const textoSucesso = "Common.Sucesso";
 			const textoOK = "Common.OK";
 			const larguraDoDialogo = "40px";
-			const noop= () => {};
+			const noop = () => {};
 
 			var dialogo = new DialogoDeConfirmacao({
 				textoConteudo : this.getTextOrName(traducao_mensagem),
