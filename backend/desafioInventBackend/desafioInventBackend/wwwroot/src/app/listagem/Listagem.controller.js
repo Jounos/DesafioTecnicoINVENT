@@ -106,17 +106,16 @@ sap.ui.define([
 		},
 
 		aoClicarBotaoPesquisar: function () {
-			this._pesquisar();
+			this.exibirEspera(() => {
+				this._pesquisar();
+			});
 		},
 
 		_pesquisar() {
-			this.exibirEspera(() => {
-				const filtrosFormatados = this._obterFiltrosFormatados();
-				const nomeModeloListaEquipamentosEletronicos = "listaEquipamentosEletronicos";
-				ServiceEquipamentoEletronico.buscarTodos(filtrosFormatados)
-					.then(result => this.criarModelo(nomeModeloListaEquipamentosEletronicos, result))
-					.finally(() => console.log("busca finalizada!!!"));
-			});
+			const filtrosFormatados = this._obterFiltrosFormatados();
+			const nomeModeloListaEquipamentosEletronicos = "listaEquipamentosEletronicos";
+			return ServiceEquipamentoEletronico.buscarTodos(filtrosFormatados)
+				.then(result => this.criarModelo(nomeModeloListaEquipamentosEletronicos, result));
 		},
 
 		_obterFiltrosFormatados: function() {

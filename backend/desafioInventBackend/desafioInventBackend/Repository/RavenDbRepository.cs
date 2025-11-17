@@ -19,7 +19,6 @@ namespace DesafioInventBackend.Repository
 
         public IEnumerable<EquipamentoEletronico> Buscar(BuscaFiltros filtros = null)
         {
-            //using IDocumentSession session = _session.obterSessaoAberta();
             IRavenQueryable<EquipamentoEletronico> equipamentoEletronicoQuery = _session.Query<EquipamentoEletronico>();
 
             if (filtros != null)
@@ -60,7 +59,6 @@ namespace DesafioInventBackend.Repository
 
         public EquipamentoEletronico BuscarPorId(string id)
         {
-            //using IDocumentSession session = _session.obterSessaoAberta();
             return _session.Load<EquipamentoEletronico>(id) ?? throw new KeyNotFoundException($"Não foi possível encontrar um equipamento eletrônico com id {id}");
         }
 
@@ -68,15 +66,12 @@ namespace DesafioInventBackend.Repository
         {
             equipamentoEletronico.DataInclusao = DateTimeOffset.Now;
 
-            //using IDocumentSession session = _servicoSessaoRaven.obterSessaoAberta();
             _session.Store(equipamentoEletronico);
             _session.SaveChanges();
         }
 
         public void Atualizar(string id, EquipamentoEletronico equipamentoEletronicoModificado)
-        {
-            //using IDocumentSession session = _servicoSessaoRaven.obterSessaoAberta();
-            
+        {            
             EquipamentoEletronico equipamentoEletronico = BuscarPorId(id);
 
             equipamentoEletronico.Nome = equipamentoEletronicoModificado.Nome;
@@ -88,7 +83,6 @@ namespace DesafioInventBackend.Repository
 
         public void Deletar(string id)
         {
-            //using IDocumentSession session = _servicoSessaoRaven.obterSessaoAberta();
             _session.Delete(id);
             _session.SaveChanges();
         }

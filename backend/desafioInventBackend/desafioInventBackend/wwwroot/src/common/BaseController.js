@@ -52,14 +52,6 @@ sap.ui.define([
 			return Object.assign({}, data);
 		},
 
-		_criaDataUI5: function (dia, mes, ano) {
-			let date = UI5Date.getInstance();
-			date.setUTCDate(dia);
-			date.setUTCMonth(mes - 1);
-			date.setUTCFullYear(ano);
-			return date;
-		},
-
 		vincularRota: function (routeName, func) {
 			const router = this._getRouter();
 

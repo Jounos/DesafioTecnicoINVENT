@@ -84,9 +84,7 @@ sap.ui.define([
 		},
 
 		aoClicarBotaoCadastrar: function () {
-			this.exibirEspera(() => {
-				this._salvar();
-			});
+			this.exibirEspera(() => this._salvar());
 		},
 
 		_validarCampos() {
@@ -109,16 +107,14 @@ sap.ui.define([
 
 		_salvar() {
 			const sucesso = "Common.SalvoComSucesso";
-			this.exibirEspera(async () => {
-				this._validarCampos();
-				const equipamentoEletronico = this.obterModelo(NOME_MODELO_FORM).getData();
-				ServiceEquipamentoEletronico.salvar(equipamentoEletronico)
-					.then(() => this.exibirMensagem(sucesso, () => this._aoClicarBotaoOkMensagemDeSucesso()));
-			});
+			this._validarCampos();
+			const equipamentoEletronico = this.obterModelo(NOME_MODELO_FORM).getData();
+			return ServiceEquipamentoEletronico.salvar(equipamentoEletronico)
+				.then(() => this.exibirMensagem(sucesso, () => this._aoClicarBotaoOkMensagemDeSucesso()));
 		},
 
 		_aoClicarBotaoOkMensagemDeSucesso: function() {
-			this.aoNavegarUltimaPagina();
+			this.exibirEspera(() => this.aoNavegarUltimaPagina());
 		}
 	});
 });
