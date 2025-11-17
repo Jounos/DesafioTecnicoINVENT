@@ -161,13 +161,11 @@ sap.ui.define([
 		 */
 		exibirEspera: function(action, busyControl) {
 			let prom = this._executarEObterPromiseDaAction(action, busyControl);
-			setTimeout(() => {
-				prom.catch((x) => {
-						this.apiResponse().obterErro(x)
-										.then(erro => this._criarDialogDeErro(erro))
-					}
-					).finally(() => this._carregamentoDaToolPageOuControle(false, busyControl));
-			}, 750);
+			prom.catch((x) => {
+					this.apiResponse().obterErro(x)
+									.then(erro => this._criarDialogDeErro(erro))
+				}
+			).finally(() => this._carregamentoDaToolPageOuControle(false, busyControl));
 		},
 
 		_criarDialogDeErro: function (erro) {
