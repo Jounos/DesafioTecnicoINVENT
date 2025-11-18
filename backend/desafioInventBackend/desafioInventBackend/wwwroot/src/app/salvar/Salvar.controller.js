@@ -37,6 +37,7 @@ sap.ui.define([
 		},
 
 		_buscarEquipamentoEletronicoPorId: function (event) {
+			this._obterParametros(event);
 			this._equipamentoEletronicoId = event.getParameter(PARAMETROS_URL)?.id;
 			ServiceEquipamentoEletronico.buscarPorId(this._equipamentoEletronicoId)
 					.then((result) => this.criarModelo(NOME_MODELO_FORM, result));
@@ -77,8 +78,10 @@ sap.ui.define([
 		},
 
 		aoNavegarUltimaPagina: function () {
+			const param = this.obterValorModelo(NOME_MODELO_PARAMETROS);
 			const rotaListagem = "listagem";
-			this.navegarPara(rotaListagem);
+
+			this.navegarPara(rotaListagem, { query: param });
 		},
 
 		_prepararValidacoes() {

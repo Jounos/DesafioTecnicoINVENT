@@ -18,7 +18,6 @@ sap.ui.define(["../helpers/ArchiveHelper"], function (ArchiveHelper) {
 		},
 
 		put(endpoint, data, callback = null) {
-			debugger;
 			const PUT = "PUT";
 			const apiUrl = URL + endpoint;
 			return this._ajaxRequest(PUT, apiUrl, data, null, callback);

@@ -103,15 +103,15 @@ sap.ui.define([
 			const rotaEdicao = 'edicao';
 			const propriedade = "id";
 			let id = evento.getSource().getBindingContext(NOME_MODELO_LISTA).getProperty(propriedade);
+			const filtros = this._obterFiltrosFormatados();
 
-			this.navegarPara(rotaEdicao, { id: id });
+			this.navegarPara(rotaEdicao, { id: id, query: filtros });
 		},
 
 		aoClicarBotaoCadastrar: function () {
 			const rotaCadastro = "cadastro";
 			const filtros = this._obterFiltrosFormatados();
-
-			this.navegarPara(rotaCadastro, filtros);
+			this.navegarPara(rotaCadastro, { query: filtros });
 		},
 
 		aoClicarBotaoPesquisar: function () {
@@ -132,6 +132,12 @@ sap.ui.define([
 			}
 			if (filtros.dataInicio != null) {
 				filtros.dataFim = this.formatter.formatarDataParaAPI(filtros.dataFim);
+			}
+
+			for (let key in filtros) {
+				if (!filtros[key]) {
+					delete filtros[key];
+				}
 			}
 
 			return filtros;

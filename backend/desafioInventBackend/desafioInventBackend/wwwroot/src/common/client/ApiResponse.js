@@ -78,7 +78,6 @@ sap.ui.define([
 		},
 
 		_escaparCaracteresDeBindings: function (texto) {
-			debugger;
 			const tipoString = "string";
 			if (texto && typeof(texto) === tipoString) {
 				const caractereDeBindInicial = "{";
