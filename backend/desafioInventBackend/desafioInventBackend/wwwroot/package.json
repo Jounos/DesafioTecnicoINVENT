@@ -3,11 +3,11 @@
     "version": "1.0.0",
     "description": "Projeto para estudo de SAPUI5",
     "scripts": {
-        "start": "ui5 serve -o index.html"
+        "start": "ui5 serve -o index.html",
+        "test": "ui5 serve -o test/testsuite.qunit.html"
     },
     "devDependencies": {
-        "@ui5/cli": "^4.0.30",
-        "ui5-middleware-simpleproxy": "^3.5.1"
+        "@ui5/cli": "^4.0.30"
     },
     "dependencies": {
         "ui5-middleware-livereload": "^3.1.4"

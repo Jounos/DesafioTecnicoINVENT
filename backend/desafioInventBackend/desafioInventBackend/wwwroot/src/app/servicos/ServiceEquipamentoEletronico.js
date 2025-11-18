@@ -2,11 +2,21 @@ sap.ui.define(["desafio/app/repositorios/RepositorioEquipamentoEletronico"], fun
 	"use strict";
 
 	return {
-		buscarTodos: _buscarTodos
+		buscarTodos: _buscarTodos,
+		salvar: _salvar
 	};
 
-	async function _buscarTodos (filtros, callback = null) {
-		return await RepositorioEquipamentoEletronico.obterTodos(filtros, callback);
+	function _buscarTodos (filtros, callback = null) {
+		return RepositorioEquipamentoEletronico.obterTodos(filtros, callback);
 	}
-})
+
+	function _salvar (equipamentoEletronico, callback = null) {
+		let equipamentoEletronicoDto = {
+			Nome: equipamentoEletronico.nome,
+			TipoEquipamento: Number(equipamentoEletronico.tipoEquipamento),
+			QuantidadeEstoque: Number(equipamentoEletronico.quantidadeEstoque)
+		}
+		return RepositorioEquipamentoEletronico.salvar(equipamentoEletronicoDto, callback);
+	}
+});
 

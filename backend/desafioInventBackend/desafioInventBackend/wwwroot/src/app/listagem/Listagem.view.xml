@@ -92,8 +92,8 @@
             items="{
               path: 'listaEquipamentosEletronicos>/',
               sorter: {
-                path: 'id',
-                descending: false
+                path: 'dataInclusao',
+                descending: true
               }
             }"
             class="sapUiResponsiveMargin"

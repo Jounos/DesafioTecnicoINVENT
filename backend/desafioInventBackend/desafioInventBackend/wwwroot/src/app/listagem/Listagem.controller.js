@@ -16,12 +16,12 @@ sap.ui.define([
 
 		formatter: Formatter,
 
-		onInit() {
+		onInit: function () {
 			const rotaListagem = "listagem";
 			this.vincularRota(rotaListagem, this._obterParametros);
 		},
 
-		_obterParametros(event) {
+		_obterParametros: function (event) {
 			const nomeParametro = "arguments";
 			let querys = event.getParameter(nomeParametro)[this.query];
 
@@ -36,7 +36,7 @@ sap.ui.define([
 			this._criarModeloFiltros(querys);
 		},
 
-		_criarModeloSelects: function() {
+		_criarModeloSelects: function () {
 			const modelSelects = this._criarSeletcs();
 			this.criarModelo(NOME_MODELO_SELECTS, modelSelects);
 		},
@@ -106,21 +106,19 @@ sap.ui.define([
 		},
 
 		aoClicarBotaoPesquisar: function () {
-			this._pesquisar();
+			this.exibirEspera(() => {
+				this._pesquisar();
+			});
 		},
 
 		_pesquisar() {
-			this.mostrarBusyIndicator();
-			setTimeout(() => {
-				const filtrosFormatados = this._obterFiltrosFormatados();
-				const nomeModeloListaEquipamentosEletronicos = "listaEquipamentosEletronicos";
-				ServiceEquipamentoEletronico.buscarTodos(filtrosFormatados).then(result => {
-					this.criarModelo(nomeModeloListaEquipamentosEletronicos, result)
-				}).finally(() => this.esconderBusyIndicator());
-			}, 1000);
+			const filtrosFormatados = this._obterFiltrosFormatados();
+			const nomeModeloListaEquipamentosEletronicos = "listaEquipamentosEletronicos";
+			return ServiceEquipamentoEletronico.buscarTodos(filtrosFormatados)
+				.then(result => this.criarModelo(nomeModeloListaEquipamentosEletronicos, result));
 		},
 
-		_obterFiltrosFormatados() {
+		_obterFiltrosFormatados: function() {
 			let filtros = this.obterValorModelo(NAME_MODELO_FILTROS);
 
 			if (filtros.dataInicio != null) {

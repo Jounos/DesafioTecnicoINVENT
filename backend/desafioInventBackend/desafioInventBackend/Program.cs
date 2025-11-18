@@ -1,10 +1,10 @@
-
-using DesafioInventBackend.Data;
 using DesafioInventBackend.Model.DTO;
 using DesafioInventBackend.Model.Entity;
 using DesafioInventBackend.Model.Validator;
 using DesafioInventBackend.Repository;
 using DesafioInventBackend.Service;
+using Raven.Client.Documents;
+using Raven.Client.Documents.Session;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,9 +16,24 @@ builder.Services.AddCors(options =>
                          .AllowAnyMethod());
 });
 
-builder.Services.AddSingleton<IServicoSessaoRaven, RavenDbContext>();
+builder.Services.AddSingleton<IDocumentStore>(provider =>
+{
+    var store = new DocumentStore()
+    {
+        Urls = new[] { Environment.GetEnvironmentVariable("ravenDbServer") },
+
+        Database = Environment.GetEnvironmentVariable("ravenDbName"),
+    }.Initialize();
+    return store;
+});
 
 builder.Services.AddControllersWithViews();
+builder.Services.AddScoped<IDocumentSession>(provider =>
+{
+    var store = provider.GetRequiredService<IDocumentStore>();
+    return store.OpenSession();
+
+});
 builder.Services.AddScoped<IRepositoryEquipamentoEletronico, RavenDbRepository>();
 builder.Services.AddScoped<EquipamentoEletronicoCadastrarValidator>();
 builder.Services.AddScoped<EquipamentoEletronicoAlterarValidator>();

@@ -1,11 +1,18 @@
-sap.ui.define(["desafio/common/HttpClient"], function(HttpClient) {
+sap.ui.define(["desafio/common/client/HttpClient"], function(HttpClient) {
 	"use strict";
 
 	const URI_CONTROLLER = "/equipamento-eletronico";
 
 	return {
-		obterTodos: _obterTodos
+		obterTodos: _obterTodos,
+		salvar: _salvar,
 	};
+
+	function _obterTodos(filtros, callback = null) {
+		const params = _obterParams(filtros);
+		const url = URI_CONTROLLER + params;
+		return HttpClient.get(url, callback);
+	}
 
 	function _obterParams(filtros) {
 
@@ -30,9 +37,8 @@ sap.ui.define(["desafio/common/HttpClient"], function(HttpClient) {
 		return `?${params.toString()}`;
 	}
 
-	async function _obterTodos(filtros, callback = null) {
-		const params = _obterParams(filtros);
-		const url = URI_CONTROLLER + params;
-		return await HttpClient.get(url, callback);
+	function _salvar(equipamentoEletronico, callback = null) {
+		const url = URI_CONTROLLER;
+		return HttpClient.post(url, equipamentoEletronico, callback);
 	}
 });
