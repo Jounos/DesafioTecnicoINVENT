@@ -9,6 +9,6 @@ sap.ui.define([
         arrangements: new Startup(),
         viewNamespace: "desafio.app.",
         autoWait: true,
-		timeout: 45
+		timeout: 15
     });
 });

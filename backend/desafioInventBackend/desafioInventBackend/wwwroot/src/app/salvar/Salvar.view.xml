@@ -1,5 +1,5 @@
 <mvc:View
-  controllerName="desafio.app.cadastro.Cadastro"
+  controllerName="desafio.app.salvar.Salvar"
   xmlns="sap.m"
   xmlns:core="sap.ui.core"
   xmlns:mvc="sap.ui.core.mvc"

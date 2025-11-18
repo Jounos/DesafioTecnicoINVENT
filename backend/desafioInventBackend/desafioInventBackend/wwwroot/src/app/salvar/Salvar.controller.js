@@ -8,7 +8,7 @@ sap.ui.define([
 	ServiceEquipamentoEletronico) => {
 	"use strict";
 
-	const NOME_CONTROLLER = "desafio.app.cadastro.Cadastro"
+	const NOME_CONTROLLER = "desafio.app.salvar.Salvar"
 	const NOME_MODELO_PARAMETROS = "params";
 	const NOME_MODELO_FORM = "form";
 	const PARAMETROS_URL = "arguments";

@@ -11,7 +11,7 @@ sap.ui.define([
 ) {
 	"use strict";
 
-	const VIEW_NAME = "cadastro.Cadastro";
+	const VIEW_NAME = "salvar.Salvar";
 
 	Opa5.createPageObjects({
 		naPaginaCriacaoDeEquipamentoEletronico: {

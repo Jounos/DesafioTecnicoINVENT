@@ -75,12 +75,12 @@
         {
           "pattern": "cadastro/0/:?query:",
           "name": "cadastro",
-          "target": "cadastro"
+          "target": "salvar"
         },
         {
           "pattern": "edicao/{id}/:?query:",
           "name": "edicao",
-          "target": "cadastro"
+          "target": "salvar"
         }
       ],
       "targets": {
@@ -88,9 +88,9 @@
           "viewId": "listagem",
           "viewName": "listagem.Listagem"
         },
-        "cadastro": {
-          "viewId": "cadastro",
-          "viewName": "cadastro.Cadastro"
+        "salvar": {
+          "viewId": "salvar",
+          "viewName": "salvar.Salvar"
         }
       }
     },

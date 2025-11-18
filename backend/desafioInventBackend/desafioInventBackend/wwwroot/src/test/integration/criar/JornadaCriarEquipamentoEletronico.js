@@ -9,7 +9,7 @@ sap.ui.define([
 
 	opaTest("Deve exibir a tela de criação de equipamentos eletrônicos", function (Given, When, Then) {
 		Given.iStartMyApp({
-			hash: "/index.html#/cadastro"
+			hash: "/index.html#/cadastro/0/"
 		});
 
 		Then.naPaginaCriacaoDeEquipamentoEletronico
@@ -31,7 +31,7 @@ sap.ui.define([
 		const selectSelecionado = "1";
 		const quantidade = 10;
 
-		Given.iStartMyApp({ hash: '/index.html#/cadastro' });
+		Given.iStartMyApp({ hash: '/index.html#/cadastro/0/' });
 
 		When.naPaginaCriacaoDeEquipamentoEletronico
 			.inserirValorNoCampoNome(nomeEquipamentoEletronico)
@@ -49,7 +49,7 @@ sap.ui.define([
 
 	opaTest("Deve tentar salvar um equipamento eletronico com as informações incompletas", function (Given, When, Then){
 		const nomeEquipamentoEletronico = "Macbook Pro Apple M4";
-		Given.iStartMyApp({ hash: '/index.html#/cadastro' });
+		Given.iStartMyApp({ hash: '/index.html#/cadastro/0/' });
 
 		When.naPaginaCriacaoDeEquipamentoEletronico.inserirValorNoCampoNome(nomeEquipamentoEletronico);
 		When.naPaginaCriacaoDeEquipamentoEletronico.clicoNoBotaoSalvar();
