@@ -45,16 +45,15 @@ sap.ui.define([
 		},
 
 		_erroTemContentTypeProblem: function (resposta) {
-			const problemsTypes = ['application/problem+json', 'application/problem+xml'];
-			const nomeDoProblemaHeaderMai = 'Content-Type';
-			const nomeDoParametroHeaderMin = 'content-type';
-
-			if (resposta instanceof Error) {
-				return false;
+			const problemTypes = ["application/problem+json", "application/problem+xml"];
+			const nomeDoParametroHeaderMai = "Content-Type";
+			const nomeDoParametroHeaderMin = "content-type";
+			if (!(resposta instanceof Error)) {
+				var contentType = resposta.headers.get(nomeDoParametroHeaderMai) || resposta.headers.get(nomeDoParametroHeaderMin);
+				return contentType && problemTypes.some(x => contentType.includes(x));
 			}
 
-			var contentType = resposta.headers.get(nomeDoProblemaHeaderMai) || resposta.headers.get(nomeDoParametroHeaderMin);
-			return problemsTypes.some(x => contentType.includes(x));
+			return false;
 		},
 
 		_erroTemContentTypeProblemDetails: function (resposta) {
@@ -79,18 +78,20 @@ sap.ui.define([
 		},
 
 		_escaparCaracteresDeBindings: function (texto) {
-			const tipoString = 'string';
-			if (!texto || typeof(texto) !== tipoString) {
-				const nomeDaFuncao = "escaparCaracteresDeBindings";
-				throw new Error(`[${nomeDaFuncao}] O texto não é do tipo string!`);
+			debugger;
+			const tipoString = "string";
+			if (texto && typeof(texto) === tipoString) {
+				const caractereDeBindInicial = "{";
+				const caractereDeBindFinal = "}";
+
+				return texto
+					.replaceAll(caractereDeBindInicial, `\\${caractereDeBindInicial}`)
+					.replaceAll(caractereDeBindFinal, `\\${caractereDeBindFinal}`);
 			}
 
-			const caractereDSeBindingInicial = "{";
-			const caractereDSeBindingFinal = "}";
+			const nomeDaFuncao = "escaparCaracteresDeBindings";
 
-			return texto
-				.replaceAll(caractereDSeBindingInicial, `\\${caractereDSeBindingInicial}`)
-				.replaceAll(caractereDSeBindingFinal, `\\${caractereDSeBindingFinal}`);
+			throw new Error(`[${nomeDaFuncao}] O texto não é do tipo String!`);
 		}
 	});
 });

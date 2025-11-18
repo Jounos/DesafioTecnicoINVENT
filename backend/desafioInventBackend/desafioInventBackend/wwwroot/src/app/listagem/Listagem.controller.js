@@ -9,6 +9,7 @@ sap.ui.define([
     "use strict";
 
 	const NOME_CONTROLLER = "desafio.app.listagem.Listagem";
+	const NOME_MODELO_LISTA = "listaEquipamentosEletronicos";
 	const NAME_MODELO_FILTROS = "filtros";
 	const NOME_MODELO_SELECTS = "selects";
 
@@ -98,6 +99,14 @@ sap.ui.define([
 			}
 		},
 
+		aoClicarBotaoEditar: function (evento) {
+			const rotaEdicao = 'edicao';
+			const propriedade = "id";
+			let id = evento.getSource().getBindingContext(NOME_MODELO_LISTA).getProperty(propriedade);
+
+			this.navegarPara(rotaEdicao, { id: id });
+		},
+
 		aoClicarBotaoCadastrar: function () {
 			const rotaCadastro = "cadastro";
 			const filtros = this._obterFiltrosFormatados();
@@ -106,16 +115,13 @@ sap.ui.define([
 		},
 
 		aoClicarBotaoPesquisar: function () {
-			this.exibirEspera(() => {
-				this._pesquisar();
-			});
+			this.exibirEspera(() => this._pesquisar());
 		},
 
 		_pesquisar() {
 			const filtrosFormatados = this._obterFiltrosFormatados();
-			const nomeModeloListaEquipamentosEletronicos = "listaEquipamentosEletronicos";
 			return ServiceEquipamentoEletronico.buscarTodos(filtrosFormatados)
-				.then(result => this.criarModelo(nomeModeloListaEquipamentosEletronicos, result));
+				.then(result => this.criarModelo(NOME_MODELO_LISTA, result));
 		},
 
 		_obterFiltrosFormatados: function() {

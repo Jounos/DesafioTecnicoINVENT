@@ -11,23 +11,35 @@ sap.ui.define([
 	const NOME_CONTROLLER = "desafio.app.cadastro.Cadastro"
 	const NOME_MODELO_PARAMETROS = "params";
 	const NOME_MODELO_FORM = "form";
+	const PARAMETROS_URL = "arguments";
+	const MENSAGEM_SUCESSO = "Common.SalvoComSucesso";
+
 	return BaseController.extend(NOME_CONTROLLER, {
 
+		_equipamentoEletronicoId: null,
 		_validadorEquipamentoEletronico: null,
 
 		onInit() {
 			const rotaCadastro = "cadastro";
 			this.vincularRota(rotaCadastro, this._obterParametros);
 
+			const rotaEdicao = "edicao";
+			this.vincularRota(rotaEdicao, this._buscarEquipamentoEletronicoPorId)
+
+			this._prepararValidacoes();
 			this._criarModelos();
 		},
 
 		_obterParametros: function (event) {
-			const parametro = "arguments";
-			let querys = event.getParameter(parametro)[this.query];
+			let querys = event.getParameter(PARAMETROS_URL)[this.query];
 
 			this.criarModelo(NOME_MODELO_PARAMETROS, querys);
-			this._prepararValidacoes();
+		},
+
+		_buscarEquipamentoEletronicoPorId: function (event) {
+			this._equipamentoEletronicoId = event.getParameter(PARAMETROS_URL)?.id;
+			ServiceEquipamentoEletronico.buscarPorId(this._equipamentoEletronicoId)
+					.then((result) => this.criarModelo(NOME_MODELO_FORM, result));
 		},
 
 		_criarModelos() {
@@ -65,9 +77,8 @@ sap.ui.define([
 		},
 
 		aoNavegarUltimaPagina: function () {
-			const params = this.obterValorModelo(NOME_MODELO_PARAMETROS);
 			const rotaListagem = "listagem";
-			this.navegarPara(rotaListagem, params);
+			this.navegarPara(rotaListagem);
 		},
 
 		_prepararValidacoes() {
@@ -106,11 +117,10 @@ sap.ui.define([
 		},
 
 		_salvar() {
-			const sucesso = "Common.SalvoComSucesso";
 			this._validarCampos();
 			const equipamentoEletronico = this.obterModelo(NOME_MODELO_FORM).getData();
-			return ServiceEquipamentoEletronico.salvar(equipamentoEletronico)
-				.then(() => this.exibirMensagem(sucesso, () => this._aoClicarBotaoOkMensagemDeSucesso()));
+			return ServiceEquipamentoEletronico.salvar(equipamentoEletronico, this._equipamentoEletronicoId)
+				.then(() => this.exibirMensagem(MENSAGEM_SUCESSO, () => this._aoClicarBotaoOkMensagemDeSucesso()));
 		},
 
 		_aoClicarBotaoOkMensagemDeSucesso: function() {

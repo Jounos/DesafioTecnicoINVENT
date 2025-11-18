@@ -63,20 +63,7 @@ sap.ui.define([
 		},
 
 		navegarPara(rota, param = null) {
-			const oRouter = this._getRouter();
-
-			if (param) {
-
-				for (let key in param) {
-					if (!param[key]) {
-						delete param[key];
-					}
-				}
-
-				oRouter.navTo(rota, { query: param });
-			} else {
-				oRouter.navTo(rota);
-			}
+			return this._getRouter().navTo(rota, param);
 		},
 
 		_getRouter: function () {

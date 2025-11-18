@@ -73,8 +73,13 @@
           "target": "listagem"
         },
         {
-          "pattern": "cadastro:?query:",
+          "pattern": "cadastro/0/:?query:",
           "name": "cadastro",
+          "target": "cadastro"
+        },
+        {
+          "pattern": "edicao/{id}/:?query:",
+          "name": "edicao",
           "target": "cadastro"
         }
       ],

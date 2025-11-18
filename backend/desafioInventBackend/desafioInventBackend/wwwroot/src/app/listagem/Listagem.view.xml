@@ -116,14 +116,14 @@
               </Column>
             </columns>
             <items>
-              <ColumnListItem type="Navigation" press="aoClicarBotaoCadastrar">
+              <ColumnListItem type="Navigation" press="aoClicarBotaoEditar">
                 <cells>
                   <Text text="{ path: 'listaEquipamentosEletronicos>nome' }"></Text>
                   <Text text="{ path: 'listaEquipamentosEletronicos>tipoEquipamento', formatter: '.formatter.formatarTipoEquipamento' }"></Text>
                   <Text text="{ path: 'listaEquipamentosEletronicos>quantidadeEstoque' }"></Text>
                   <Text text="{ path: 'listaEquipamentosEletronicos>dataInclusao', formatter: '.formatter.formatarData'}"></Text>
                   <HBox>
-                    <Button icon="sap-icon://edit" type="Attention" class="myCustomButton" press="" />
+                    <Button icon="sap-icon://edit" type="Attention" class="myCustomButton" press="aoClicarBotaoEditar" />
                     <Button icon="sap-icon://delete" type="Reject" class="myCustomButton" press="" />
                   </HBox>
                 </cells>
