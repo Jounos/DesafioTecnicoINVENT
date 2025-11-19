@@ -67,10 +67,10 @@
                   </Select>
                 </VBox>
                 <VBox class="sapUiSmallMarginEnd sapUiMediumMarginTop">
-                  <Button text="Cadastrar" type="Emphasized" class="myCustomButton" press="aoClicarBotaoCadastrar"/>
+                  <Button icon="sap-icon://add" text="{i18n>Listagem.CadastrarBotao}" type="Emphasized" class="myCustomButton" press="aoClicarBotaoCadastrar"/>
                 </VBox>
                 <VBox class="sapUiMediumMarginTop">
-                  <Button text="Pesquisar" type="Emphasized" class="myCustomButton" press="aoClicarBotaoPesquisar" />
+                  <Button icon="sap-icon://search" text="{i18n>Listagem.PesquiarBotao}" type="Emphasized" class="myCustomButton" press="aoClicarBotaoPesquisar" />
                 </VBox>
               </HBox>
             </VBox>

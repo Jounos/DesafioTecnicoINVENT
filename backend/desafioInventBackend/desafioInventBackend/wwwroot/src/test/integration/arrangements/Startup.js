@@ -12,7 +12,7 @@ sap.ui.define([
 
 			oOptions.delay = oOptions.delay || 1;
 
-			return this.iStartMyAppInAFrame(oOptions.hash);
+			return this.iStartMyAppInAFrame(`/index.html${oOptions.hash}`);
 		},
 
 		_clearSharedData: function() {

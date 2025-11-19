@@ -46,8 +46,8 @@
     <footer>
       <OverflowToolbar>
         <ToolbarSpacer/>
-        <Button text="{i18n>Cadastro.SalvarBotao}" type="Emphasized" press="aoClicarBotaoCadastrar"/>
-        <Button text="{i18n>Cadastro.CancelarBotao}" type="Ghost" press="aoNavegarUltimaPagina" />
+        <Button icon="sap-icon://add" text="{i18n>Cadastro.SalvarBotao}" type="Emphasized" press="aoClicarBotaoCadastrar"/>
+        <Button icon="sap-icon://decline" text="{i18n>Cadastro.CancelarBotao}" type="Ghost" press="aoNavegarUltimaPagina" />
       </OverflowToolbar>
     </footer>
   </Page>
